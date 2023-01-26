@@ -1,3 +1,7 @@
 __pycache__/
+
 rapport/*.pdf
+rapport/build_*/
+
+viscek.gif
 
