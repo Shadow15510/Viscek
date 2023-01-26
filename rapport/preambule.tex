@@ -27,6 +27,21 @@
 \usepackage{babel}
 
 
+% Minted
+\newcommand{\python}{\mintinline[breaklines=true, breakanywhere=true]{python}}
+\newminted{python}{
+	linenos=true,
+	tabsize=4,
+	breaklines=true,
+	fontfamily=courier,
+	autogobble,
+	style=rainbow_dash,
+	xleftmargin=5pt,
+	xrightmargin=5pt,
+	frame=lines
+}
+
+
 % Pagestyle
 \everymath{\displaystyle}
 \pagestyle{fancy}
