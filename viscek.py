@@ -27,7 +27,7 @@ class Agent:
         position    : vecteur position (sous forme d'un tableau numpy de trois entiers)
         speed       : direction du vecteur vitesse (tableau de trois entiers)
         velocity    : norme de la vitesse
-        noise       : taux de bruit qui traduit le comportement de l'agent par rapport aux autres (0 suit les autres, 1 ne suit pas les autres)
+        noise       : taux de bruit qui traduit une déviation aléatoire sur la direction de la vitesse
         sight       : distance à laquelle l'agent voit les autres
         field_sight : angle de vision de l'agent de chaque côté du vecteur vitesse
         agent_type  : type d'agent (0 : agent normal ; 1 : agent répulsif)
@@ -35,7 +35,7 @@ class Agent:
         self.position = position.copy()
         self.speed = speed.copy()
         self.velocity = velocity
-        self.noise = noise
+        self.noise = noise / 2
         self.sight = sight
         self.field_sight = field_sight
         self.agent_type = agent_type
@@ -74,12 +74,11 @@ class Agent:
         average_speed = np.zeros((dim))
         for agent in neighbours:
             if agent.agent_type == 1:
-                average_speed = (self.position - agent.position)
-                break
+                average_speed += (self.position - agent.position)
             average_speed += agent.speed
 
         self.position += self.velocity * 0.5 * self.speed
-        self.speed = average_speed + (self.noise * np.random.randint(0, math.floor(self.velocity) + 1, dim))
+        self.speed = average_speed + (2 * self.noise * np.random.random(dim) - self.noise)
         self.speed /= norm(self.speed)
 
 
@@ -119,21 +118,19 @@ class Group:
         check_field    : prise en compte de l'angle de vue de l'agent (True par défaut)
         Retourne une liste d'agents appartenant au groupe et étant à une distance inférieure ou égale à dmin.
         """
-        agents = [agent for agent in self.agents if (targeted_agent - agent) <= dmin]
-
         if not check_field:
-            return agents
+            return [agent for agent in self.agents if (targeted_agent - agent) <= dmin]
         else:
-            visible_agents = []
-            for agent in agents:
-                if agent == targeted_agent: visible_agents.append(agent)
+            agents = []
+            for agent in self.agents:
+                if agent == targeted_agent: agents.append(agent)
                 else:
                     vect = agent.position - targeted_agent.position
                     vect /= norm(vect)
                     angle = sum(vect * targeted_agent.speed) / (norm(vect) * norm(targeted_agent.speed))
-                    if abs(math.acos(angle)) <= targeted_agent.field_sight: visible_agents.append(agent)
+                    if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(math.acos(angle)) <= targeted_agent.field_sight): agents.append(agent)
 
-            return visible_agents
+            return agents
 
     def get_agents_parameters(self):
         """Retourne un tuple de tableaux numpy contenant les positions et les vitesses de tous les agents du groupe."""
@@ -181,7 +178,8 @@ class Group:
         check_field : vérification de l'angle de vue (True par defaut)
         Génère une animation.
         """
-        def compute_animation(*args):
+        def compute_animation(frame_index):
+            print(f"{math.floor(100 * frame_index/frames)} %")
             positions = np.zeros((self.nb_agents, self.dimension))
 
             if self.dimension == 2:
@@ -222,17 +220,22 @@ class DimensionError(Exception):
 # │ Fonctions │ #
 # └───────────┘ #
 
-def group_generator(nb: int, position_min: int=-25, position_max: int=25, speed_min: int=-2, speed_max: int=2, sight_min: int=1, sight_max: int=6, dim: int=2):
+def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(1, 6), field_sight: int=7*math.pi/36, dim: int=2):
     """
-    nb: nombre d'agents à générer
+    nb          : nombre d'agents à générer
+    position    : valeurs limites de la position (xlim ; ylim)
+    speed       : valeurs limites de la vitesse (xlim ; ylim)
+    sight       : portée de la vue des agents
+    field_sight : champ de vision des agents
+    dim         : dimension de l'espace dans lequel les agents évoluent
     Retourne un groupe d'agents générés aléatoirement.
     """
     rlist = lambda minimum, maximum: minimum + (maximum - minimum) * np.random.random(dim)
-    agents = [Agent(rlist(position_min, position_max), np.zeros(dim), 0, random.random(), random.randint(sight_min, sight_max)) for _ in range(nb)]
+    agents = [Agent(rlist(position[0], position[1]), np.zeros(dim), 0, random.random(), random.randint(sight[0], sight[1]), field_sight) for _ in range(nb)]
     for agent in agents:
         velocity = 0
         while velocity == 0:
-            agent.speed = rlist(speed_min, speed_max)
+            agent.speed = rlist(speed[0], speed[1])
             velocity = norm(agent.speed)
 
         agent.speed /= velocity
@@ -253,7 +256,7 @@ def norm(vect: np.array):
 # │ Données │ #
 # └─────────┘ #
 
-group_20 = group_generator(20, dim=2)
+group_20 = group_generator(19, dim=2)
 group_20.add_agent(Agent(
     np.array([0., 0.]),
     np.array([0., 0.]),
@@ -261,7 +264,7 @@ group_20.add_agent(Agent(
     0,
     0,
     0,
-    agent_type=1
+    1
 ))
 
 group_40 = group_generator(40, dim=2)
