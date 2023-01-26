@@ -1,0 +1,15 @@
+\documentclass[french, a4paper, 12pt, openany]{book}
+
+\newcommand{\doctitle}{Modele de Viscek}
+\newcommand{\docsubtitle}{test}
+\newcommand{\docauthor}{Alexis Peyroutet \& Antoine Royer}
+\newcommand{\docdate}{test}
+
+% \usepackage[outputdir=/home/sha-chan/.cache/gummi]{minted}
+% \input{~/latex/minted.tex}
+\input{preambule.tex}
+
+\begin{document} \maketitle \tableofcontents
+\chapter{One}
+contenu
+\end{document}
