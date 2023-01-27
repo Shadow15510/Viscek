@@ -51,7 +51,7 @@ class Agent:
         agent : un autre agent
         Retourne la distance entre les deux agents.
         """
-        return math.sqrt(sum((self.position - agent.position) ** 2))
+        return norm(self.position - agent.position)
 
     __rsub__ = __sub__
 
@@ -101,13 +101,20 @@ class Group:
             if len(agent.position) != dim or len(agent.speed) != dim:
                 raise DimensionError("dimension of agents don't match")
     
+    def __getitem__(self, index: int):
+        """
+        index : indice de l'agent
+        Renvoie l'agent d'indice index.
+        """
+        return self.agents[index]
+    
     def copy(self):
         """Renvoie une copie profonde du groupe."""
         return Group([agent.copy() for agent in self.agents], self.dimension)
 
     def add_agent(self, agent: Agent):
         if len(agent.position) != self.dimension or len(agent.speed) != self.dimension:
-                raise DimensionError("dimension of agents don't match")
+                raise DimensionError("dimension of agent doesn't match")
         self.agents.append(agent.copy())
         self.nb_agents += 1
 
@@ -171,10 +178,11 @@ class Group:
         self.compute_figure()
         plt.show()
 
-    def run(self, frames: int=20, interval: int=100, check_field: bool=True):
+    def run(self, frames: int=20, interval: int=100, filename: str="viscek", check_field: bool=True):
         """
         frames      : nombre d'image voulues dans l'animation (20 par défaut)
         interval    : intervale entre deux images de l'animation en ms (100 ms par défaut)
+        filename    : nom du GIF enregistré ("viscek" par défaut)
         check_field : vérification de l'angle de vue (True par defaut)
         Génère une animation.
         """
@@ -209,7 +217,7 @@ class Group:
 
         fig = self.compute_figure()
         ani = animation.FuncAnimation(fig, compute_animation, frames=frames, interval=interval)
-        ani.save("viscek.gif")
+        ani.save(filename + ".gif")
 
 
 class DimensionError(Exception):
@@ -231,16 +239,26 @@ def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), si
     Retourne un groupe d'agents générés aléatoirement.
     """
     rlist = lambda minimum, maximum: minimum + (maximum - minimum) * np.random.random(dim)
-    agents = [Agent(rlist(position[0], position[1]), np.zeros(dim), 0, random.random(), random.randint(sight[0], sight[1]), field_sight) for _ in range(nb)]
-    for agent in agents:
+    agents = []
+    
+    for _ in range(nb):
+        agent = Agent(
+            position=rlist(position[0], position[1]),
+            speed=np.zeros(dim),
+            velocity=0,
+            noise=random.random(),
+            sight=random.randint(sight[0], sight[1]),
+            field_sight=field_sight)
+        
         velocity = 0
         while velocity == 0:
             agent.speed = rlist(speed[0], speed[1])
             velocity = norm(agent.speed)
-
         agent.speed /= velocity
         agent.velocity = velocity
-  
+        
+        agents.append(agent)
+    
     return Group(agents, dim)
 
 
