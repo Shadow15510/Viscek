@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Viscek — 1.5.0          │ #
+# │          Viscek — 1.5.1          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -12,7 +12,7 @@ import random
 
 
 __name__ = "Viscek"
-__version__ = "1.5.0"
+__version__ = "1.5.1"
 
 
 # ┌─────────┐ #
