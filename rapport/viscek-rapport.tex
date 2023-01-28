@@ -1,25 +1,45 @@
-\documentclass[french, a4paper, 12pt, openany]{book}
+\documentclass[french, a4paper, 12pt, openany]{report}
+
+\title{\sc Modèle de Viscek}
+\author{Alexis Peyroutet, Léo Noël\\Antoine Royer}
+\date{Janvier – Juin 2023}
 
 \input{preambule.tex}
 
-\title{\LARGE{\sc Modèle de Viscek}}
-\author{\LARGE{Alexis Peyroutet et Antoine Royer}}
-\date{\Large{Janvier – Juin 2023}}
-
-\lhead{}
-\rhead{Modèle de Viscek}
-
-\lfoot{Alexis Peyroutet et Antoine Royer}
-\cfoot{\thepage\ $|$ \pageref{LastPage}}
 \rfoot{L3 PCAME\\2022 — 2023}
-
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 
 % \usepackage[outputdir=/home/sha-chan/.cache/gummi]{minted}
 % \input{~/latex/minted.tex}
 
-\begin{document} \maketitle \tableofcontents
+\begin{document}
+\makeatletter
+\begin{titlepage}
+	\centering
+	
+	\includegraphics[width=8cm]{images/ut3.png} \hfill \includegraphics[width=8cm]{images/uppa.png} \\
+	{\large{\sc Licence 3 de Physique, Chimie, Astrophysique, Météorologie et Énergie}} \\
+	\rule{0.5\linewidth}{0.4pt} \\
+	{\sc Rapport du projet numérique} \\
+	
+	%\rule{\linewidth}{0.4pt}
+	
+	\vfill
+	{\huge {\sc \@title}} \\ \vspace{1cm}
+	{\Large \@author} \\
+	\rule{0.25\linewidth}{0.4pt} \\ \vspace{0.25cm}
+	{\Large \@date}
+	
+	\vfill 
+	\includegraphics[width=0.7\linewidth]{images/page_garde2.png}
+	\vfill 
+	\rule{\linewidth}{0.4pt}
+\end{titlepage}
+\makeatother
+
+\tableofcontents
+
 \nnchapter{Introduction}
 
 \end{document}
