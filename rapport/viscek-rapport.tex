@@ -1,20 +1,12 @@
-\documentclass[french, a4paper, 12pt, openany]{book}
+\documentclass[french, a4paper, 12pt, openany]{report}
 
-\input{preambule.tex}
-
-\title{Modèle de Viscek}
+\title{\sc Modèle de Viscek}
 \author{Alexis Peyroutet, Léo Noël\\Antoine Royer}
 \date{Janvier – Juin 2023}
 
-\makeatletter
-	\lhead{}
-	\rhead{\@title}
+\input{preambule.tex}
 
-	\lfoot{\@author}
-	\cfoot{\thepage\ $|$ \pageref{LastPage}}
-	\rfoot{L3 PCAME\\2022 — 2023}
-\makeatother
-
+\rfoot{L3 PCAME\\2022 — 2023}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 
@@ -28,20 +20,26 @@
 	
 	\includegraphics[width=8cm]{images/ut3.png} \hfill \includegraphics[width=8cm]{images/uppa.png} \\
 	{\large{\sc Licence 3 de Physique, Chimie, Astrophysique, Météorologie et Énergie}} \\
-	{\sc Rapport du projet numérique}\\
+	\rule{0.5\linewidth}{0.4pt} \\
+	{\sc Rapport du projet numérique} \\
 	
-	\rule{\linewidth}{0.4pt}
+	%\rule{\linewidth}{0.4pt}
 	
 	\vfill
-	{\huge {\sc \@title}}\\
-	\vspace{1cm}
-	{\Large \@author \\ \@date}
+	{\huge {\sc \@title}} \\ \vspace{1cm}
+	{\Large \@author} \\
+	\rule{0.25\linewidth}{0.4pt} \\ \vspace{0.25cm}
+	{\Large \@date}
 	
-	\vfill \vfill
+	\vfill 
+	\includegraphics[width=0.7\linewidth]{images/page_garde2.png}
+	\vfill 
 	\rule{\linewidth}{0.4pt}
 \end{titlepage}
 \makeatother
 
 \tableofcontents
+
 \nnchapter{Introduction}
+
 \end{document}

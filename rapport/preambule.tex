@@ -44,9 +44,17 @@
 
 
 % Pagestyle
-\everymath{\displaystyle}
 \pagestyle{fancy}
 \fancypagestyle{plain}
+
+\makeatletter
+	\lhead{}
+	\rhead{\@title}
+
+	\lfoot{\@author}
+	\cfoot{\thepage\ $|$ \pageref{LastPage}}
+\makeatother
+
 
 
 % Customs commands and environnements
