@@ -89,7 +89,7 @@ class Agent:
 
 
 class Group:
-    """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher"""
+    """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher."""
     
     def __init__(self, agents: list, length: int=50, dim: int=2):
         """
@@ -182,8 +182,7 @@ class Group:
         return fig
 
     def density(self):
-        """Calcule la densité d'agents dans l'espace en 2 ou 3 dimensions"""
-        
+        """Calcule la densité d'agents dans l'espace en 2 ou 3 dimensions."""
         if self.dimension == 2 :
            return self.nb_agents / (self.length ** 2)
         else:
@@ -208,8 +207,8 @@ class Group:
 
             if self.dimension == 2:
                 ax = plt.axes()
-                ax.axes.set_xlim(-50, 50)
-                ax.axes.set_ylim(-50, 50)
+                ax.axes.set_xlim(-self.length, self.length)
+                ax.axes.set_ylim(-self.length, self.length)
 
                 for index, agent in enumerate(self.agents):
                     if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension)
@@ -220,9 +219,9 @@ class Group:
 
             else:
                 ax = plt.axes(projection="3d")
-                ax.axes.set_xlim3d(-20, 20)
-                ax.axes.set_ylim3d(-20, 20)
-                ax.axes.set_zlim3d(-20, 20)
+                ax.axes.set_xlim3d(-self.length, self.length)
+                ax.axes.set_ylim3d(-self.length, self.length)
+                ax.axes.set_zlim3d(-self.length, self.length)
 
                 for index, agent in enumerate(self.agents):
                     if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight), self.dimension)
@@ -244,13 +243,14 @@ class DimensionError(Exception):
 # │ Fonctions │ #
 # └───────────┘ #
 
-def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(5, 10), field_sight: int=math.pi/2, dim: int=2):
+def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(5, 10), field_sight: int=math.pi/2, length: int=50, dim: int=2):
     """
     nb          : nombre d'agents à générer
     position    : valeurs limites de la position (xlim ; ylim)
     speed       : valeurs limites de la vitesse (xlim ; ylim)
     sight       : portée de la vue des agents
     field_sight : champ de vision des agents
+    length      : taille de l'arête du cube d'espace considéré
     dim         : dimension de l'espace dans lequel les agents évoluent
     Retourne un groupe d'agents générés aléatoirement.
     """
@@ -275,7 +275,7 @@ def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), si
         
         agents.append(agent)
     
-    return Group(agents, dim)
+    return Group(agents, length=length, dim=dim)
 
 
 def norm(vect: np.array):
@@ -290,7 +290,7 @@ def norm(vect: np.array):
 # │ Données │ #
 # └─────────┘ #
 
-group_20 = group_generator(19, dim=2)
+group_20 = group_generator(19)
 group_20.add_agent(Agent(
     np.array([0., 0.]),
     np.array([0., 0.]),
@@ -301,4 +301,4 @@ group_20.add_agent(Agent(
     1
 ))
 
-group_40 = group_generator(40, dim=2)
+group_40 = group_generator(40)
