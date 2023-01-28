@@ -22,14 +22,14 @@ __version__ = "1.5.2"
 class Agent:
     """Simule un agent avec sa position, sa vitesse, et le bruit associé qui traduit sa tendance naturelle à suivre le groupe ou pas."""
 
-    def __init__(self, position: np.array, speed: np.array, velocity: int, noise: int, sight: int, field_sight: float=7*math.pi/36, agent_type: int=0):
+    def __init__(self, position: np.array, speed: np.array, velocity: int, noise: int, sight: int, field_sight: float=math.pi/2, agent_type: int=0):
         """
         position    : vecteur position (sous forme d'un tableau numpy de trois entiers)
         speed       : direction du vecteur vitesse (tableau de trois entiers)
         velocity    : norme de la vitesse
         noise       : taux de bruit qui traduit une déviation aléatoire sur la direction de la vitesse
         sight       : distance à laquelle l'agent voit les autres
-        field_sight : angle de vision de l'agent de chaque côté du vecteur vitesse
+        field_sight : angle du cône de vision de l'agent
         agent_type  : type d'agent (0 : agent normal ; 1 : agent répulsif)
         """
         self.position = position.copy()
@@ -37,7 +37,7 @@ class Agent:
         self.velocity = velocity
         self.noise = noise / 2
         self.sight = sight
-        self.field_sight = field_sight
+        self.field_sight = field_sight / 2
         self.agent_type = agent_type
 
     def __str__(self):
@@ -185,13 +185,10 @@ class Group:
         """Calcule la densité d'agents dans l'espace en 2 ou 3 dimensions"""
         
         if self.dimension == 2 :
-           rho=self.nb_agents/(self.length**2)
+           return self.nb_agents / (self.length ** 2)
         else:
-           rho=self.nb_agents/(self.length**3)
-        
-        return rho
-        
-        
+           return self.nb_agents / (self.length ** 3)
+                
     def show(self):
         """Affiche le groupe d'agent."""
         self.compute_figure()
@@ -238,6 +235,7 @@ class Group:
         ani = animation.FuncAnimation(fig, compute_animation, frames=frames, interval=interval)
         ani.save(filename + ".gif")
 
+
 class DimensionError(Exception):
     pass
 
@@ -246,7 +244,7 @@ class DimensionError(Exception):
 # │ Fonctions │ #
 # └───────────┘ #
 
-def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(1, 6), field_sight: int=7*math.pi/36, dim: int=2):
+def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(5, 10), field_sight: int=math.pi/2, dim: int=2):
     """
     nb          : nombre d'agents à générer
     position    : valeurs limites de la position (xlim ; ylim)
