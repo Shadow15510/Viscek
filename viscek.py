@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Viscek — 1.5.1          │ #
+# │          Viscek — 1.5.2          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -12,7 +12,7 @@ import random
 
 
 __name__ = "Viscek"
-__version__ = "1.5.1"
+__version__ = "1.5.2"
 
 
 # ┌─────────┐ #
@@ -72,14 +72,20 @@ class Agent:
         dim        : dimension de l'espace
         """
         average_speed = np.zeros((dim))
+        average_velocity = 0
         for agent in neighbours:
             if agent.agent_type == 1:
                 average_speed += (self.position - agent.position)
             average_speed += agent.speed
+            average_velocity += agent.velocity
+
+        average_speed /= len(neighbours)
+        average_velocity /= len(neighbours)
 
         self.position += self.velocity * 0.5 * self.speed
         self.speed = average_speed + (2 * self.noise * np.random.random(dim) - self.noise)
         self.speed /= norm(self.speed)
+        self.velocity = average_velocity
 
 
 class Group:
