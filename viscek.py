@@ -85,13 +85,15 @@ class Agent:
 class Group:
     """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher"""
     
-    def __init__(self, agents: list, dim: int=2):
+    def __init__(self, agents: list, length: int=50, dim: int=2):
         """
         agents : liste des agents du groupe
+        length : longueur d'un côté de l'espace en 2 ou 3 dimensions
         dim    : dimension de l'espace considéré (2 ou 3)
         """
         self.agents = agents
         self.nb_agents = len(agents)
+        self.length = length
         
         if not dim in (2, 3):
             raise DimensionError("dim must be 2 or 3")
@@ -160,18 +162,29 @@ class Group:
             ax.scatter(positions[:, 0], positions[:, 1], s=5, c="black")
             for agent_index in range(self.nb_agents):
                 ax.quiver(positions[agent_index, 0], positions[agent_index, 1], speeds[agent_index, 0], speeds[agent_index, 1], color="black", width=0.002, scale=0.25, scale_units="xy", headwidth=0, headaxislength=0, headlength=0)
-            ax.axes.set_xlim(-50, 50)
-            ax.axes.set_ylim(-50, 50)
+            ax.axes.set_xlim(-self.length, self.length)
+            ax.axes.set_ylim(-self.length, self.length)
         else:
             ax = plt.axes(projection="3d")
             ax.scatter(positions[:, 0], positions[:, 1], positions[:, 2], s=5, c="black")
             for agent_index in range(self.nb_agents):
                 ax.quiver(positions[agent_index, 0], positions[agent_index, 1], positions[agent_index, 2], speeds[agent_index, 0], speeds[agent_index, 1], speeds[agent_index, 2], color="black")
-            ax.axes.set_xlim3d(-20, 20)
-            ax.axes.set_ylim3d(-20, 20)
-            ax.axes.set_zlim3d(-20, 20)
+            ax.axes.set_xlim3d(-self.length, self.length)
+            ax.axes.set_ylim3d(-self.length, self.length)
+            ax.axes.set_zlim3d(-self.length, self.length)
 
         return fig
+
+    def density(self):
+        """Calcule la densité d'agents dans l'espace en 2 ou 3 dimensions"""
+        
+        if self.dimension == 2 :
+           rho=self.nb_agents/(self.length**2)
+        else:
+           rho=self.nb_agents/(self.length**3)
+        
+        return rho
+        
         
     def show(self):
         """Affiche le groupe d'agent."""
@@ -218,7 +231,6 @@ class Group:
         fig = self.compute_figure()
         ani = animation.FuncAnimation(fig, compute_animation, frames=frames, interval=interval)
         ani.save(filename + ".gif")
-
 
 class DimensionError(Exception):
     pass
