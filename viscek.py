@@ -91,7 +91,7 @@ class Agent:
 class Group:
     """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher."""
     
-    def __init__(self, agents: list, length: int=50, dim: int=2):
+    def __init__(self, agents: list, length: int=50, density=float, dim: int=2):
         """
         agents : liste des agents du groupe
         length : longueur d'un côté de l'espace en 2 ou 3 dimensions
@@ -108,6 +108,11 @@ class Group:
         for agent in agents:
             if len(agent.position) != dim or len(agent.speed) != dim:
                 raise DimensionError("dimension of agents don't match")
+        
+        self.density=density
+        self.density=self.nb_agents/(self.length**self.dimension)
+        
+
     
     def __getitem__(self, index: int):
         """
@@ -181,12 +186,6 @@ class Group:
 
         return fig
 
-    def density(self):
-        """Calcule la densité d'agents dans l'espace en 2 ou 3 dimensions."""
-        if self.dimension == 2 :
-           return self.nb_agents / (self.length ** 2)
-        else:
-           return self.nb_agents / (self.length ** 3)
                 
     def show(self):
         """Affiche le groupe d'agent."""
