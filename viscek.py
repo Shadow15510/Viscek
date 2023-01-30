@@ -93,9 +93,10 @@ class Group:
     
     def __init__(self, agents: list, length: int=50, density=float, dim: int=2):
         """
-        agents : liste des agents du groupe
-        length : longueur d'un côté de l'espace en 2 ou 3 dimensions
-        dim    : dimension de l'espace considéré (2 ou 3)
+        agents  : liste des agents du groupe
+        length  : longueur d'un côté de l'espace en 2 ou 3 dimensions
+        density : densité d'agents dans l'espace (nombre agent/longueur**dim)
+        dim     : dimension de l'espace considéré (2 ou 3)
         """
         self.agents = agents
         self.nb_agents = len(agents)
