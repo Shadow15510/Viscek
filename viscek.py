@@ -22,14 +22,14 @@ __version__ = "1.5.2"
 class Agent:
     """Simule un agent avec sa position, sa vitesse, et le bruit associé qui traduit sa tendance naturelle à suivre le groupe ou pas."""
 
-    def __init__(self, position: np.array, speed: np.array, velocity: int, noise: int, sight: int, field_sight: float=7*math.pi/36, agent_type: int=0):
+    def __init__(self, position: np.array, speed: np.array, velocity: int, noise: int, sight: int, field_sight: float=math.pi/2, agent_type: int=0):
         """
         position    : vecteur position (sous forme d'un tableau numpy de trois entiers)
         speed       : direction du vecteur vitesse (tableau de trois entiers)
         velocity    : norme de la vitesse
         noise       : taux de bruit qui traduit une déviation aléatoire sur la direction de la vitesse
         sight       : distance à laquelle l'agent voit les autres
-        field_sight : angle de vision de l'agent de chaque côté du vecteur vitesse
+        field_sight : angle du cône de vision de l'agent
         agent_type  : type d'agent (0 : agent normal ; 1 : agent répulsif)
         """
         self.position = position.copy()
@@ -37,7 +37,7 @@ class Agent:
         self.velocity = velocity
         self.noise = noise / 2
         self.sight = sight
-        self.field_sight = field_sight
+        self.field_sight = field_sight / 2
         self.agent_type = agent_type
 
     def __str__(self):
@@ -89,15 +89,18 @@ class Agent:
 
 
 class Group:
-    """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher"""
+    """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher."""
     
-    def __init__(self, agents: list, dim: int=2):
+    def __init__(self, agents: list, length: int=50, density=float, dim: int=2):
         """
-        agents : liste des agents du groupe
-        dim    : dimension de l'espace considéré (2 ou 3)
+        agents  : liste des agents du groupe
+        length  : longueur d'un côté de l'espace en 2 ou 3 dimensions
+        density : densité d'agents dans l'espace (nombre agent/longueur**dim)
+        dim     : dimension de l'espace considéré (2 ou 3)
         """
         self.agents = agents
         self.nb_agents = len(agents)
+        self.length = length
         
         if not dim in (2, 3):
             raise DimensionError("dim must be 2 or 3")
@@ -106,6 +109,11 @@ class Group:
         for agent in agents:
             if len(agent.position) != dim or len(agent.speed) != dim:
                 raise DimensionError("dimension of agents don't match")
+        
+        self.density=density
+        self.density=self.nb_agents/(self.length**self.dimension)
+        
+
     
     def __getitem__(self, index: int):
         """
@@ -166,19 +174,20 @@ class Group:
             ax.scatter(positions[:, 0], positions[:, 1], s=5, c="black")
             for agent_index in range(self.nb_agents):
                 ax.quiver(positions[agent_index, 0], positions[agent_index, 1], speeds[agent_index, 0], speeds[agent_index, 1], color="black", width=0.002, scale=0.25, scale_units="xy", headwidth=0, headaxislength=0, headlength=0)
-            ax.axes.set_xlim(-50, 50)
-            ax.axes.set_ylim(-50, 50)
+            ax.axes.set_xlim(-self.length, self.length)
+            ax.axes.set_ylim(-self.length, self.length)
         else:
             ax = plt.axes(projection="3d")
             ax.scatter(positions[:, 0], positions[:, 1], positions[:, 2], s=5, c="black")
             for agent_index in range(self.nb_agents):
                 ax.quiver(positions[agent_index, 0], positions[agent_index, 1], positions[agent_index, 2], speeds[agent_index, 0], speeds[agent_index, 1], speeds[agent_index, 2], color="black")
-            ax.axes.set_xlim3d(-20, 20)
-            ax.axes.set_ylim3d(-20, 20)
-            ax.axes.set_zlim3d(-20, 20)
+            ax.axes.set_xlim3d(-self.length, self.length)
+            ax.axes.set_ylim3d(-self.length, self.length)
+            ax.axes.set_zlim3d(-self.length, self.length)
 
         return fig
-        
+
+                
     def show(self):
         """Affiche le groupe d'agent."""
         self.compute_figure()
@@ -198,8 +207,8 @@ class Group:
 
             if self.dimension == 2:
                 ax = plt.axes()
-                ax.axes.set_xlim(-50, 50)
-                ax.axes.set_ylim(-50, 50)
+                ax.axes.set_xlim(-self.length, self.length)
+                ax.axes.set_ylim(-self.length, self.length)
 
                 for index, agent in enumerate(self.agents):
                     if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension)
@@ -210,9 +219,9 @@ class Group:
 
             else:
                 ax = plt.axes(projection="3d")
-                ax.axes.set_xlim3d(-20, 20)
-                ax.axes.set_ylim3d(-20, 20)
-                ax.axes.set_zlim3d(-20, 20)
+                ax.axes.set_xlim3d(-self.length, self.length)
+                ax.axes.set_ylim3d(-self.length, self.length)
+                ax.axes.set_zlim3d(-self.length, self.length)
 
                 for index, agent in enumerate(self.agents):
                     if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight), self.dimension)
@@ -234,13 +243,14 @@ class DimensionError(Exception):
 # │ Fonctions │ #
 # └───────────┘ #
 
-def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(1, 6), field_sight: int=7*math.pi/36, dim: int=2):
+def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(5, 10), field_sight: int=math.pi/2, length: int=50, dim: int=2):
     """
     nb          : nombre d'agents à générer
     position    : valeurs limites de la position (xlim ; ylim)
     speed       : valeurs limites de la vitesse (xlim ; ylim)
     sight       : portée de la vue des agents
     field_sight : champ de vision des agents
+    length      : taille de l'arête du cube d'espace considéré
     dim         : dimension de l'espace dans lequel les agents évoluent
     Retourne un groupe d'agents générés aléatoirement.
     """
@@ -265,7 +275,7 @@ def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), si
         
         agents.append(agent)
     
-    return Group(agents, dim)
+    return Group(agents, length=length, dim=dim)
 
 
 def norm(vect: np.array):
@@ -280,7 +290,7 @@ def norm(vect: np.array):
 # │ Données │ #
 # └─────────┘ #
 
-group_20 = group_generator(19, dim=2)
+group_20 = group_generator(19)
 group_20.add_agent(Agent(
     np.array([0., 0.]),
     np.array([0., 0.]),
@@ -291,4 +301,4 @@ group_20.add_agent(Agent(
     1
 ))
 
-group_40 = group_generator(40, dim=2)
+group_40 = group_generator(40)
