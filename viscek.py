@@ -8,6 +8,8 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.patches as mpatches
+from matplotlib.collections import PatchCollection
 import random
 
 
@@ -91,7 +93,7 @@ class Agent:
 class Group:
     """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher."""
     
-    def __init__(self, agents: list, length: int=50, dim: int=2):
+    def __init__(self, agents: list, length: int=50, dim: int=2,field_sight: float=30):
         """
         agents  : liste des agents du groupe
         length  : longueur d'un côté de l'espace en 2 ou 3 dimensions
@@ -102,6 +104,7 @@ class Group:
         self.agents = agents
         self.nb_agents = len(agents)
         self.length = length
+        self.field_sight = field_sight / 2
         
         if not dim in (2, 3):
             raise DimensionError("dim must be 2 or 3")
@@ -207,11 +210,18 @@ class Group:
                 ax = plt.axes()
                 ax.axes.set_xlim(-self.length, self.length)
                 ax.axes.set_ylim(-self.length, self.length)
+                patches = []
 
                 for index, agent in enumerate(self.agents):
                     if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension)
                     positions[index] = agent.position
                     ax.quiver(agent.position[0], agent.position[1], agent.velocity * agent.speed[0], agent.velocity * agent.speed[1], color="black", width=0.002, scale=0.25, scale_units="xy", headwidth=0, headaxislength=0, headlength=0)
+                    wedge = mpatches.Wedge(agent.position[0], agent.position[1],3,self.field_sight,self.field_sight, ec="none")
+                    patches.append(wedge)
+                    colors = np.linspace(0, 1, len(patches))
+                    collection = PatchCollection(patches, cmap=plt.cm.hsv, alpha=0.3)
+                    collection.set_array(np.array(colors))
+                    ax.add_collection(collection)
 
                 ax.scatter(positions[:, 0], positions[:, 1], s=5, c="black")
 
