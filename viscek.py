@@ -308,13 +308,12 @@ def get_colors():
     color_map = []
     r, g, b = 255, 0, 0
     for angle in range (360):
-        match (angle // 60):
-            case 0: g += 4.25
-            case 1: r -= 4.25
-            case 2: b += 4.25
-            case 3: g -= 4.25
-            case 4: r += 4.25
-            case 5: b -= 4.25
+        if (angle // 60) == 0: g += 4.25
+        elif (angle // 60) == 1: r -= 4.25
+        elif (angle // 60) == 2: b += 4.25
+        elif (angle // 60) == 3: g -= 4.25
+        elif (angle // 60) == 4: r += 4.25
+        elif (angle // 60) == 5: b -= 4.25
         color_map.append((r / 255, g / 255, b / 255))
     return color_map
 
