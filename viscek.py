@@ -68,6 +68,13 @@ class Agent:
         """Renvoie une copie profonde de l'agent."""
         return Agent(self.position.copy(), self.speed.copy(), self.velocity, self.noise, self.sight, self.field_sight, self.agent_type)
 
+    def get_color(self):
+        """Renvoie la couleur de l'agent en fonction de son orientation."""
+        vect = np.array([1, 0])
+        angle = np.angle(self.position[0] + 1j * self.position[1])
+        angle = (180 * angle) / math.pi
+        return COLOR_MAP[math.floor(angle)], angle
+
     def next_step(self, neighbours: list, dim: int):
         """
         neighbours : liste des agents voisins
@@ -93,7 +100,7 @@ class Agent:
 class Group:
     """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher."""
     
-    def __init__(self, agents: list, length: int=50, dim: int=2,field_sight: float=30):
+    def __init__(self, agents: list, length: int=50, dim: int=2):
         """
         agents  : liste des agents du groupe
         length  : longueur d'un côté de l'espace en 2 ou 3 dimensions
@@ -104,7 +111,6 @@ class Group:
         self.agents = agents
         self.nb_agents = len(agents)
         self.length = length
-        self.field_sight = field_sight / 2
         
         if not dim in (2, 3):
             raise DimensionError("dim must be 2 or 3")
@@ -147,9 +153,7 @@ class Group:
             for agent in self.agents:
                 if agent == targeted_agent: agents.append(agent)
                 else:
-                    vect = agent.position - targeted_agent.position
-                    vect /= norm(vect)
-                    angle = sum(vect * targeted_agent.speed) / (norm(vect) * norm(targeted_agent.speed))
+                    angle = np.angle((targeted_agent.position[0] + 1j * targeted_agent.position[1]) / (agent.position[0] + 1j * agent.position[1]))
                     if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(math.acos(angle)) <= targeted_agent.field_sight): agents.append(agent)
 
             return agents
@@ -166,29 +170,35 @@ class Group:
         return positions, speeds
 
     def compute_figure(self):
-        """Génère une figure matplotlib avec le groupe d'agents sous forme d'un nuage de points en deux ou trois dimensions avec les vecteurs vitesses."""
-        positions, speeds = self.get_agents_parameters()
-
+        """Génère une figure matplotlib avec le groupe d'agents sous forme d'un nuage de points en deux ou trois dimensions."""
         fig = plt.figure()
         if self.dimension == 2:
             ax = plt.axes()
-            ax.scatter(positions[:, 0], positions[:, 1], s=5, c="black")
-            for agent_index in range(self.nb_agents):
-                ax.quiver(positions[agent_index, 0], positions[agent_index, 1], speeds[agent_index, 0], speeds[agent_index, 1], color="black", width=0.002, scale=0.25, scale_units="xy", headwidth=0, headaxislength=0, headlength=0)
+            sight_wedges = []
+
+            for agent in self.agents:
+                _, angle = agent.get_color()
+                plt.scatter(agent.position[0], agent.position[1], s=5, color="black") #agent_color)
+
+                wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, 360 -angle - (180 * agent.field_sight) / math.pi, -angle + (180 * agent.field_sight) / math.pi, ec="black")
+                sight_wedges.append(wedge)
+
+            ax.add_collection(PatchCollection(sight_wedges, alpha=0.3))
+                
             ax.axes.set_xlim(-self.length, self.length)
             ax.axes.set_ylim(-self.length, self.length)
-        else:
-            ax = plt.axes(projection="3d")
-            ax.scatter(positions[:, 0], positions[:, 1], positions[:, 2], s=5, c="black")
-            for agent_index in range(self.nb_agents):
-                ax.quiver(positions[agent_index, 0], positions[agent_index, 1], positions[agent_index, 2], speeds[agent_index, 0], speeds[agent_index, 1], speeds[agent_index, 2], color="black")
-            ax.axes.set_xlim3d(-self.length, self.length)
-            ax.axes.set_ylim3d(-self.length, self.length)
-            ax.axes.set_zlim3d(-self.length, self.length)
+
+        # else:
+        #     ax = plt.axes(projection="3d")
+        #     ax.scatter(positions[:, 0], positions[:, 1], positions[:, 2], s=5, c="black")
+        #     for agent_index in range(self.nb_agents):
+        #         ax.quiver(positions[agent_index, 0], positions[agent_index, 1], positions[agent_index, 2], speeds[agent_index, 0], speeds[agent_index, 1], speeds[agent_index, 2], color="black")
+        #     ax.axes.set_xlim3d(-self.length, self.length)
+        #     ax.axes.set_ylim3d(-self.length, self.length)
+        #     ax.axes.set_zlim3d(-self.length, self.length)
 
         return fig
 
-                
     def show(self):
         """Affiche le groupe d'agent."""
         self.compute_figure()
@@ -204,27 +214,25 @@ class Group:
         """
         def compute_animation(frame_index):
             print(f"{math.floor(100 * frame_index/frames)} %")
-            positions = np.zeros((self.nb_agents, self.dimension))
 
             if self.dimension == 2:
                 ax = plt.axes()
                 ax.axes.set_xlim(-self.length, self.length)
                 ax.axes.set_ylim(-self.length, self.length)
-                patches = []
+                sight_wedges = []
 
                 for index, agent in enumerate(self.agents):
                     if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension)
-                    positions[index] = agent.position
-                    ax.quiver(agent.position[0], agent.position[1], agent.velocity * agent.speed[0], agent.velocity * agent.speed[1], color="black", width=0.002, scale=0.25, scale_units="xy", headwidth=0, headaxislength=0, headlength=0)
-                    wedge = mpatches.Wedge(agent.position[0], agent.position[1],3,self.field_sight,self.field_sight, ec="none")
-                    patches.append(wedge)
-                    colors = np.linspace(0, 1, len(patches))
-                    collection = PatchCollection(patches, cmap=plt.cm.hsv, alpha=0.3)
-                    collection.set_array(np.array(colors))
-                    ax.add_collection(collection)
+                    color, angle = agent.get_color()
+                    field_sight = (180 * agent.field_sight) / math.pi
 
-                ax.scatter(positions[:, 0], positions[:, 1], s=5, c="black")
+                    plt.scatter(agent.position[0], agent.position[1], s=5, color=color)
 
+                    wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, field_sight + angle, 360 - field_sight + angle, ec="none")
+                    sight_wedges.append(wedge)
+                
+                ax.add_collection(PatchCollection(sight_wedges, alpha=0.3))
+                
             else:
                 ax = plt.axes(projection="3d")
                 ax.axes.set_xlim3d(-self.length, self.length)
@@ -241,6 +249,7 @@ class Group:
         fig = self.compute_figure()
         ani = animation.FuncAnimation(fig, compute_animation, frames=frames, interval=interval)
         ani.save(filename + ".gif")
+        plt.close()
 
 
 class DimensionError(Exception):
@@ -294,9 +303,29 @@ def norm(vect: np.array):
     return math.sqrt(sum(vect ** 2))
 
 
+def get_colors():
+    """Retourne une liste de couleur indexée sur l'angle avec la verticale ascendante."""
+    color_map = []
+    r, g, b = 255, 0, 0
+    for angle in range (360):
+        match (angle // 60):
+            case 0: g += 4.25
+            case 1: r -= 4.25
+            case 2: b += 4.25
+            case 3: g -= 4.25
+            case 4: r += 4.25
+            case 5: b -= 4.25
+        color_map.append((r / 255, g / 255, b / 255))
+    return color_map
+
+
 # ┌─────────┐ #
 # │ Données │ #
 # └─────────┘ #
+
+COLOR_MAP = get_colors()
+
+group_10 = group_generator(10)
 
 group_20 = group_generator(19)
 group_20.add_agent(Agent(
