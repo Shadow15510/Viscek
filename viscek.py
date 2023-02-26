@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Viscek — 1.5.2          │ #
+# │          Viscek — 1.6.0          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -14,7 +14,7 @@ import random
 
 
 __name__ = "Viscek"
-__version__ = "1.5.2"
+__version__ = "1.6.0"
 
 
 # ┌─────────┐ #
@@ -31,7 +31,7 @@ class Agent:
         velocity    : norme de la vitesse
         noise       : taux de bruit qui traduit une déviation aléatoire sur la direction de la vitesse
         sight       : distance à laquelle l'agent voit les autres
-        field_sight : angle du cône de vision de l'agent
+        field_sight : angle du cône de vision de l'agent en radian
         agent_type  : type d'agent (0 : agent normal ; 1 : agent répulsif)
         """
         self.position = position.copy()
@@ -70,10 +70,8 @@ class Agent:
 
     def get_color(self):
         """Renvoie la couleur de l'agent en fonction de son orientation."""
-        vect = np.array([1, 0])
-        angle = np.angle(self.position[0] + 1j * self.position[1])
-        angle = (180 * angle) / math.pi
-        return COLOR_MAP[math.floor(angle)], angle
+        angle = np.angle(self.speed[0] + 1j * self.speed[1]) % (2 * math.pi)
+        return COLOR_MAP[math.floor(angle)], (180 * angle) / math.pi
 
     def next_step(self, neighbours: list, dim: int):
         """
@@ -153,8 +151,10 @@ class Group:
             for agent in self.agents:
                 if agent == targeted_agent: agents.append(agent)
                 else:
-                    angle = np.angle((targeted_agent.position[0] + 1j * targeted_agent.position[1]) / (agent.position[0] + 1j * agent.position[1]))
-                    if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(math.acos(angle)) <= targeted_agent.field_sight): agents.append(agent)
+                    pos = agent.position - targeted_agent.position
+                    angle_spd = np.angle(targeted_agent.speed[0] + 1j * targeted_agent.speed[1]) % (2 * math.pi)
+                    angle_pos = np.angle(pos[0] + 1j * pos[1]) % (2 * math.pi)
+                    if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(angle_spd - angle_pos) <= targeted_agent.field_sight): agents.append(agent)
 
             return agents
 
@@ -177,10 +177,12 @@ class Group:
             sight_wedges = []
 
             for agent in self.agents:
-                _, angle = agent.get_color()
-                plt.scatter(agent.position[0], agent.position[1], s=5, color="black") #agent_color)
+                _, dir_angle = agent.get_color()
+                sight_angle = (180 * agent.field_sight) / math.pi
 
-                wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, 360 -angle - (180 * agent.field_sight) / math.pi, -angle + (180 * agent.field_sight) / math.pi, ec="black")
+                plt.scatter(agent.position[0], agent.position[1], s=5, color="black") #agent_color)
+                
+                wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, dir_angle + 360 - sight_angle, dir_angle + sight_angle, ec="black")
                 sight_wedges.append(wedge)
 
             ax.add_collection(PatchCollection(sight_wedges, alpha=0.3))
@@ -223,12 +225,12 @@ class Group:
 
                 for index, agent in enumerate(self.agents):
                     if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension)
-                    color, angle = agent.get_color()
-                    field_sight = (180 * agent.field_sight) / math.pi
+                    color, dir_angle = agent.get_color()
+                    sight_angle = (180 * agent.field_sight) / math.pi
 
                     plt.scatter(agent.position[0], agent.position[1], s=5, color=color)
 
-                    wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, field_sight + angle, 360 - field_sight + angle, ec="none")
+                    wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, dir_angle + 360 - sight_angle, dir_angle + sight_angle, ec="none")
                     sight_wedges.append(wedge)
                 
                 ax.add_collection(PatchCollection(sight_wedges, alpha=0.3))
