@@ -71,7 +71,8 @@ class Agent:
     def get_color(self):
         """Renvoie la couleur de l'agent en fonction de son orientation."""
         angle = np.angle(self.speed[0] + 1j * self.speed[1]) % (2 * math.pi)
-        return COLOR_MAP[math.floor(angle)], (180 * angle) / math.pi
+        angle = (180 * angle) / math.pi
+        return COLOR_MAP[math.floor(angle)], angle 
 
     def next_step(self, neighbours: list, dim: int):
         """
