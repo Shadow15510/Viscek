@@ -254,7 +254,8 @@ class Group:
         ax = plt.axes()
         
         for findex in range(frames):
-            if not (findex % 10): images.append(compute_animation(findex, ax))
+            pl = compute_animation(findex, ax)
+            if not (findex % 10): images.append(pl)
 
 
         #ani = animation.FuncAnimation(fig, compute_animation, frames=frames, interval=interval)
