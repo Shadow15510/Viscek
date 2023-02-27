@@ -215,42 +215,51 @@ class Group:
         check_field : vérification de l'angle de vue (True par defaut)
         Génère une animation.
         """
-        def compute_animation(frame_index):
+        def compute_animation(frame_index, ax):
             print(f"{math.floor(100 * frame_index/frames)} %")
 
             if self.dimension == 2:
-                ax = plt.axes()
+                sight_wedges = []
                 ax.axes.set_xlim(-self.length, self.length)
                 ax.axes.set_ylim(-self.length, self.length)
-                sight_wedges = []
+                pl = []
 
                 for index, agent in enumerate(self.agents):
                     if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension)
                     color, dir_angle = agent.get_color()
                     sight_angle = (180 * agent.field_sight) / math.pi
 
-                    plt.scatter(agent.position[0], agent.position[1], s=5, color=color)
+                    pl.append(ax.scatter(agent.position[0], agent.position[1], s=5, color=color))
 
                     wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, dir_angle + 360 - sight_angle, dir_angle + sight_angle, ec="none")
                     sight_wedges.append(wedge)
                 
-                ax.add_collection(PatchCollection(sight_wedges, alpha=0.3))
+                pl.append(ax.add_collection(PatchCollection(sight_wedges, alpha=0.3)))
                 
-            else:
-                ax = plt.axes(projection="3d")
-                ax.axes.set_xlim3d(-self.length, self.length)
-                ax.axes.set_ylim3d(-self.length, self.length)
-                ax.axes.set_zlim3d(-self.length, self.length)
+            # else:
+            #     ax = plt.axes(projection="3d")
+            #     ax.axes.set_xlim3d(-self.length, self.length)
+            #     ax.axes.set_ylim3d(-self.length, self.length)
+            #     ax.axes.set_zlim3d(-self.length, self.length)
 
-                for index, agent in enumerate(self.agents):
-                    if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight), self.dimension)
-                    positions[index] = agent.position
-                    ax.quiver(agent.position[0], agent.position[1], agent.position[2], agent.speed[0], agent.speed[1], agent.speed[2], color="black")
+            #     for index, agent in enumerate(self.agents):
+            #         if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight), self.dimension)
+            #         positions[index] = agent.position
+            #         ax.quiver(agent.position[0], agent.position[1], agent.position[2], agent.speed[0], agent.speed[1], agent.speed[2], color="black")
 
-            return ax
+            return pl
 
-        fig = self.compute_figure()
-        ani = animation.FuncAnimation(fig, compute_animation, frames=frames, interval=interval)
+        images = []
+        fig = plt.figure()
+        ax = plt.axes()
+        
+        for findex in range(frames):
+            if not (findex % 10): images.append(compute_animation(findex, ax))
+
+
+        #ani = animation.FuncAnimation(fig, compute_animation, frames=frames, interval=interval)
+
+        ani = animation.ArtistAnimation(fig, images, interval=interval, repeat=False)
         ani.save(filename + ".gif")
         plt.close()
 
