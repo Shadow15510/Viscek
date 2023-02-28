@@ -66,5 +66,23 @@
       
       C'est avec tout cela que nous essayerons, à travers ce projet, de reproduire numériquement des mouvements collectifs et ainsi étudier de manière informatique le modèle de Viscek.
 
+\newpage
+
+\section{Travail effectué et prévu}
+
+     Nous avons décidé d'utiliser la programmation orientée objet. Notre programme Python utilise les classes. Nous utilisons ainsi deux classes principales appelées Agent et Group qui fixent respectivement les paramètres de l'agent et du groupe. Pour ce faire, chaque classes est composée par un bon nombre de fonctions qui joue chacune un rôle précis. Par exemple la fonction init qui permet d'initialiser les variables importantes pour construire notre modèle. Nous nous sommes bien sûr servi des équations qui régissent le modèle pour notre programme. \\ 
+
+     Depuis le début du projet, nous avons déjà bien avancé. En effet, notre programme est maintenant capable de générer une animation qui suit le modèle de Viscek. Nous pouvons choisir le nombre d'agents, le nombre d'images qui compose notre animation ou encore la dimension de l'espace considéré (~2D ou 3D~). Sans oublier nos fonctions qui sont capables de nous donner la densité d'agent dans l'espace considéré, la vitesse de chacun des agents, le nombre d'agent dans un cercle de rayon donné (~selon un agent de référence~) et pleins d'autres informations. Nous avons pour le moment fixé la taille de l'espace étudié, et pris des valeurs de bruit aléatoires. Nous avons déjà joué avec les différents paramètres modifiable pour observer le comportement du groupe et les effets collectifs. \\
+     
+     Mais nous ne nous sommes arrêté là. Pour améliorer un peu notre modèle, nous avons testé plusieurs choses. Nous avons premièrement ajouter des agents répulsifs pour voir le comportements des agents. Dès que l'agent répulsif rentrait dans le champs de vision d'un agent, cet agent prend immédiatement la fuite en prenant le vecteur opposé à celui allant de lui à l'agent répulsif. Mais les agents ne montraient plus trop d'effets de groupes, il prenait simplement la fuite. Il y avait de petit groupe mais rien de semblable à ce que l'on obtenait auparavant.\\
+     
+     Puis, nous avons décider de rajouter le cône de vision des agents dans l'animation. Pour cela nous avons du rechercher des fonctions et modules interéssant sur le net pour l'appliquer à notre programme. Après plusieurs heures, nous avons finalement résussi à rajouter ce cône de vision qui nous permet de mieux voir l'influence des agents entre eux. De plus, nous avons récemment une nouvelle amélioration à notre animation. Nous pouvons désormais mieux repérer les groupes car les agents d'un même groupe apparaîtrons de la même couleur.\\
+     
+     Pour la suite du projet, nous avons quelques idées. Nous aimerions par exemple rajouter des obstacles pour voir les conséquences sur l'effet de groupe. Mais cette idée paraît assez difficile à coder. Nous avons également pensé à aller à l'encontre du modèle en établissant un agent leader qui influence tout le groupe. Nous pourrons alors observer un mouvement collectif totalement différent.
+     
+     
+     
+       
+
 
 \end{document}
