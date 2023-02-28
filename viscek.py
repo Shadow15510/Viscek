@@ -355,4 +355,4 @@ group_20.add_agent(Agent(
 ))
 
 group_40 = group_generator(40)
-group_100 = group_generator(100, position=(-5, 5), speed=(-1, 1), length=15)
+group_100 = group_generator(100, position=(-1, 1), speed=(-1, 1), length=4)
