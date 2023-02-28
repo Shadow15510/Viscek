@@ -1,0 +1,70 @@
+\documentclass[french, a4paper, 12pt]{article}
+
+% Packages
+\usepackage{fancyhdr, fancyvrb}
+\usepackage{lastpage}
+\usepackage[left=2.0cm, right=2.0cm, top = 2.0cm, bottom = 2.0cm]{geometry}
+\usepackage{titling}
+\usepackage{hyperref}
+\hypersetup{hyperindex=true, colorlinks, linkcolor=blue, urlcolor=blue, citecolor=blue, breaklinks=true}
+\everymath{\displaystyle}
+
+% Language
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+
+% Pagestyle 
+\pagestyle{fancy}
+\lhead{}
+\rhead{\thetitle}
+\lfoot{\theauthor}
+\cfoot{\thepage\ $|$ \pageref{LastPage}}
+\rfoot{L3 PCAME\\2022 — 2023}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Document
+\title{\sc Feuille de route projet numérique}
+\author{Antoine Royer et Alexis Peyroutet}
+\date{mardi 28 Février 2023}
+
+\begin{document} \maketitle \vspace{3pt} \hrule \vspace{3pt}
+
+\section{Contextualisation du sujet}
+
+      Notre sujet est intitulé ``Modèle de Viscek''. Le but de ce projet numérique est de reproduire de manière numérique le modèle de Viscek.\\
+      
+      Le modèle de Viscek a été crée par le scientifique Tamás Vicsek. Il s'agit d'un physicien hongrois connu pour ses contributions à la physique statistique, à la biologie et à la dynamique des systèmes. Il est né le 10 mai 1948 (~74 ans~) à Budapest. Il est aujourd'hui professeur à l'Université Eötvös Loránd de Budapest. Ce brillant physicien est d'ailleurs un des membres de l'Académie hongroise des sciences et a reçu de nombreux prix pour ses contributions à la physique, notamment le prix Széchenyi (~1999~) ou encore le prix Lars Onsager (~2020~).\\
+
+
+      Mais Tamás Vicsek est surtout connu pour son travail sur les systèmes auto-organisés, les mouvements collectifs. Il a alors travaillé sur le comportement d'agents individuels intéragissant avec d'autres agents aux alentours. Ces observations montrent des motifs de mouvement collectif. Nous pouvons citer comme exemples~: les bancs de poissons, les regroupements de certains oiseaux, les essaims d'insectes, ou encore le mouvement de foules. Le groupe se déplace alors de manière coordonnée sans qu'il y ai de leader comme on peut l'observer notamment dans la migration des grues.\\
+      
+      C'est pour cela qu'il travailla sur un modèle pour étudier ce phénomène de mouvement d'ensemble de plusieurs agents. On appelle ce modèle, le modèle de Viscek, sorti en 1995.\\
+      
+      Pour être plus précis, le modèle de Vicsek va étudié un groupe d'agents qui se déplacent sur un plan. Chacun des agents a sa propre direction de mouvement et une vitesse associée. Or, les agents vont interagir les uns avec les autres. Chaque agent va pouvoir modifier sa direction et même sa vitesse en observant ses voisins. Chaque agent va ainsi modifier sa direction de mouvement en fonction de la direction moyenne des voisins et il en sera de même pour la vitesse.  On va alors observer un mouvement de groupe du aux interactions entre les agents voisins. En revanche, il est possible de rajouter du bruit pour avoir des résultats moins importants concernant la dynamique collective. En augmentant significativement le bruit, le groupe pert son mouvement collectif et les agents prennent alors des directions aléatoires. Le mouvement collectif devient alors inexistant.\\
+      
+      \newpage
+      
+      Viscek a utilisé des équations mathématiques pour construire ce modèle~:
+      \[
+		\Theta_{i}(t+dt) = \Theta_{j |r_{i}-r_{j}|<r} + \eta_{i}(t)
+	   \]
+	   \[
+		 r_{i}(t+dt) = r_{i}(t) + v_{i}\Delta t
+	   \]
+	
+	
+      Avec $r_{i}$ la position de chaque individu donnée par un vecteur de position, nous prendrons $i$ comme indice de l'agent en question et t le temps. Nous noterons également $\eta$ le bruit et $\Theta$ pour l’angle définissant la direction de sa vitesse. Ici, $\Theta_{j |r_{i}-r_{j}|<r}$ nous indiquera la direction moyenne des vitesses des agents dans un cercle de rayon $r$. L'indice $j$ repésentera alors l'ensemble des voisins de $i$ compris dans ce cercle.\\
+      
+      Ce qui est interréssant, c'est que nous pouvons, en modifiant certains paramètres du système étudié, observer un mouvement de foule plus fort ou plus faible. Nous pourons alors jouer sur la surface et les dimensions du plan étudié, le nombre d'agent et donc par conséquent la densité de population et même le bruit.\\
+
+      Le modèle de Vicsek est important pour étudier le comportements de certains animaux en biologie ou encore l'étude des foules. Ce modèle peut même être utile à la construction de bâtiment. Le comportement des foules peut être interéssant dans la conception d'entrées et sorties d'un espace fermé, notamment dans un moment de panique. La foule va s'éloigner du danger est emprunter les sorties. Il est alors crucial de prévoir le comportement des agents pour placer les sorties de manière à ce que le débit d'agent sortant soit le plus important possible.\\
+      
+      Nous pouvons également retrouver le modèle de Vicsek dans la robotique. C'est un précieux outils pour la technologie du monde moderne. Il peut être utiliser dans des programmes informatiques qui gèrent le déplacement de systèmes de robots (~comme les drones~).\\ 
+      
+      C'est avec tout cela que nous essayerons, à travers ce projet, de reproduire numériquement des mouvements collectifs et ainsi étudier de manière informatique le modèle de Viscek.
+
+
+\end{document}
