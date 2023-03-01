@@ -74,11 +74,13 @@ class Agent:
         angle = (180 * angle) / math.pi
         return COLOR_MAP[math.floor(angle)], angle 
 
-    def next_step(self, neighbours: list, dim: int):
+    def next_step(self, neighbours: list, dim: int, length: int):
         """
         neighbours : liste des agents voisins
         dim        : dimension de l'espace
+        length     : longueur caractéristique de l'espace
         """
+        length //= 2
         average_speed = np.zeros((dim))
         average_velocity = 0
         for agent in neighbours:
@@ -90,11 +92,13 @@ class Agent:
         average_speed /= len(neighbours)
         average_velocity /= len(neighbours)
 
-        self.position += self.velocity * 0.5 * self.speed
+        self.position += self.velocity * 0.1 * self.speed
         self.speed = average_speed + (2 * self.noise * np.random.random(dim) - self.noise)
         self.speed /= norm(self.speed)
         self.velocity = average_velocity
 
+        for i in range(dim):
+            if not (-length < self.position[i] < length): self.position = length * np.random.random(dim) - length // 2
 
 class Group:
     """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher."""
@@ -102,7 +106,7 @@ class Group:
     def __init__(self, agents: list, length: int=50, dim: int=2):
         """
         agents  : liste des agents du groupe
-        length  : longueur d'un côté de l'espace en 2 ou 3 dimensions
+        length  : longueur caractéristique de l'espace
         dim     : dimension de l'espace considéré (2 ou 3)
 
         density : densité d'agents dans l'espace (nombre agent / longueur ** dim)
@@ -188,17 +192,17 @@ class Group:
 
             ax.add_collection(PatchCollection(sight_wedges, alpha=0.3))
                 
-            ax.axes.set_xlim(-self.length, self.length)
-            ax.axes.set_ylim(-self.length, self.length)
+            ax.axes.set_xlim(-self.length // 2, self.length // 2)
+            ax.axes.set_ylim(-self.length // 2, self.length // 2)
 
         # else:
         #     ax = plt.axes(projection="3d")
         #     ax.scatter(positions[:, 0], positions[:, 1], positions[:, 2], s=5, c="black")
         #     for agent_index in range(self.nb_agents):
         #         ax.quiver(positions[agent_index, 0], positions[agent_index, 1], positions[agent_index, 2], speeds[agent_index, 0], speeds[agent_index, 1], speeds[agent_index, 2], color="black")
-        #     ax.axes.set_xlim3d(-self.length, self.length)
-        #     ax.axes.set_ylim3d(-self.length, self.length)
-        #     ax.axes.set_zlim3d(-self.length, self.length)
+        #     ax.axes.set_xlim3d(-self.length // 2, self.length // 2)
+        #     ax.axes.set_ylim3d(-self.length // 2, self.length // 2)
+        #     ax.axes.set_zlim3d(-self.length // 2, self.length // 2)
 
         return fig
 
@@ -207,52 +211,61 @@ class Group:
         self.compute_figure()
         plt.show()
 
-    def run(self, frames: int=20, interval: int=100, filename: str="viscek", check_field: bool=True):
+    def run(self, frames: int=20, interval: int=100, filename: str="viscek", check_field: bool=True, sight: bool=True):
         """
         frames      : nombre d'image voulues dans l'animation (20 par défaut)
         interval    : intervale entre deux images de l'animation en ms (100 ms par défaut)
-        filename    : nom du GIF enregistré ("viscek" par défaut)
+        filename    : nom du fichier de sortie GIF ("viscek" par défaut)
         check_field : vérification de l'angle de vue (True par defaut)
+        sight       : affichage du cône de vision (True par defaut)
         Génère une animation.
         """
-        def compute_animation(frame_index):
+        def compute_animation(frame_index, ax, sight: bool=True):
             print(f"{math.floor(100 * frame_index/frames)} %")
 
             if self.dimension == 2:
-                ax = plt.axes()
-                ax.axes.set_xlim(-self.length, self.length)
-                ax.axes.set_ylim(-self.length, self.length)
                 sight_wedges = []
+                
+                pl = []
 
                 for index, agent in enumerate(self.agents):
-                    if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension)
+                    if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length)
                     color, dir_angle = agent.get_color()
                     sight_angle = (180 * agent.field_sight) / math.pi
 
-                    plt.scatter(agent.position[0], agent.position[1], s=5, color=color)
+                    pl.append(ax.scatter(agent.position[0], agent.position[1], s=5, color=color))
 
                     wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, dir_angle + 360 - sight_angle, dir_angle + sight_angle, ec="none")
                     sight_wedges.append(wedge)
                 
-                ax.add_collection(PatchCollection(sight_wedges, alpha=0.3))
+                if sight: pl.append(ax.add_collection(PatchCollection(sight_wedges, alpha=0.3)))
                 
-            else:
-                ax = plt.axes(projection="3d")
-                ax.axes.set_xlim3d(-self.length, self.length)
-                ax.axes.set_ylim3d(-self.length, self.length)
-                ax.axes.set_zlim3d(-self.length, self.length)
+            # else:
+            #     ax = plt.axes(projection="3d")
+            #     ax.axes.set_xlim3d(-self.length // 2, self.length // 2)
+            #     ax.axes.set_ylim3d(-self.length // 2, self.length // 2)
+            #     ax.axes.set_zlim3d(-self.length // 2, self.length // 2)
 
-                for index, agent in enumerate(self.agents):
-                    if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight), self.dimension)
-                    positions[index] = agent.position
-                    ax.quiver(agent.position[0], agent.position[1], agent.position[2], agent.speed[0], agent.speed[1], agent.speed[2], color="black")
+            #     for index, agent in enumerate(self.agents):
+            #         if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight), self.dimension)
+            #         positions[index] = agent.position
+            #         ax.quiver(agent.position[0], agent.position[1], agent.position[2], agent.speed[0], agent.speed[1], agent.speed[2], color="black")
 
-            return ax
+            return pl
 
-        fig = self.compute_figure()
-        ani = animation.FuncAnimation(fig, compute_animation, frames=frames, interval=interval)
+        images = []
+
+        fig = plt.figure()
+        ax = plt.axes()
+        ax.axes.set_xlim(-self.length // 2, self.length // 2)
+        ax.axes.set_ylim(-self.length // 2, self.length // 2)
+        
+        for findex in range(frames):
+            pl = compute_animation(findex, ax, sight)
+            images.append(pl)
+
+        ani = animation.ArtistAnimation(fig, images, interval=interval)
         ani.save(filename + ".gif")
-        plt.close()
 
 
 class DimensionError(Exception):
@@ -284,7 +297,8 @@ def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), si
             velocity=0,
             noise=random.random(),
             sight=random.randint(sight[0], sight[1]),
-            field_sight=field_sight)
+            field_sight=field_sight
+        )
         
         velocity = 0
         while velocity == 0:
@@ -341,3 +355,4 @@ group_20.add_agent(Agent(
 ))
 
 group_40 = group_generator(40)
+group_100 = group_generator(100, position=(-1, 1), speed=(-1, 1), length=4)
