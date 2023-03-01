@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Viscek — 1.6.0          │ #
+# │          Viscek — 1.6.1          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -14,7 +14,7 @@ import random
 
 
 __name__ = "Viscek"
-__version__ = "1.6.0"
+__version__ = "1.6.1"
 
 
 # ┌─────────┐ #
@@ -74,25 +74,28 @@ class Agent:
         angle = (180 * angle) / math.pi
         return COLOR_MAP[math.floor(angle)], angle 
 
-    def next_step(self, neighbours: list, dim: int, length: int):
+    def next_step(self, neighbours: list, dim: int, length: int, dt :float=0.5):
         """
         neighbours : liste des agents voisins
         dim        : dimension de l'espace
         length     : longueur caractéristique de l'espace
+        dt         : pas de temps (0.5 par défaut)
         """
         length //= 2
         average_speed = np.zeros((dim))
-        average_velocity = 0
+        average_velocity = self.velocity
         for agent in neighbours:
             if agent.agent_type == 1:
                 average_speed += (self.position - agent.position)
-            average_speed += agent.speed
-            average_velocity += agent.velocity
+            else:
+                average_speed += agent.speed
+                average_velocity += agent.velocity
 
         average_speed /= len(neighbours)
         average_velocity /= len(neighbours)
+        if average_velocity == 0: average_velocity = 1
 
-        self.position += self.velocity * 0.1 * self.speed
+        self.position += self.velocity * dt * self.speed
         self.speed = average_speed + (2 * self.noise * np.random.random(dim) - self.noise)
         self.speed /= norm(self.speed)
         self.velocity = average_velocity
@@ -211,13 +214,14 @@ class Group:
         self.compute_figure()
         plt.show()
 
-    def run(self, frames: int=20, interval: int=100, filename: str="viscek", check_field: bool=True, sight: bool=True):
+    def run(self, frames: int=20, interval: int=100, filename: str="viscek", check_field: bool=True, sight: bool=True, dt: float=0.5):
         """
         frames      : nombre d'image voulues dans l'animation (20 par défaut)
         interval    : intervale entre deux images de l'animation en ms (100 ms par défaut)
         filename    : nom du fichier de sortie GIF ("viscek" par défaut)
         check_field : vérification de l'angle de vue (True par defaut)
         sight       : affichage du cône de vision (True par defaut)
+        dt          : pas de temps (0.5 par defaut)
         Génère une animation.
         """
         def compute_animation(frame_index, ax, sight: bool=True):
@@ -229,7 +233,7 @@ class Group:
                 pl = []
 
                 for index, agent in enumerate(self.agents):
-                    if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length)
+                    if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
                     color, dir_angle = agent.get_color()
                     sight_angle = (180 * agent.field_sight) / math.pi
 
@@ -343,7 +347,7 @@ COLOR_MAP = get_colors()
 
 group_10 = group_generator(10)
 
-group_20 = group_generator(19)
+group_20 = group_generator(19, position=(-1, 1), speed=(-1, 1), length=4)
 group_20.add_agent(Agent(
     np.array([0., 0.]),
     np.array([0., 0.]),
@@ -356,3 +360,4 @@ group_20.add_agent(Agent(
 
 group_40 = group_generator(40)
 group_100 = group_generator(100, position=(-1, 1), speed=(-1, 1), length=4)
+group_300 = group_generator(300, position=(-1, 1), speed=(-1, 1), length=4)
