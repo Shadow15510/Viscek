@@ -27,11 +27,11 @@
 
 	Le modèle de Viscek a été crée par le scientifique Tamás Vicsek. Il s'agit d'un physicien hongrois connu pour ses contributions à la physique statistique, à la biologie et à la dynamique des systèmes. Il est né le 10 mai 1948 (~74 ans~) à Budapest. Il est aujourd'hui professeur à l'Université Eötvös Loránd de Budapest. Ce brillant physicien est d'ailleurs un des membres de l'Académie hongroise des sciences et a reçu de nombreux prix pour ses contributions à la physique, notamment le prix Széchenyi (~1999~) ou encore le prix Lars Onsager (~2020~).
 
-	Mais Tamás Vicsek est surtout connu pour son travail sur les systèmes auto-organisés, qui étudient les mouvements collectifs. Il a ainsi travaillé sur le comportement d'agents individuels qui interagissent avec d'autres agents aux alentours, ses observations montrent que des motifs de mouvements collectifs emmergent d'eux-même. Le groupe se déplace alors de manière coordonnée sans qu'il n'y ai de leader comme on peut l'observer notamment dans la migration des grues. Nous pouvons citer comme exemples~: les bancs de poissons, les regroupements de certains oiseaux, les essaims d'insectes, ou encore le mouvement de foules. 
+	Mais Tamás Vicsek est surtout connu pour son travail sur les systèmes auto-organisés, qui étudient les mouvements collectifs. Il a ainsi travaillé sur le comportement d'agents individuels qui interagissent avec d'autres agents aux alentours, ses observations montrent que des motifs de mouvements collectifs emmergent d'eux-même. Le groupe se déplace alors de manière coordonnée sans qu'il n'y ait de leader comme on peut l'observer notamment dans la migration des grues. Nous pouvons citer comme exemples~: les bancs de poissons, les regroupements de certains oiseaux, les essaims d'insectes, ou encore le mouvement de foules. 
 
 	 Le premier modèle de Viscek voit ainsi le jour en 1995.\\
 
-	Pour être plus précis, le modèle de Vicsek va étudier un groupe d'agents qui se déplacent dans un espace. Chacun des agents a une vitesse donnée (~en norme et en direction~). Chaque agent va interagir avec ses voisins, ce qui concrètement se traduit par des changements dans sur la norme et la direction de la vitesse. Nous allons alors observer la création d'un mouvement de groupe du aux interactions entre les agents. Cependant, les agents observables dans la vie réelle ne suivent pas toujours le groupe à la perfection, et il peut arriver qu'un agent s'écarte, de manière aléatoire, des autres. C'est pour cela que Viscek a introduit une notion de bruit dans son modèle. En effet à chaque pas de temps, chaque agent va prendre la direction moyenne des agents autour de lui et à cette direction va venir se superposer un bruit qui le fera peut-être dévier dans une autre direction. En augmentant significativement le bruit, le groupe pert son mouvement collectif et les agents prennent alors des directions aléatoires.\\
+	Pour être plus précis, le modèle de Vicsek va étudier un groupe d'agents qui se déplace dans un espace. Chacun des agents a une vitesse donnée (~en norme et en direction~). Chaque agent va interagir avec ses voisins, ce qui concrètement se traduit par des changements concernant la norme et la direction de la vitesse. Nous allons alors observer la création d'un mouvement de groupe du aux interactions entre les agents. Cependant, les agents observables dans la vie réelle ne suivent pas toujours le groupe à la perfection, et il peut arriver qu'un agent s'écarte, de manière aléatoire, des autres. C'est pour cela que Viscek a introduit une notion de bruit dans son modèle. En effet, à chaque pas de temps, chaque agent va prendre la direction moyenne des agents autour de lui et à cette direction va venir se superposer un bruit qui le fera peut-être dévier dans une autre direction. En augmentant significativement le bruit, le groupe pert son mouvement collectif et les agents prennent alors des directions aléatoires.\\
 
 	Le modèle de Viscek s'implémente très simplement puisqu'il se réduit à deux équations~:
 	\[
@@ -42,19 +42,19 @@
 	\]
 	dans lesquelles $r_{i}$ la position de chaque individu donnée par un vecteur de position, nous prendrons $i$ comme indice de l'agent en question et $t$ le temps. Nous noterons également $\eta$ le bruit et $\Theta$ pour l’angle définissant la direction de sa vitesse. Ici, $\Theta_{j |r_{i}-r_{j}|<r}$ nous indiquera la direction moyenne des vitesses des agents dans un cercle de rayon $r$. L'indice $j$ repésentera alors l'ensemble des voisins de $i$ compris dans ce cercle.\\
 
-	Ce qui est intéressant, c'est que nous pouvons, en modifiant certains paramètres du système étudié, observer un mouvement de foule plus fort ou plus faible. Nous pourons alors jouer sur la surface et les dimensions du plan étudié, le nombre d'agent et donc par conséquent la densité de population et même le bruit.\\
+	Ce qui est intéressant, c'est que nous pouvons, en modifiant certains paramètres du système étudié, observer un mouvement de foule plus fort ou plus faible. Nous pourrons alors jouer sur la surface et les dimensions du plan étudié, le nombre d'agent et donc par conséquent la densité de population et même le bruit.\\
 
-	Le modèle de Vicsek est important pour étudier le comportements de certains animaux en biologie ou encore l'étude des foules. Ce modèle peut même être utile à la construction de bâtiment. Le comportement des foules peut être intéressant dans la conception d'entrées et sorties d'un espace fermé, notamment dans un moment de panique. La foule va s'éloigner du danger est emprunter les sorties. Il est alors crucial de prévoir le comportement des agents pour placer les sorties de manière à ce que le débit d'agent sortant soit le plus important possible.\\
+	Le modèle de Vicsek est important pour étudier le comportement de certains animaux en biologie ou encore l'étude des foules. Ce modèle peut même être utile à la construction de bâtiment. En effet, le comportement des foules peut être intéressant dans la conception d'entrées et de sorties d'un espace fermé, notamment dans un moment de panique. La foule va s'éloigner du danger est emprunter les sorties. Il est alors crucial de prévoir le comportement des agents pour placer les sorties de manière à ce que le débit d'agent sortant soit le plus important possible. Nous pouvons pas parler de foule sans citer le sociologue français Mehdi Moussaoui et son livre "Fouloscopie" qui étudie et explique au grand public ses recherches et découvertes sur la pscychologie des foules (~sur sa chaîne Youtube ``Fouloscopie''~). Ce domaine étant étroitement lié au modèle de Viscek dans plusieurs aspects, nous devions en dire un mot. \\
 
-	Nous pouvons également retrouver le modèle de Vicsek dans la robotique. C'est un précieux outils pour la technologie du monde moderne. Il peut être utiliser dans des programmes informatiques qui gèrent le déplacement de systèmes de robots (~comme les drones~).\\ 
+	Nous pouvons également retrouver le modèle de Vicsek dans la robotique. C'est un précieux outil pour la technologie du monde moderne. Il peut être utiliser dans des programmes informatiques qui gèrent le déplacement de systèmes de robots (~comme les drones~).\\ 
 
 	C'est avec tout cela que nous essayerons, à travers ce projet, de reproduire numériquement des mouvements collectifs et ainsi étudier de manière informatique le modèle de Viscek.
 
-\section{Travail effectué et prévu}
+\section{Travail effectué et travail prévu}
 	\subsection{Présentation du travail effectué}
      Pour ce projet, la programmation orientée objet s'est naturellement imposée. Nous utilisons ainsi deux classes principales appelées \python|Agent| et \python|Group| qui fixent respectivement les paramètres de l'agent et du groupe. Assez simplement, la classe \python|Group| contient une liste d'instances de la classe \python|Agent| et permet de les représenter dans l'espace et le temps. La classe \python|Agent| permet d'encapsuler toutes les données de chaque agent~: position, vitesse et direction.
 
-     Depuis le début du projet, nous avons déjà bien avancé. En effet, notre programme est maintenant capable de générer une animation qui montre l'évolution du groupe d'agent selon le modèle de Viscek. Nous pouvons choisir un certain nombre de paramètres, en particulier~:
+     Depuis le début du projet, nous avons déjà bien avancé. En effet, notre programme est maintenant capable de générer une animation qui montre l'évolution du groupe d'agents selon le modèle de Viscek. Nous pouvons choisir un certain nombre de paramètres, en particulier~:
 	 \begin{itemize}
 	 	\item le nombre d'agents~;
 		\item la longueur caractéristique de l'espace~;
@@ -76,11 +76,36 @@
 	Nous avons assez peu fouillé encore cette fonctionnalité, mais nous pouvons rajouter des agents répulsifs. Pour l'instant immobiles, ces agents symbolisent un danger ou un prédateur, et les autres agents vont tenter de s'en éloigner au plus vite. Dès qu'un agent répulsif entre dans le champ de vision d'un agent normal, l'agent normal fait demi-tour. Les agents répulsifs sont détectés à 360°, sans prise en compte de l'angle de vue. Nous avons alors observé des mouvements chaotiques et désorganisés. Il est toutefois intéressant de noter que grâce aux règles générales, un agent qui n'a pas vu l'agent répulsif peut prendre la fuite aussi s'il se met à suivre un agent qui, lui, l'a vu et est en train de fuir.
 
 	\subsection{Travail prévu}
-	Nous avons encore quelques idées d'amélioration à apporter à notre programme. Nous aimerions, par exemple, rajouter des obstacles pour voir les conséquences sur l'effet de groupe. Mais cette idée paraît assez difficile à programmer. Nous avons également pensé à aller à l'encontre du modèle en établissant un agent leader qui influence tout le groupe. Nous pourrions alors observer un mouvement collectif totalement différent. Dans la même idée, étudier plus en détail les agents répulsifs pourrait être intéressant.
-     
-     
-     
+	Nous avons encore quelques idées d'améliorations à apporter à notre programme. Nous aimerions, par exemple, rajouter des obstacles pour voir les conséquences sur l'effet de groupe. Bien que cette idée paraît assez difficile à programmer, elle représente des situations de la vie réelle, comme la présence d'un rocher pour un banc de poisson par exemple. Nous nous attendons alors à voir une intelligence collective à ce sujet afin d'éviter l'obstacle et de continuer à avoir un mouvement de groupe.
+	
+	Dans la même idée, étudier plus en détail les agents répulsifs pourrait être intéressant.
+	
+	Il serait aussi interrésant de rajouter une interface graphique à notre script Python pour plus de confort quant à l'utilisation de notre programme. L'utilisateur pourrait alors plus facilement choisir les paramètres qu'il souhaite appliquer au modèle.
+	
+	Nous avons également pensé à aller à l'encontre du modèle en établissant un agent leader qui influence tout le groupe. Nous pourrions alors observer un mouvement collectif totalement différent. Tout comme l'a étudié le sociologue français Mehdi Moussaoui dans une expérience avec la foule, nous pourrons sans doute voir une hiérarchie se créer au sein du groupe. Le leader va guider quelques agents qui vont à leur tour en guider un plus grand nombre et ainsi de suite. Cette hiérarchie en forme de pyramide va prendre forme pour assurer la bonne cohésion du groupe. Nous nous attendons à observer cela avec notre simulation numérique, lors du déplacement de nos agents. Là aussi, cette idée paraît assez difficile à programmer mais est très interréssante pour aller au délà du modèle de Viscek et étudier en particulier l'intelligence collective et l'adaptation du groupe face à certaines situations. Cette pscychologie et intelligence de groupe, au délà du modèle de Viscek, est très interréssante pour évaluer également l'organisation et même la cohesion d'un groupe.
+	
+	Cette dernière idée va même nous permettre de nous poser la question suivante en tant que citoyen~: Un groupe d'individus peut'il s'organiser sans leader ? Faut t'il nécessairement une hiérarchie pour que pour que tout se passe bien dans notre société ?   
        
 
+\section{Bibliographie}
 
+   Pour comprendre le modèle avec ses paramètres et équations nous avons eu recours a deux sources~:
+
+   \begin{itemize}
+	 	\item Papier sur le modèle~: Novel Type of Phase Transition in a System of Self-Driven Particles de Tamas Vicsek, Andras Czirok, Eshel Ben-Jacob, Inon Cohen, and Ofer Shochet~;
+		\item La page Wikipédia du modèle~: https://en.wikipedia.org/wiki/Vicsek_model~.
+	\end{itemize}
+	
+	Lors de la programmation, nous avons cherché des fonctions à appliquer à notre modèle sur les sites web~:
+	
+	\begin{itemize}
+	 	\item Site de Matplotlib~: https://matplotlib.org/~;
+		\item Site d'informations sur Python : https://courspython.com/index.html
+   \end{itemize}
+   
+   Pour l'histoire de Tamás Vicsek, nous sommes allés sur sa page Wikipédia~: https://fr.wikipedia.org/wiki/Tam%C3%A1s_Vicsek
+
+   Pour améliorer nos connaissances sur l'intelligence collective et les mouvements de foule, nous sommes allés sur la chaîne Youtube ``Fouloscopie'' du sociologue Mehdi Moussaoui~: https://www.youtube.com/@Fouloscopie
+   
+   
 \end{document}
