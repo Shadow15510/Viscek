@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Viscek — 1.6.1          │ #
+# │          Vicsek — 1.6.1          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -13,7 +13,8 @@ from matplotlib.collections import PatchCollection
 import random
 
 
-__name__ = "Viscek"
+
+__name__ = "Vicsek"
 __version__ = "1.6.1"
 
 
@@ -93,7 +94,6 @@ class Agent:
 
         average_speed /= len(neighbours)
         average_velocity /= len(neighbours)
-        if average_velocity == 0: average_velocity = 1
 
         self.position += self.velocity * dt * self.speed
         self.speed = average_speed + (2 * self.noise * np.random.random(dim) - self.noise)
@@ -214,11 +214,11 @@ class Group:
         self.compute_figure()
         plt.show()
 
-    def run(self, frames: int=20, interval: int=100, filename: str="viscek", check_field: bool=True, sight: bool=True, dt: float=0.5):
+    def run(self, frames: int=20, interval: int=100, filename: str="vicsek", check_field: bool=True, sight: bool=True):
         """
         frames      : nombre d'image voulues dans l'animation (20 par défaut)
         interval    : intervale entre deux images de l'animation en ms (100 ms par défaut)
-        filename    : nom du fichier de sortie GIF ("viscek" par défaut)
+        filename    : nom du fichier de sortie GIF ("vicsek" par défaut)
         check_field : vérification de l'angle de vue (True par defaut)
         sight       : affichage du cône de vision (True par defaut)
         dt          : pas de temps (0.5 par defaut)

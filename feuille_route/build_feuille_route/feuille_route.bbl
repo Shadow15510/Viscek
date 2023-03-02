@@ -1,0 +1,28 @@
+\begin{thebibliography}{1}
+
+\bibitem{wiki-vicsek}
+Tamás vicsek.
+\newblock \url{https://en.wikipedia.org/wiki/Tamas_Vicsek}.
+
+\bibitem{vicsek-paper}
+Tamás Vicsek, Andras Czirok, Eshel Ben-Jacob, Inon Cohen, and Shochet.
+\newblock Novel type of phase transition in a system of self-driven particules.
+
+\bibitem{wiki-model}
+Modèle de vicsek.
+\newblock \url{https://en.wikipedia.org/wiki/Vicsek_model}.
+
+\bibitem{fouloscopie}
+Mehdi Moussaoui.
+\newblock Fouloscopie.
+\newblock \url{https://youtube.com/@Fouloscopie}.
+
+\bibitem{matplotlib}
+Matplotlib.
+\newblock \url{https://matplotlib.org}.
+
+\bibitem{python}
+Cours python.
+\newblock \url{https://courspython.com/index.html}.
+
+\end{thebibliography}
