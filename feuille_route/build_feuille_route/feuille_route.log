@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.11.15)  1 MAR 2023 16:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.11.15)  2 MAR 2023 14:22
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -996,7 +996,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[2] 
+[2]
+\openout4 = `feuille_route.pyg'.
+
+
+(./_minted-feuille_route/BFDD14487827B806DFC0B0E3C5E38A54CE28A184D983C0F9FA6161
+36C945A54B.pygtex)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[3] (./feuille_route.bbl) 
 AED: lastpage setting LastPage
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1006,7 +1020,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[3]
+[4]
 Package minitoc Info: I0009
 (minitoc)             Listing minitoc auxiliary files. 
 (minitoc)             Creating the feuille_route.maf file.
@@ -1031,22 +1045,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[4
+[5
 
 ] (./feuille_route.aux)
 Package rerunfilecheck Info: File `feuille_route.out' has not changed.
-(rerunfilecheck)             Checksum: 0EC7986E4C65C03C624F135358FF8199;991.
+(rerunfilecheck)             Checksum: 7D3FFABE2D7DBF6BEFFF3BA07FE0BEC2;1034.
 runsystem(rm feuille_route.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 20304 strings out of 478238
- 333475 string characters out of 5850455
+ 20340 strings out of 478238
+ 334456 string characters out of 5850455
  718848 words of memory out of 5000000
- 37989 multiletter control sequences out of 15000+600000
+ 38008 multiletter control sequences out of 15000+600000
  487434 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 79i,12n,80p,1079b,500s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 79i,12n,80p,1080b,500s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}{/usr/share/
 texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texmf-dist/font
 s/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public
@@ -1060,10 +1074,10 @@ usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc2074.pfb></usr/share/texmf
 -dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/typ
 e1/public/cm-super/sfrm1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-su
 per/sftt1200.pfb>
-Output written on feuille_route.pdf (4 pages, 178152 bytes).
+Output written on feuille_route.pdf (5 pages, 191739 bytes).
 PDF statistics:
- 121 PDF objects out of 1000 (max. 8388607)
- 87 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
+ 146 PDF objects out of 1000 (max. 8388607)
+ 110 compressed objects within 2 object streams
+ 18 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
