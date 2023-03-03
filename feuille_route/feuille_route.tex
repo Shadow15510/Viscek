@@ -33,7 +33,7 @@
 
 	Pour être plus précis, le modèle de Vicsek va étudier un groupe d'agents qui se déplace dans un espace. Chacun des agents a une vitesse donnée (~en norme et en direction~). Chaque agent va interagir avec ses voisins, ce qui concrètement se traduit par des changements concernant la norme et la direction de la vitesse. Nous allons alors observer la création d'un mouvement de groupe du aux interactions entre les agents. Cependant, les agents observables dans la vie réelle ne suivent pas toujours le groupe à la perfection, et il peut arriver qu'un agent s'écarte, de manière aléatoire, des autres. C'est pour cela que Vicsek a introduit une notion de bruit dans son modèle. En effet, à chaque pas de temps, chaque agent va prendre la direction moyenne des agents autour de lui et à cette direction va venir se superposer un bruit qui le fera peut-être dévier dans une autre direction. En augmentant significativement le bruit, le groupe pert son mouvement collectif et les agents prennent alors des directions aléatoires.\\
 
-	Le modèle de Vicsek s'implémente très simplement puisqu'il se réduit à deux équations que nous avons retrouvé dans les documents~\cite{vicsek-paper, wiki-model}~:
+	Le modèle de Vicsek s'implémente très simplement puisqu'il se réduit à deux équations que nous avons retrouvé dans le papier écrit par Vicsek lui-même ainsi que la page Wikipédia du modèle~\cite{vicsek-paper, wiki-model}~:
 	\[
 		\Theta_{i}(t+dt) = \Theta_{j |r_{i}-r_{j}|<r} + \eta_{i}(t)
 	\]
