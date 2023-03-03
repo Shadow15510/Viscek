@@ -180,23 +180,25 @@ class Group:
         ]
         agents = []
 
-        if not check_field or targeted_agent.agent_type == 1:
-            for index, agent in enumerate(self.agents + wall_agents):
-                if agent.agent_type != 1 and index < self.nb_agents and (targeted_agent - agent) <= 1:
-                    self.dead_agents.append(self.agents.pop(index))
-                    self.nb_agents -= 1
-                elif (targeted_agent - agent) <= dmin:
-                    agents.append(agent)
+        if not check_field:
+            agents = [agent for agent in self.agents if (targeted_agent - agent) <= dmin]
        
         else:
-            for agent in self.agents + wall_agents:
+            dead_index = []
+            for index, agent in enumerate(self.agents + wall_agents):
+                if targeted_agent.agent_type == 1 and agent.agent_type != 1 and (targeted_agent - agent) < 1 and index < self.nb_agents:
+                    self.dead_agents.append(agent.copy())
+                    dead_index.append(index)
+                    self.nb_agents -= 1
+
                 if agent != targeted_agent:
                     pos = agent.position - targeted_agent.position
                     angle_spd = np.angle(targeted_agent.speed[0] + 1j * targeted_agent.speed[1]) % (2 * math.pi)
                     angle_pos = np.angle(pos[0] + 1j * pos[1]) % (2 * math.pi)
                     if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(angle_spd - angle_pos) <= targeted_agent.field_sight): agents.append(agent)
-                
                 else: agents.append(agent)
+
+            for index in dead_index: self.agents.pop(index)
 
         return agents
 
@@ -364,7 +366,7 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tupl
 
     agent.speed /= velocity
     agent.velocity = velocity
-    return agent
+    return agent.copy()
 
 
 def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(5, 10), field_sight: tuple=(math.pi/4, math.pi/2), length: int=50, dim: int=2):
