@@ -52,7 +52,7 @@
 
 \section{Travail effectué et travail prévu}
 	\subsection{Présentation du travail effectué}
-     Pour ce projet, la programmation orientée objet s'est naturellement imposée. Nous utilisons ainsi deux classes principales appelées \python|Agent| et \python|Group| qui fixent respectivement les paramètres de l'agent et du groupe. Assez simplement, la classe \python|Group| contient une liste d'instances de la classe \python|Agent| et permet de les représenter dans l'espace et le temps. La classe \python|Agent| permet d'encapsuler toutes les données de chaque agent~: position, vitesse et direction.
+     Pour ce projet, la programmation orientée objet s'est naturellement imposée. Nous utilisons ainsi deux classes principales appelées \verb|Agent| et \verb|Group| qui fixent respectivement les paramètres de l'agent et du groupe. Assez simplement, la classe \verb|Group| contient une liste d'instances de la classe \verb|Agent| et permet de les représenter dans l'espace et le temps. La classe \verb|Agent| permet d'encapsuler toutes les données de chaque agent~: position, vitesse et direction.
 
      Depuis le début du projet, nous avons déjà bien avancé. En effet, notre programme est maintenant capable de générer une animation qui montre l'évolution du groupe d'agents selon le modèle de Vicsek. Nous pouvons choisir un certain nombre de paramètres, en particulier~:
 	 \begin{itemize}
@@ -62,14 +62,14 @@
 		\item les bornes pour la vitesse (~en norme et en direction~)~;
 		\item le bruit.
 	\end{itemize}
-	La programmation orientée objet permet une manipulation extrêmement agréable du modèle. Nous avons par exemple pu redéfinir la soustraction pour les agents qui nous retourne la distance qui sépare ces deux agents. La syntaxe avec les méthodes permet également beaucoup de choses en restant une solution élégante~: \python|mon_group.run()| permet ainsi de générer une animation, nous pouvons alors régler le nombre d'images, l'intervale entre chaque image, le nom du fichier de sortie, la prise de compte de l'angle de vue et son affichage. 
+	La programmation orientée objet permet une manipulation extrêmement agréable du modèle. Nous avons par exemple pu redéfinir la soustraction pour les agents qui nous retourne la distance qui sépare ces deux agents. La syntaxe avec les méthodes permet également beaucoup de choses en restant une solution élégante~: \verb|mon_group.run()| permet ainsi de générer une animation, nous pouvons alors régler le nombre d'images, l'intervale entre chaque image, le nom du fichier de sortie, la prise de compte de l'angle de vue et son affichage. 
 
 	Nous avons par ailleurs accès à la densité d'agent dans l'espace considéré, ainsi qu'à tous les paramètres du modèle (~vitesse et position de chacun des agents, nombre d'agents dans un cercle de rayon et de centre donnés~).
 	
 	\subsection{Expériences menées à partir du modèle}
 	Nous avons dans un premier fixé la taille de l'espace étudié, et pris des valeurs de bruits aléatoires afin de voir son impact sur l'organisation du groupe.
 
-	Nous avons ensuite rajouté à chaque agent un angle de vue. En effet, la majorité des cas réels dans lesquels ce modèle s'applique, les agents ne voient pas à 360°, nous avons ainsi voulu rendre compte de cette réalité. L'angle de vue est fixé et identique pour tous les individus du groupe, mais les distances de visions ne sont pas uniforme sur l'ensemle des agents. Ces cônes de vue peuvent être tracés pour mettre en lumière quels agents sont vus. Pour cela nous avons du recourir à des fonctions du module \python|matplotlib|~\cite{matplotlib} ainsi qu'à des cours en ligne pour approfondir nos connaissances en Python et trouver des fonctions adaptées à nos besoins~\cite{python}.
+	Nous avons ensuite rajouté à chaque agent un angle de vue. En effet, la majorité des cas réels dans lesquels ce modèle s'applique, les agents ne voient pas à 360°, nous avons ainsi voulu rendre compte de cette réalité. L'angle de vue est fixé et identique pour tous les individus du groupe, mais les distances de visions ne sont pas uniforme sur l'ensemle des agents. Ces cônes de vue peuvent être tracés pour mettre en lumière quels agents sont vus. Pour cela nous avons du recourir à des fonctions du module \verb|matplotlib|~\cite{matplotlib} ainsi qu'à des cours en ligne pour approfondir nos connaissances en python et trouver des fonctions adaptées à nos besoins~\cite{python}.
 
 	Dans la même optique et afin de préparer nos futures simulations, nous avons fait en sorte que chaque agent ait une couleur qui dépend de son orientation. Cela nous permettra, lorsque nous nous intéresserons aux groupes de hautes densités d'avoir un aperçu rapide des mouvements en présence.
     
@@ -80,7 +80,7 @@
 	
 	Dans la même idée, étudier plus en détail les agents répulsifs pourrait être intéressant.
 	
-	Il serait aussi interrésant de rajouter une interface graphique à notre script Python pour plus de confort quant à l'utilisation de notre programme. L'utilisateur pourrait alors plus facilement choisir les paramètres qu'il souhaite appliquer au modèle.
+	Il serait aussi interrésant de rajouter une interface graphique à notre script python pour plus de confort quant à l'utilisation de notre programme. L'utilisateur pourrait alors plus facilement choisir les paramètres qu'il souhaite appliquer au modèle.
 	
 	Nous avons également pensé à aller à l'encontre du modèle en établissant un agent leader qui influence tout le groupe. Nous pourrions alors observer un mouvement collectif totalement différent. Tout comme l'a étudié le sociologue français Mehdi Moussaoui dans une expérience avec la foule, nous pourrons sans doute voir une hiérarchie se créer au sein du groupe. Le leader va guider quelques agents qui vont à leur tour en guider un plus grand nombre et ainsi de suite. Une hiérarchie en forme de pyramide serait alors visible lors du déplacement de nos agents. Cette idée permet d'aller au delà du modèle de Vicsek et étudier en particulier l'intelligence collective et l'adaptation du groupe face à certaines situations. Cette pscychologie et intelligence de groupe, peut être très intéressante pour évaluer également l'organisation et même la cohésion d'un groupe.
 	
@@ -89,5 +89,4 @@
 
 \bibliographystyle{unsrt}
 \bibliography{vicsek.bib}
-   
 \end{document}
