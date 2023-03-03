@@ -21,23 +21,22 @@ __version__ = "1.7.0"
 # │ Classes │ #
 # └─────────┘ #
 class Agent:
-    """Simule un agent avec sa position, sa vitesse, et le bruit associé qui traduit sa tendance naturelle à suivre le groupe ou pas."""
+    """
+    Simule un agent avec sa position, sa vitesse, et le bruit associé qui traduit sa tendance naturelle à suivre le groupe ou pas.
+    @arguments :
+        position    : vecteur position (sous forme d'un tableau numpy de trois entiers)
+        speed       : direction du vecteur vitesse (tableau de trois entiers)
+        velocity    : norme de la vitesse
+        noise       : taux de bruit qui traduit une déviation aléatoire sur la direction de la vitesse
+        sight       : distance à laquelle l'agent voit les autres
+        field_sight : angle du cône de vision de l'agent en radian                                     [optionnel, default = math.pi/4]
+        agent_type  : type d'agent                                                                     [optionnel, default = 0]
+            0 : agent normal
+            1 : agent répulsif
+            2 : agent leader
+    """
 
     def __init__(self, position: np.array, speed: np.array, velocity: int, noise: int, sight: int, field_sight: float=math.pi/2, agent_type: int=0):
-        """
-        Initialise l'agent
-        @arguments :
-            position    : vecteur position (sous forme d'un tableau numpy de trois entiers)
-            speed       : direction du vecteur vitesse (tableau de trois entiers)
-            velocity    : norme de la vitesse
-            noise       : taux de bruit qui traduit une déviation aléatoire sur la direction de la vitesse
-            sight       : distance à laquelle l'agent voit les autres
-            field_sight : angle du cône de vision de l'agent en radian                                     [optionnel, default = math.pi/4]
-            agent_type  : type d'agent                                                                     [optionnel, default = 0]
-                0 : agent normal
-                1 : agent répulsif
-                2 : agent leader
-        """
         self.position = position.copy()
         self.speed = speed.copy()
         self.velocity = velocity
@@ -118,18 +117,18 @@ class Agent:
 
 
 class Group:
-    """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher."""
-    
+    """
+    Simule un groupe d'agents, permet de le faire évoluer et de l'afficher.
+    @arguments :
+        agents  : liste des agents du groupe
+        length  : longueur caractéristique de l'espace     [optionnel, default = 50]
+        dim     : dimension de l'espace considéré (2 ou 3) [optionnel, default = 2]
+    @attributs :
+        density     : densité d'agents dans l'espace (nombre agent / longueur ** dimension)
+        dead_agents : liste des agents touchés par un agent répulsif
+    """
     def __init__(self, agents: list, length: int=50, dim: int=2):
-        """
-        Initialise le groupe.
-        @arguments :
-            agents  : liste des agents du groupe
-            length  : longueur caractéristique de l'espace     [optionnel, default = 50]
-            dim     : dimension de l'espace considéré (2 ou 3) [optionnel, default = 2]
-        @attributs :
-            density : densité d'agents dans l'espace (nombre agent / longueur ** dimension)
-        """
+        
         self.agents = agents
         self.dead_agents = []
         self.nb_agents = len(agents)
