@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Vicsek — 1.6.1          │ #
+# │          Vicsek — 1.7.0          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -13,15 +13,13 @@ from matplotlib.collections import PatchCollection
 import random
 
 
-
 __name__ = "Vicsek"
-__version__ = "1.6.1"
+__version__ = "1.7.0"
 
 
 # ┌─────────┐ #
 # │ Classes │ #
 # └─────────┘ #
-
 class Agent:
     """Simule un agent avec sa position, sa vitesse, et le bruit associé qui traduit sa tendance naturelle à suivre le groupe ou pas."""
 
@@ -33,7 +31,10 @@ class Agent:
         noise       : taux de bruit qui traduit une déviation aléatoire sur la direction de la vitesse
         sight       : distance à laquelle l'agent voit les autres
         field_sight : angle du cône de vision de l'agent en radian
-        agent_type  : type d'agent (0 : agent normal ; 1 : agent répulsif)
+        agent_type  : type d'agent
+            0 : agent normal
+            1 : agent répulsif
+            2 : agent leader
         """
         self.position = position.copy()
         self.speed = speed.copy()
@@ -75,7 +76,7 @@ class Agent:
         angle = (180 * angle) / math.pi
         return COLOR_MAP[math.floor(angle)], angle 
 
-    def next_step(self, neighbours: list, dim: int, length: int, dt :float=0.5):
+    def next_step(self, neighbours: list, dim: int, length: int, dt: float=0.5):
         """
         neighbours : liste des agents voisins
         dim        : dimension de l'espace
@@ -83,15 +84,22 @@ class Agent:
         dt         : pas de temps (0.5 par défaut)
         """
         length //= 2
-        average_speed = np.zeros((dim))
-        average_velocity = self.velocity
+        average_speed = np.zeros(dim)
+        average_velocity = 0
+
         for agent in neighbours:
-            if agent.agent_type == 1:
-                average_speed += (self.position - agent.position)
-            else:
+            if agent.agent_type == 0:
                 average_speed += agent.speed
                 average_velocity += agent.velocity
 
+            elif agent.agent_type == 1:
+                if self.agent_type != 1: average_speed = 100 * (self.position - agent.position)
+                average_velocity += agent.velocity
+            
+            elif agent.agent_type == 2:
+                average_speed += 5 * agent.speed
+                average_velocity += agent.velocity                
+                
         average_speed /= len(neighbours)
         average_velocity /= len(neighbours)
 
@@ -102,6 +110,7 @@ class Agent:
 
         for i in range(dim):
             if not (-length < self.position[i] < length): self.position = length * np.random.random(dim) - length // 2
+
 
 class Group:
     """Simule un groupe d'agents, permet de le faire évoluer et de l'afficher."""
@@ -157,12 +166,12 @@ class Group:
         else:
             agents = []
             for agent in self.agents:
-                if agent == targeted_agent: agents.append(agent)
-                else:
+                if agent != targeted_agent:
                     pos = agent.position - targeted_agent.position
                     angle_spd = np.angle(targeted_agent.speed[0] + 1j * targeted_agent.speed[1]) % (2 * math.pi)
                     angle_pos = np.angle(pos[0] + 1j * pos[1]) % (2 * math.pi)
                     if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(angle_spd - angle_pos) <= targeted_agent.field_sight): agents.append(agent)
+                else: agents.append(agent)
 
             return agents
 
@@ -214,7 +223,7 @@ class Group:
         self.compute_figure()
         plt.show()
 
-    def run(self, frames: int=20, interval: int=100, filename: str="vicsek", check_field: bool=True, sight: bool=True):
+    def run(self, frames: int=20, interval: int=100, filename: str="vicsek", check_field: bool=True, sight: bool=True, dt: float=0.5):
         """
         frames      : nombre d'image voulues dans l'animation (20 par défaut)
         interval    : intervale entre deux images de l'animation en ms (100 ms par défaut)
@@ -229,15 +238,18 @@ class Group:
 
             if self.dimension == 2:
                 sight_wedges = []
-                
                 pl = []
+                size = 5
 
                 for index, agent in enumerate(self.agents):
-                    if agent.agent_type == 0: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
+                    agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
                     color, dir_angle = agent.get_color()
                     sight_angle = (180 * agent.field_sight) / math.pi
 
-                    pl.append(ax.scatter(agent.position[0], agent.position[1], s=5, color=color))
+                    if agent.agent_type: size, color = 7, (0, 0, 0)
+                    else: size = 5
+
+                    pl.append(ax.scatter(agent.position[0], agent.position[1], s=size, color=color))
 
                     wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, dir_angle + 360 - sight_angle, dir_angle + sight_angle, ec="none")
                     sight_wedges.append(wedge)
@@ -279,40 +291,54 @@ class DimensionError(Exception):
 # ┌───────────┐ #
 # │ Fonctions │ #
 # └───────────┘ #
+rarray = lambda dim, minimum, maximum: minimum + (maximum - minimum) * np.random.random(dim)
+
+
+def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(5, 10), field_sight: int=math.pi/2, agent_type: int=0, dim: int=2):
+    """
+    position    : valeurs limites de la position (xlim ; ylim)
+    speed       : valeurs limites de la vitesse (xlim ; ylim)
+    sight       : valeurs limites de la portée de la vue des agents
+    field_sight : champ de vision des agents
+    agent_type  : type de l'agent
+        0 : agent normal
+        1 : agent répulsif
+        2 : agent leader
+    dim         : dimension de l'espace dans lequel les agents évoluent
+    Retourne un agent généré aléatoirement.
+    """
+    agent = Agent(
+        position=rarray(dim, position[0], position[1]),
+        speed=np.zeros(dim),
+        velocity=0,
+        noise=random.random(),
+        sight=random.randint(sight[0], sight[1]),
+        field_sight=field_sight,
+        agent_type=agent_type
+    )
+        
+    velocity = 0
+    while velocity == 0:
+        agent.speed = rarray(dim, speed[0], speed[1])
+        velocity = norm(agent.speed)
+
+    agent.speed /= velocity
+    agent.velocity = velocity
+    return agent
+
 
 def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), sight: tuple=(5, 10), field_sight: int=math.pi/2, length: int=50, dim: int=2):
     """
     nb          : nombre d'agents à générer
     position    : valeurs limites de la position (xlim ; ylim)
     speed       : valeurs limites de la vitesse (xlim ; ylim)
-    sight       : portée de la vue des agents
+    sight       : valeurs limites de la portée de la vue des agents
     field_sight : champ de vision des agents
     length      : taille de l'arête du cube d'espace considéré
     dim         : dimension de l'espace dans lequel les agents évoluent
     Retourne un groupe d'agents générés aléatoirement.
     """
-    rlist = lambda minimum, maximum: minimum + (maximum - minimum) * np.random.random(dim)
-    agents = []
-    
-    for _ in range(nb):
-        agent = Agent(
-            position=rlist(position[0], position[1]),
-            speed=np.zeros(dim),
-            velocity=0,
-            noise=random.random(),
-            sight=random.randint(sight[0], sight[1]),
-            field_sight=field_sight
-        )
-        
-        velocity = 0
-        while velocity == 0:
-            agent.speed = rlist(speed[0], speed[1])
-            velocity = norm(agent.speed)
-        agent.speed /= velocity
-        agent.velocity = velocity
-        
-        agents.append(agent)
-    
+    agents = [agent_generator(position, speed, sight, field_sight, 0, dim) for _ in range(nb)]
     return Group(agents, length=length, dim=dim)
 
 
@@ -348,16 +374,12 @@ COLOR_MAP = get_colors()
 group_10 = group_generator(10)
 
 group_20 = group_generator(19, position=(-1, 1), speed=(-1, 1), length=4)
-group_20.add_agent(Agent(
-    np.array([0., 0.]),
-    np.array([0., 0.]),
-    0,
-    0,
-    0,
-    0,
-    1
-))
+group_20.add_agent(agent_generator(position=(-1, 1), speed=(-1, 1), agent_type=1))
 
 group_40 = group_generator(40)
-group_100 = group_generator(100, position=(-1, 1), speed=(-1, 1), length=4)
-group_300 = group_generator(300, position=(-1, 1), speed=(-1, 1), length=4)
+
+group_100 = group_generator(100, position=(-25, 25), speed=(-2, 2), length=50)
+group_100.add_agent(agent_generator(position=(-25, 25), speed=(-1, 1), agent_type=1))
+
+
+group_200 = group_generator(200, position=(-1, 1), speed=(-1, 1), length=4)
