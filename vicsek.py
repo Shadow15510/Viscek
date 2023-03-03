@@ -436,8 +436,10 @@ group_20 = group_generator(19, position=(-1, 1), speed=(-1, 1), length=4)
 group_20.add_agent(agent_generator(position=(-1, 1), speed=(-1, 1), agent_type=1))
 
 group_40 = group_generator(40)
+for _ in range(3):
+    group_40.add_agent(agent_generator(position=(-25, 25), speed=(-3, 3), field_sight=(math.pi/2, math.pi), agent_type=1))
 
-group_100 = group_generator(100, position=(-25, 25), speed=(-1, 1), length=50)
+group_100 = group_generator(100, position=(-25, 25), speed=(-1, 1))
 group_100.add_agent(agent_generator(position=(-25, 25), speed=(-3, 3), field_sight=(math.pi/2, math.pi), agent_type=1))
 
 
