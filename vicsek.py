@@ -481,10 +481,40 @@ group_10 = group_generator(10)
 
 group_20 = group_generator(19, position=(-1, 1), speed=(-1, 1), length=4)
 
-group_40 = group_generator(40, noise=-1, fear=1)
+group_40 = group_generator(40, noise=1, fear=0)
 for _ in range(2):
     group_40.add_agent(agent_generator(speed=(-3, 3), noise=0.25, agent_type=1))
+group_40_bis = group_40.copy()
+for i in range(40):
+    group_40_bis[i].noise, group_40_bis[i].fear = 0, 1
 
 group_100 = group_generator(100, position=(-25, 25), speed=(-1, 1))
 
 group_200 = group_generator(200, position=(-1, 1), speed=(-1, 1), length=4)
+
+
+def test():
+    group_1 = group_generator(50, noise=0, fear=0)
+    for _ in range(2):
+        group_1.add_agent(agent_generator(speed=(-3, 3), noise=0.25, agent_type=1))
+
+    group_2 = group_1.copy()
+    group_3 = group_1.copy()
+    group_4 = group_1.copy()
+    for i in range(50):
+        group_1[i].noise, group_1[i].fear = 1, 0
+        group_2[i].noise, group_2[i].fear = 0, 1
+        group_3[i].noise, group_3[i].fear = 1, 1
+        group_4[i].noise, group_4[i].fear = 0, 0
+
+    print("Groupe 1")
+    group_1.run(500)
+    print("Groupe 2")
+    group_2.run(500)
+    print("Groupe 3")
+    group_3.run(500)
+    print("Groupe 4")
+    group_4.run(500)
+
+
+    return len(group_1.dead_agents), len(group_2.dead_agents), len(group_3.dead_agents), len(group_4.dead_agents)
