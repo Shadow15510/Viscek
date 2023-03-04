@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Vicsek — 1.7.0          │ #
+# │          Vicsek — 1.7.1          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -14,7 +14,7 @@ import random
 
 
 __name__ = "Vicsek"
-__version__ = "1.7.0"
+__version__ = "1.7.1"
 
 
 # ┌─────────┐ #
@@ -44,6 +44,8 @@ class Agent:
         self.sight = sight
         self.field_sight = field_sight / 2
         self.agent_type = agent_type
+
+        self.max_velocity = self.velocity
 
     def __str__(self):
         """Affiche l'agent avec ses paramètres."""
@@ -96,13 +98,20 @@ class Agent:
             average_velocity += agent.velocity
 
             if agent.agent_type == 0:
-                average_speed += agent.speed
+                if self.agent_type != 1: average_speed += agent.speed
+                else:
+                    average_speed += 2 * (agent.position - self.position)
+                    average_velocity += agent.velocity / 4
 
             if agent.agent_type == 1:
-                if self.agent_type != 1: average_speed = 100 * (self.position - agent.position)            
+                if self.agent_type != 1: average_speed = 50 * (self.position - agent.position)   
 
             elif agent.agent_type == 2:
-                average_speed += 5 * agent.speed
+                if self.agent_type != 1: average_speed += 5 * agent.speed
+                else: average_speed += (agent.position - self.position)
+
+            elif agent.agent_type == 3:
+                average_speed = 100 * (self.position - agent.position)
                 
         average_speed /= len(neighbours)
         average_velocity /= len(neighbours)
@@ -110,6 +119,8 @@ class Agent:
         self.position += self.velocity * dt * self.speed
         self.speed = average_speed + (2 * self.noise * np.random.random(dim) - self.noise)
         self.speed /= norm(self.speed)
+
+        if average_velocity > self.max_velocity and self.agent_type != 1: average_velocity = self.max_velocity
         self.velocity = average_velocity
 
         for i in range(dim):
@@ -172,10 +183,10 @@ class Group:
         """
         length = self.length // 2
         wall_agents = [
-            Agent(position=np.array([targeted_agent.position[0], -length]), speed=np.array([0, 0]), velocity=0.5, noise=0, sight=0, field_sight=0, agent_type=1),
-            Agent(position=np.array([targeted_agent.position[0], length]), speed=np.array([0, 0]), velocity=0.5, noise=0, sight=0, field_sight=0, agent_type=1),
-            Agent(position=np.array([length, targeted_agent.position[1]]), speed=np.array([0, 0]), velocity=0.5, noise=0, sight=0, field_sight=0, agent_type=1),
-            Agent(position=np.array([-length, targeted_agent.position[1]]), speed=np.array([0, 0]), velocity=0.5, noise=0, sight=0, field_sight=0, agent_type=1),
+            Agent(position=np.array([targeted_agent.position[0], -length]), speed=np.array([0, 0]), velocity=0.5, noise=0, sight=0, field_sight=0, agent_type=3),
+            Agent(position=np.array([targeted_agent.position[0], length]), speed=np.array([0, 0]), velocity=0.5, noise=0, sight=0, field_sight=0, agent_type=3),
+            Agent(position=np.array([length, targeted_agent.position[1]]), speed=np.array([0, 0]), velocity=0.5, noise=0, sight=0, field_sight=0, agent_type=3),
+            Agent(position=np.array([-length, targeted_agent.position[1]]), speed=np.array([0, 0]), velocity=0.5, noise=0, sight=0, field_sight=0, agent_type=3),
         ]
         agents = []
 
@@ -195,6 +206,7 @@ class Group:
                     angle_spd = np.angle(targeted_agent.speed[0] + 1j * targeted_agent.speed[1]) % (2 * math.pi)
                     angle_pos = np.angle(pos[0] + 1j * pos[1]) % (2 * math.pi)
                     if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(angle_spd - angle_pos) <= targeted_agent.field_sight): agents.append(agent)
+                
                 else: agents.append(agent)
 
             for index in dead_index: self.agents.pop(index)
@@ -421,7 +433,9 @@ def progress_bar(iteration: int, total: int, finished: str=""):
     bar = "#" * completed_length + " " * (80 - completed_length)
     print(f"\r[{bar}] {math.floor(100 * iteration / total)}%", end="\r")
 
-    if iteration == total: print("\n" + finished)
+    if iteration == total:
+        if finished: print("\n" + finished)
+        else: print()
 
 
 # ┌─────────┐ #
