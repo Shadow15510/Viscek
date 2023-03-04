@@ -338,7 +338,7 @@ class Group:
             dt          : pas de temps                   [optionnel, defaut = 0.5]
         """
         for index in range(steps):
-            progress_bar(index, steps)
+            #progress_bar(index, steps)
             for agent in self.agents:
                 agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
 
@@ -493,6 +493,7 @@ group_100 = group_generator(100, position=(-25, 25), speed=(-1, 1))
 group_200 = group_generator(200, position=(-1, 1), speed=(-1, 1), length=4)
 
 
+
 def test():
     group_1 = group_generator(50, noise=0, fear=0)
     for _ in range(2):
@@ -507,14 +508,9 @@ def test():
         group_3[i].noise, group_3[i].fear = 1, 1
         group_4[i].noise, group_4[i].fear = 0, 0
 
-    print("Groupe 1")
     group_1.run(500)
-    print("Groupe 2")
     group_2.run(500)
-    print("Groupe 3")
     group_3.run(500)
-    print("Groupe 4")
     group_4.run(500)
-
 
     return len(group_1.dead_agents), len(group_2.dead_agents), len(group_3.dead_agents), len(group_4.dead_agents)
