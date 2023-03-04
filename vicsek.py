@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Vicsek — 1.7.1          │ #
+# │          Vicsek — 1.7.2          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -14,7 +14,7 @@ import random
 
 
 __name__ = "Vicsek"
-__version__ = "1.7.1"
+__version__ = "1.7.2"
 
 
 # ┌─────────┐ #
@@ -34,7 +34,7 @@ class Agent:
             0 : agent normal
             1 : agent répulsif
             2 : agent leader
-        fear        : peur des agents répulsif (entre 0 et 1)                                          [optionnel, default = 1]
+        fear        : sensibilité aux agents répulsif (entre 0 et 1)                                          [optionnel, default = 1]
     """
 
     def __init__(self, position: np.array, speed: np.array, velocity: int, noise: int, sight: int, field_sight: float=math.pi/2, agent_type: int=0, fear: float=1):
@@ -81,7 +81,7 @@ class Agent:
         """Renvoie la couleur de l'agent en fonction de son orientation."""
         angle = np.angle(self.speed[0] + 1j * self.speed[1]) % (2 * math.pi)
         angle = (180 * angle) / math.pi
-        return COLOR_MAP[math.floor(angle)], angle 
+        return COLOR_MAP[math.floor(angle) % 360], angle 
 
     def next_step(self, neighbours: list, dim: int, length: int, dt: float=0.5):
         """
@@ -93,30 +93,34 @@ class Agent:
             dt         : pas de temps                         [optionnel, default = 0.5]
         """
         length //= 2
-        average_speed = np.zeros(dim)
+        average_speed = 0
         average_velocity = 0
+        nb_neighbours = 0
 
         for agent in neighbours:
-            average_velocity += agent.velocity
+            if agent.agent_type != 3:
+                average_velocity += agent.velocity
+                nb_neighbours += 1
 
             if agent.agent_type == 0:
                 if self.agent_type != 1: average_speed += agent.speed
                 else:
-                    average_speed += 2 * (agent.position - self.position)
+                    average_speed += agent.position - self.position
                     average_velocity += agent.velocity / 4
 
-            if agent.agent_type == 1:
-                if self.agent_type != 1: average_speed += self.fear * len(neighbours) * (self.position - agent.position)  
+            elif agent.agent_type == 1:
+                if self.agent_type != 1: average_speed += self.fear * len(neighbours) * (self.position - agent.position)
+                else: average_speed += agent.speed
 
             elif agent.agent_type == 2:
                 if self.agent_type != 1: average_speed += 5 * agent.speed
                 else: average_speed += (agent.position - self.position)
 
             elif agent.agent_type == 3:
-                average_speed = len(neighbours) * 100 * (self.position - agent.position)
-                
-        average_speed /= len(neighbours)
-        average_velocity /= len(neighbours)
+                average_speed += 100 * (self.position - agent.position)
+        
+        average_speed /= nb_neighbours
+        average_velocity /= nb_neighbours
 
         self.position += self.velocity * dt * self.speed
         self.speed = average_speed + (2 * self.noise * np.random.random(dim) - self.noise)
@@ -193,7 +197,7 @@ class Group:
         agents = []
 
         if not check_field:
-            agents = [agent for agent in self.agents if (targeted_agent - agent) <= dmin]
+            agents = [agent for agent in (self.agents + wall_agents) if (targeted_agent - agent) <= dmin]
        
         else:
             dead_index = []
@@ -207,8 +211,7 @@ class Group:
                     pos = agent.position - targeted_agent.position
                     angle_spd = np.angle(targeted_agent.speed[0] + 1j * targeted_agent.speed[1]) % (2 * math.pi)
                     angle_pos = np.angle(pos[0] + 1j * pos[1]) % (2 * math.pi)
-                    if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(angle_spd - angle_pos) <= targeted_agent.field_sight): agents.append(agent)
-                
+                    if (targeted_agent - agent) <= dmin and (agent.agent_type in (1, 3) or abs(angle_spd - angle_pos) <= targeted_agent.field_sight): agents.append(agent)        
                 else: agents.append(agent)
 
             for index in dead_index: self.agents.pop(index)
@@ -391,7 +394,7 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: floa
 
 def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: float=-1, sight: tuple=(5, 10), field_sight: tuple=(math.pi/4, math.pi/2), fear: float=-1, length: int=50, dim: int=2):
     """
-    Retourne un groupe d'agents générés aléatoirement.
+    Retourne un groupe d'agents normaux générés aléatoirement dans les limites données.
     @arguments :
         nb          : nombre d'agents à générer
         position    : valeurs limites de la position                        [optionnel, defaut = (-25, 25)]
@@ -403,7 +406,7 @@ def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), no
         length      : taille de l'arête du cube d'espace considéré          [optionnel, defaut = 50]
         dim         : dimension de l'espace dans lequel les agents évoluent [optionnel, defaut = 2]
     """
-    agents = [agent_generator(position=position, speed=speed, noise=noise, sight=sight, field_sight=field_sight, agent_type=0, fear=fear, dim=dim) for _ in range(nb)]
+    agents = [agent_generator(position=position, speed=speed, noise=noise, sight=sight, field_sight=field_sight, fear=fear, dim=dim) for _ in range(nb)]
     return Group(agents, length=length, dim=dim)
 
 
@@ -449,6 +452,26 @@ def progress_bar(iteration: int, total: int, finished: str=""):
         else: print()
 
 
+def stat(agents):
+    noise, fear, velocity = 0, 0, 0
+    nb_agents = 0
+
+    for agent in agents:
+        if agent.agent_type in (0, 2):
+            nb_agents += 1
+            noise += agent.noise
+            fear += agent.fear
+            velocity += agent.max_velocity
+
+    noise /= nb_agents
+    fear /= nb_agents
+    velocity /= nb_agents
+
+    print("noise   :", noise)
+    print("fear    :", fear)
+    print("vitesse :", velocity)
+
+
 # ┌─────────┐ #
 # │ Données │ #
 # └─────────┘ #
@@ -458,13 +481,10 @@ group_10 = group_generator(10)
 
 group_20 = group_generator(19, position=(-1, 1), speed=(-1, 1), length=4)
 
-group_40 = group_generator(40, noise=-1, fear=-1)
-group_40_bis = group_40.copy()
-for _ in range(3):
-    group_40.add_agent(agent_generator(position=(-25, 25), speed=(-3, 3), field_sight=(math.pi/2, math.pi), agent_type=1))
+group_40 = group_generator(40, noise=-1, fear=1)
+for _ in range(2):
+    group_40.add_agent(agent_generator(speed=(-3, 3), noise=0.25, agent_type=1))
 
 group_100 = group_generator(100, position=(-25, 25), speed=(-1, 1))
-group_100.add_agent(agent_generator(position=(-25, 25), speed=(-5, 5), field_sight=(math.pi/2, math.pi), agent_type=1))
-
 
 group_200 = group_generator(200, position=(-1, 1), speed=(-1, 1), length=4)
