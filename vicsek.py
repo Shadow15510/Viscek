@@ -79,6 +79,8 @@ class Agent:
 
     def get_color(self):
         """Renvoie la couleur de l'agent en fonction de son orientation."""
+        if self.agent_type == 3:
+            return (0, 0, 1), 0
         angle = np.angle(self.speed[0] + 1j * self.speed[1]) % (2 * math.pi)
         angle = (180 * angle) / math.pi
         return COLOR_MAP[math.floor(angle) % 360], angle 
@@ -117,7 +119,7 @@ class Agent:
                 else: average_speed += (agent.position - self.position)
 
             elif agent.agent_type == 3:
-                average_speed += 100 * (self.position - agent.position)
+                average_speed += len(neighbours) * 100 * (self.position - agent.position)
         
         average_speed /= nb_neighbours
         average_velocity /= nb_neighbours
@@ -202,7 +204,7 @@ class Group:
         else:
             dead_index = []
             for index, agent in enumerate(self.agents + wall_agents):
-                if targeted_agent.agent_type == 1 and agent.agent_type != 1 and (targeted_agent - agent) < 1 and index < self.nb_agents:
+                if targeted_agent.agent_type == 1 and not agent.agent_type in (1, 3) and (targeted_agent - agent) < self.length / 50 and index < self.nb_agents:
                     self.dead_agents.append(agent.copy())
                     dead_index.append(index)
                     self.nb_agents -= 1
@@ -211,7 +213,12 @@ class Group:
                     pos = agent.position - targeted_agent.position
                     angle_spd = np.angle(targeted_agent.speed[0] + 1j * targeted_agent.speed[1]) % (2 * math.pi)
                     angle_pos = np.angle(pos[0] + 1j * pos[1]) % (2 * math.pi)
-                    if (targeted_agent - agent) <= dmin and (agent.agent_type in (1, 3) or abs(angle_spd - angle_pos) <= targeted_agent.field_sight): agents.append(agent)        
+                    if agent.agent_type != 3:
+                        if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or abs(angle_spd - angle_pos) <= targeted_agent.field_sight):
+                            agents.append(agent)
+                    elif (targeted_agent - agent) <= self.length / 50:
+                        agents.append(agent)
+
                 else: agents.append(agent)
 
             for index in dead_index: self.agents.pop(index)
@@ -288,7 +295,7 @@ class Group:
                 size = 5
 
                 for index, agent in enumerate(self.agents):
-                    agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
+                    if agent.agent_type != 3: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
                     color, dir_angle = agent.get_color()
                     sight_angle = (180 * agent.field_sight) / math.pi
 
@@ -338,9 +345,9 @@ class Group:
             dt          : pas de temps                   [optionnel, defaut = 0.5]
         """
         for index in range(steps):
-            #progress_bar(index, steps)
+            progress_bar(index, steps)
             for agent in self.agents:
-                agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
+                if agent.agent_type != 3: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
 
 
 class DimensionError(Exception):
@@ -376,14 +383,14 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: floa
         speed=np.zeros(dim),
         velocity=0,
         noise=noise,
-        sight=random.randint(sight[0], sight[1]),
+        sight=(sight[1] - sight[0]) * random.random() + sight[0],
         field_sight=(field_sight[1] - field_sight[0]) * random.random() + field_sight[0],
         agent_type=agent_type,
         fear=fear
     )
 
     velocity = 0
-    while velocity == 0:
+    while velocity < 1e-3:
         agent.speed = rarray(dim, speed[0], speed[1])
         velocity = norm(agent.speed)
 
@@ -481,16 +488,25 @@ group_10 = group_generator(10)
 
 group_20 = group_generator(19, position=(-1, 1), speed=(-1, 1), length=4)
 
-group_40 = group_generator(40, noise=1, fear=0)
-for _ in range(2):
-    group_40.add_agent(agent_generator(speed=(-3, 3), noise=0.25, agent_type=1))
-group_40_bis = group_40.copy()
-for i in range(40):
-    group_40_bis[i].noise, group_40_bis[i].fear = 0, 1
+group_50 = group_generator(50)
+for y in range(-10, 10):
+    group_50.add_agent(Agent(
+        position=np.array([0, y]),
+        speed=np.zeros(2),
+        velocity=0,
+        noise=0,
+        sight=0,
+        field_sight=0,
+        agent_type=3,
+        fear=0
+    ))
+for i in range(1, 3):
+    group_50.add_agent(agent_generator(agent_type=i))
+
 
 group_100 = group_generator(100, position=(-25, 25), speed=(-1, 1))
 
-group_200 = group_generator(200, position=(-1, 1), speed=(-1, 1), length=4)
+group_200 = group_generator(200, position=(-2, 2), speed=(-0.5, 0.5), sight=(0.5, 1), length=4)
 
 
 
