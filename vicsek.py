@@ -1,5 +1,5 @@
 # ┌──────────────────────────────────┐ #
-# │          Vicsek — 1.7.2          │ #
+# │          Vicsek — 1.7.3          │ #
 # │ Alexis Peyroutet & Antoine Royer │ #
 # │ GNU General Public Licence v3.0+ │ #
 # └──────────────────────────────────┘ #
@@ -14,7 +14,7 @@ import random
 
 
 __name__ = "Vicsek"
-__version__ = "1.7.2"
+__version__ = "1.7.3"
 
 
 # ┌─────────┐ #
@@ -128,9 +128,11 @@ class Agent:
         
         average_speed /= nb_neighbours
         average_velocity /= nb_neighbours
-
+        noise_min = - self.noise / 2
+        noise_max = self.noise / 2
+        
         self.position += self.velocity * dt * self.speed
-        self.speed = average_speed + (2 * self.noise * np.random.random(dim) - self.noise)
+        self.speed = average_speed + ((noise_max - noise_min) * np.random.random(dim) + noise_min)
         self.speed /= norm(self.speed)
 
         if average_velocity > self.max_velocity: average_velocity = self.max_velocity
@@ -547,7 +549,7 @@ def op():
     for noise in np.arange(0, 5, 0.5):
         op_temp = 0
         for _ in range(5):
-            grp = group_generator(50, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3)
+            grp = group_generator(40, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3.1)
             grp.run(200, check_field=False, check_wall=False, dt=0.25)
             op_temp += grp.order_parameter()
         order_p.append(op_temp / 5)
