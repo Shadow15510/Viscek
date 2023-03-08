@@ -291,7 +291,7 @@ class Group:
         self.compute_figure()
         plt.show()
 
-    def compute_animation(self, frames: int=20, interval: int=100, filename: str="vicsek", check_field: bool=True, sight: bool=False, dt: float=0.5):
+    def compute_animation(self, frames: int=20, interval: int=100, filename: str="vicsek", check_field: bool=True, sight: bool=False, dt: float=0.5, gui=None):
         """
         Génère une animation.
         @arguments :
@@ -302,8 +302,11 @@ class Group:
             sight       : affichage du cône de vision                      [optionnel, default = False]
             dt          : pas de temps                                     [optionnel, default = 0.5]
         """
-        def aux(frame_index, ax, sight: bool=True):
-            progress_bar(frame_index, frames, finished="exportation GIF en cours")
+        def aux(frame_index, ax, sight: bool=True, gui=None):
+            if gui:
+                gui.progress_bar["value"] = (100 * (frame_index + 1) / frames)
+                gui.update()
+            else: progress_bar(frame_index, frames, finished="exportation GIF en cours")
             
             sight_wedges = []
             pl = []
@@ -354,7 +357,7 @@ class Group:
 
         
         for findex in range(frames):
-            pl = aux(findex, ax, sight)
+            pl = aux(findex, ax, sight, gui)
             images.append(pl)
 
         ani = animation.ArtistAnimation(fig, images, interval=interval)
@@ -401,21 +404,21 @@ class DimensionError(Exception):
 rarray = lambda dim, minimum, maximum: minimum + (maximum - minimum) * np.random.random(dim)
 
 
-def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: float=-1, sight: tuple=(5, 10), field_sight: tuple=(math.pi/4, math.pi/2), agent_type: int=0, fear: float=-1, dim: int=2):
+def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: tuple=(0, 1), sight: tuple=(5, 10), field_sight: tuple=(math.pi/4, math.pi/2), agent_type: int=0, fear: tuple=(0, 1), dim: int=2):
     """
     Retourne un agent généré aléatoirement.
     @arguments :
-        position    : valeurs limites de la position                    [optionnel, defaut = (-25, 25)]
-        speed       : valeurs limites de la vitesse                     [optionnel, defaut = (-2, 2)]
-        noise       : bruit de l'agent                                  [optionnel, default = random.random()]
-        sight       : valeurs limites de la portée de la vue des agents [optionnel, defaut = (5, 10)]
-        field_sight : valeurs limites du champ de vision des agents     [optionnel, defaut = (math.pi/4, math.pi/2)]
-        agent_type  : type de l'agent                                   [optionnel, defaut = 0]
+        position    : valeurs limites de la position                             [optionnel, defaut = (-25, 25)]
+        speed       : valeurs limites de la vitesse                              [optionnel, defaut = (-2, 2)]
+        noise       : valeurs limites du bruit de l'agent                        [optionnel, default = (0, 1)]
+        sight       : valeurs limites de la portée de la vue des agents          [optionnel, defaut = (5, 10)]
+        field_sight : valeurs limites du champ de vision des agents              [optionnel, defaut = (math.pi/4, math.pi/2)]
+        agent_type  : type de l'agent                                            [optionnel, defaut = 0]
             0 : agent normal
             1 : agent répulsif
             2 : agent leader
-        fear        : sensibilité de l'agent aux agents répulsifs       [optionnel, defaut = random.random()]
-        dim         : dimension de l'espace                             [optionnel, defaut = 2]
+        fear        : valeurs limites de la peur de l'agent aux agents répulsifs [optionnel, defaut = (0, 1)]
+        dim         : dimension de l'espace                                      [optionnel, defaut = 2]
     """
     if noise == -1: noise = random.random()
     if fear == -1: fear = random.random()
@@ -423,11 +426,11 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: floa
         position=rarray(dim, position[0], position[1]),
         speed=np.zeros(dim),
         velocity=0,
-        noise=noise,
+        noise=(noise[1] - noise[0]) * random.random() + noise[0],
         sight=(sight[1] - sight[0]) * random.random() + sight[0],
         field_sight=(field_sight[1] - field_sight[0]) * random.random() + field_sight[0],
         agent_type=agent_type,
-        fear=fear
+        fear=(fear[1] - fear[0]) * random.random() + fear[0]
     )
 
     velocity = 0
@@ -440,19 +443,19 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: floa
     return agent.copy()
 
 
-def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: float=-1, sight: tuple=(5, 10), field_sight: tuple=(math.pi/4, math.pi/2), fear: float=-1, length: int=50, dim: int=2):
+def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: tuple=(0, 1), sight: tuple=(5, 10), field_sight: tuple=(math.pi/4, math.pi/2), fear: tuple=(0, 1), length: int=50, dim: int=2):
     """
     Retourne un groupe d'agents normaux générés aléatoirement dans les limites données.
     @arguments :
         nb          : nombre d'agents à générer
-        position    : valeurs limites de la position                        [optionnel, defaut = (-25, 25)]
-        speed       : valeurs limites de la vitesse                         [optionnel, defaut = (-2, 2)]
-        noise       : bruit de l'agent                                      [optionnel, default = random.random()]
-        sight       : valeurs limites de la portée de la vue des agents     [optionnel, defaut = (5, 10)]
-        field_sight : valeurs limites du champ de vision des agents         [optionnel, defaut = (math.pi/4, math.pi/2)]
-        fear        : sensibilité de l'agent aux agents répulsifs           [optionnel, defaut = random.random()]
-        length      : taille de l'arête du cube d'espace considéré          [optionnel, defaut = 50]
-        dim         : dimension de l'espace dans lequel les agents évoluent [optionnel, defaut = 2]
+        position    : valeurs limites de la position                             [optionnel, defaut = (-25, 25)]
+        speed       : valeurs limites de la vitesse                              [optionnel, defaut = (-2, 2)]
+        noise       : valeurs limites du bruit de l'agent                        [optionnel, defaut = (0, 1)]
+        sight       : valeurs limites de la portée de la vue des agents          [optionnel, defaut = (5, 10)]
+        field_sight : valeurs limites du champ de vision des agents              [optionnel, defaut = (math.pi/4, math.pi/2)]
+        fear        : valeurs limites de la peur de l'agent aux agents répulsifs [optionnel, defaut = (0, 1)]
+        length      : taille de l'arête du cube d'espace considéré               [optionnel, defaut = 50]
+        dim         : dimension de l'espace dans lequel les agents évoluent      [optionnel, defaut = 2]
     """
     agents = [agent_generator(position=position, speed=speed, noise=noise, sight=sight, field_sight=field_sight, fear=fear, dim=dim) for _ in range(nb)]
     return Group(agents, length=length, dim=dim)
@@ -530,7 +533,7 @@ group_10 = group_generator(10)
 group_20 = group_generator(20, dim=3)
 
 group_40 = group_generator(40, dim=3)
-group_40.add_agent(agent_generator(speed=(-3, 3), noise=0.1, sight=(10, 15), field_sight=(math.pi, 2 * math.pi), agent_type=1, dim=3))
+group_40.add_agent(agent_generator(speed=(-3, 3), noise=(0.1, 0.1), sight=(10, 15), field_sight=(math.pi, 2 * math.pi), agent_type=1, dim=3))
 
 group_100 = group_generator(100, speed=(-1, 1))
 for _ in range(5):
@@ -541,7 +544,7 @@ group_200 = group_generator(200, position=(-2, 2), speed=(-0.5, 0.5), sight=(0.5
 
 
 def test():
-    group_1 = group_generator(50, noise=0, fear=0)
+    group_1 = group_generator(50, noise=(0, 0), fear=(0, 0))
     for _ in range(2):
         group_1.add_agent(agent_generator(speed=(-3, 3), noise=0.25, agent_type=1))
 
