@@ -374,6 +374,23 @@ class Group:
                 if agent.agent_type != 3: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
 
 
+    def alignment_parameter(self):
+        """Renvoie le paramètre d'alignement"""
+        speeds = np.random.rand(self.nb_agents, self.dimension)
+        alignment=[]
+        for index in range(self.nb_agents):
+            alignment = []
+            for index2 in range(self.nb_agents):
+                if (speeds[index] == speeds[index2]).all:
+                    alignment.append(1)
+                else:
+                    alignment.append(0)
+            nb_same_speed = sum(alignment)
+            nb_different_speed = len(alignment) - nb_same_speed
+            Pourcent_same_speed = nb_same_speed / len(alignment)
+            Pourcent_dif_speed = nb_different_speed / len(alignment)
+        return alignment,Pourcent_same_speed,Pourcent_dif_speed
+
 class DimensionError(Exception):
     pass
 
