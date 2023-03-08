@@ -260,12 +260,12 @@ class Group:
             sight_wedges = []
 
             for agent in self.agents:
-                _, dir_angle = agent.get_color()
+                color, dir_angle = agent.get_color()
                 sight_angle = (180 * agent.field_sight) / math.pi
 
-                if agent.agent_type: size = 7
+                if agent.agent_type: size, color = 7, (0, 0, 0)
                 else: size = 5
-                plt.scatter(agent.position[0], agent.position[1], s=size, color="black") #agent_color)
+                plt.scatter(agent.position[0], agent.position[1], s=size, color=color)
                 
                 wedge = mpatches.Wedge((agent.position[0], agent.position[1]), agent.sight, dir_angle + 360 - sight_angle, dir_angle + sight_angle, ec="black")
                 sight_wedges.append(wedge)
@@ -376,23 +376,18 @@ class Group:
             for agent in self.agents:
                 if agent.agent_type != 3: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
 
-
     def alignment_parameter(self):
-        """Renvoie le paramètre d'alignement"""
-        speeds = np.random.rand(self.nb_agents, self.dimension)
-        alignment=[]
+        """Renvoie le paramètre d'alignement."""
+        alignment = []
         for index in range(self.nb_agents):
-            alignment = []
             for index2 in range(self.nb_agents):
-                if (speeds[index] == speeds[index2]).all:
+                if (index != index2) and (abs(self.agents[index].speed - self.agents[index2].speed) <= np.array([1e-1, 1e-1])).all():
                     alignment.append(1)
                 else:
                     alignment.append(0)
-            nb_same_speed = sum(alignment)
-            nb_different_speed = len(alignment) - nb_same_speed
-            Pourcent_same_speed = nb_same_speed / len(alignment)
-            Pourcent_dif_speed = nb_different_speed / len(alignment)
-        return alignment,Pourcent_same_speed,Pourcent_dif_speed
+
+        return sum(alignment) / self.nb_agents ** 2
+
 
 class DimensionError(Exception):
     pass
@@ -530,10 +525,10 @@ COLOR_MAP = get_colors()
 
 group_10 = group_generator(10)
 
-group_20 = group_generator(20, dim=3)
+group_20 = group_generator(20)
 
-group_40 = group_generator(40, dim=3)
-group_40.add_agent(agent_generator(speed=(-3, 3), noise=(0.1, 0.1), sight=(10, 15), field_sight=(math.pi, 2 * math.pi), agent_type=1, dim=3))
+group_40 = group_generator(40)
+#group_40.add_agent(agent_generator(speed=(-3, 3), noise=(0.1, 0.1), sight=(10, 15), field_sight=(math.pi, 2 * math.pi), agent_type=1))
 
 group_100 = group_generator(100, speed=(-1, 1))
 for _ in range(5):
