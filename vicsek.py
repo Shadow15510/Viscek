@@ -190,8 +190,7 @@ class Group:
         """
         Retourne une liste d'agents appartenant au groupe et étant à une distance inférieure ou égale à dmin.
         @arguments :
-            targeted_agent : agent servant de référence pour le calcul de d):
-istance
+            targeted_agent : agent servant de référence pour le calcul de distance
             dmin           : distance minimale à considérer
             check_field    : prise en compte de l'angle de vue de l'agent          [optionnel, default = True]
         """
@@ -335,7 +334,7 @@ istance
                     else: size, color = 5, (0, 0, 0)
 
                     pl.append(ax.scatter(agent.position[0], agent.position[1], agent.position[2], s=size, color=color))
-                    pl.append(ax.quiver(agent.position[0], agent.position[1], agent.position[2], agent.speed[0], agent.speed[1], agent.speed[2], color=color))
+                    pl.append(ax.quiver(agent.position[0], agent.position[1], agent.position[2], agent.velocity * agent.speed[0], agent.velocity * agent.speed[1], agent.velocity * agent.speed[2], color=color))
 
 
             return pl
