@@ -29,12 +29,12 @@ class Agent:
         velocity    : norme de la vitesse
         noise       : taux de bruit qui traduit une déviation aléatoire sur la direction de la vitesse
         sight       : distance à laquelle l'agent voit les autres
-        field_sight : angle du cône de vision de l'agent en radian                                     [optionnel, default = math.pi/4]
-        agent_type  : type d'agent                                                                     [optionnel, default = 0]
+        field_sight : angle du cône de vision de l'agent en radian                                     [optionnel, defaut = math.pi/4]
+        agent_type  : type d'agent                                                                     [optionnel, defaut = 0]
             0 : agent normal
             1 : agent répulsif
             2 : agent leader
-        fear        : sensibilité aux agents répulsif (entre 0 et 1)                                    [optionnel, default = 1]
+        fear        : sensibilité aux agents répulsif (entre 0 et 1)                                   [optionnel, defaut = 1]
     @attributs
         max_velocity : norme maximale de la vitesse
     """
@@ -95,7 +95,7 @@ class Agent:
             neighbours : liste des agents voisins
             dim        : dimension de l'espace
             length     : longueur caractéristique de l'espace
-            dt         : pas de temps                         [optionnel, default = 0.5]
+            dt         : pas de temps                         [optionnel, defaut = 0.5]
         """
         length //= 2
         average_speed = 0
@@ -137,16 +137,17 @@ class Agent:
         self.velocity = average_velocity
 
         for i in range(dim):
-            if not (-length < self.position[i] < length): self.position = length * np.random.random(dim) - length // 2
-
+            if self.position[i] > length: self.position[i] = -length
+            elif self.position[i] < -length: self.position[i] = length
+            
 
 class Group:
     """
     Simule un groupe d'agents, permet de le faire évoluer et de l'afficher.
     @arguments :
         agents  : liste des agents du groupe
-        length  : longueur caractéristique de l'espace     [optionnel, default = 50]
-        dim     : dimension de l'espace considéré (2 ou 3) [optionnel, default = 2]
+        length  : longueur caractéristique de l'espace     [optionnel, defaut = 50]
+        dim     : dimension de l'espace considéré (2 ou 3) [optionnel, defaut = 2]
     @attributs :
         density     : densité d'agents dans l'espace (nombre agent / longueur ** dimension)
         dead_agents : liste des agents touchés par un agent répulsif
@@ -186,15 +187,16 @@ class Group:
         self.agents.append(agent.copy())
         self.nb_agents += 1
 
-    def get_neighbours(self, targeted_agent: Agent, dmin: int, check_field: bool=True):
+    def get_neighbours(self, targeted_agent: Agent, dmin: int, check_field: bool=True, check_wall: bool=True):
         """
         Retourne une liste d'agents appartenant au groupe et étant à une distance inférieure ou égale à dmin.
         @arguments :
             targeted_agent : agent servant de référence pour le calcul de distance
             dmin           : distance minimale à considérer
-            check_field    : prise en compte de l'angle de vue de l'agent          [optionnel, default = True]
+            check_field    : prise en compte de l'angle de vue de l'agent          [optionnel, defaut = True]
+            check_wall     : prise en compte des murs                              [optionnel, defaut = True]
         """
-        length = self.length // 2
+        length = self.length / 2
 
         if self.dimension == 2: wall_agents = [
             Agent(position=np.array([length, targeted_agent.position[1]]), speed=np.zeros(2), velocity=0, noise=0, sight=0, field_sight=0, agent_type=3),
@@ -214,12 +216,15 @@ class Group:
             ]
         agents = []
 
+        if check_wall: total_agents = self.agents + wall_agents
+        else: total_agents = self.agents
+
         if not check_field or self.dimension == 3:
-            agents = [agent for agent in (self.agents + wall_agents) if (targeted_agent - agent) <= dmin]
+            agents = [agent for agent in total_agents if (targeted_agent - agent) <= dmin]
        
         else:
             dead_index = []
-            for index, agent in enumerate(self.agents + wall_agents):
+            for index, agent in enumerate(total_agents):
                 if targeted_agent.agent_type == 1 and not agent.agent_type in (1, 3) and (targeted_agent - agent) < self.length / 25 and index < self.nb_agents:
                     self.dead_agents.append(agent.copy())
                     dead_index.append(index)
@@ -272,17 +277,17 @@ class Group:
 
             ax.add_collection(PatchCollection(sight_wedges, alpha=0.3))
                 
-            ax.axes.set_xlim(-self.length // 2, self.length // 2)
-            ax.axes.set_ylim(-self.length // 2, self.length // 2)
+            ax.axes.set_xlim(-self.length / 2, self.length / 2)
+            ax.axes.set_ylim(-self.length / 2, self.length / 2)
 
         # else:
         #     ax = plt.axes(projection="3d")
         #     ax.scatter(positions[:, 0], positions[:, 1], positions[:, 2], s=5, c="black")
         #     for agent_index in range(self.nb_agents):
         #         ax.quiver(positions[agent_index, 0], positions[agent_index, 1], positions[agent_index, 2], speeds[agent_index, 0], speeds[agent_index, 1], speeds[agent_index, 2], color="black")
-        #     ax.axes.set_xlim3d(-self.length // 2, self.length // 2)
-        #     ax.axes.set_ylim3d(-self.length // 2, self.length // 2)
-        #     ax.axes.set_zlim3d(-self.length // 2, self.length // 2)
+        #     ax.axes.set_xlim3d(-self.length / 2, self.length / 2)
+        #     ax.axes.set_ylim3d(-self.length / 2, self.length / 2)
+        #     ax.axes.set_zlim3d(-self.length / 2, self.length / 2)
 
         return fig
 
@@ -291,22 +296,20 @@ class Group:
         self.compute_figure()
         plt.show()
 
-    def compute_animation(self, frames: int=20, interval: int=100, filename: str="vicsek", check_field: bool=True, sight: bool=False, dt: float=0.5, gui=None):
+    def compute_animation(self, frames: int=20, interval: int=100, filename: str="vicsek", check_field: bool=True, check_wall: bool=False, sight: bool=False, dt: float=0.5):
         """
         Génère une animation.
         @arguments :
-            frames      : nombre d'images voulues dans l'animation         [optionnel, default = 20]
-            interval    : intervale entre deux images de l'animation en ms [optionnel, default = 100]
-            filename    : nom du fichier de sortie GIF                     [optionnel, default = "vicsek"]
-            check_field : vérification de l'angle de vue                   [optionnel, default = True]
-            sight       : affichage du cône de vision                      [optionnel, default = False]
-            dt          : pas de temps                                     [optionnel, default = 0.5]
+            frames      : nombre d'images voulues dans l'animation         [optionnel, defaut = 20]
+            interval    : intervale entre deux images de l'animation en ms [optionnel, defaut = 100]
+            filename    : nom du fichier de sortie GIF                     [optionnel, defaut = "vicsek"]
+            check_field : vérification de l'angle de vue                   [optionnel, defaut = True]
+            check_wall  : vérification des murs                            [optionnel, defaut = True]
+            sight       : affichage du cône de vision                      [optionnel, defaut = False]
+            dt          : pas de temps                                     [optionnel, defaut = 0.5]
         """
-        def aux(frame_index, ax, sight: bool=True, gui=None):
-            if gui:
-                gui.progress_bar["value"] = (100 * (frame_index + 1) / frames)
-                gui.update()
-            else: progress_bar(frame_index, frames, finished="exportation GIF en cours")
+        def aux(frame_index, ax, sight: bool=True):
+            progress_bar(frame_index, frames, finished="exportation GIF en cours")
             
             sight_wedges = []
             pl = []
@@ -347,46 +350,47 @@ class Group:
         fig = plt.figure()
         if self.dimension == 2:
             ax = plt.axes()
-            ax.axes.set_xlim(-self.length // 2, self.length // 2)
-            ax.axes.set_ylim(-self.length // 2, self.length // 2)
+            ax.axes.set_xlim(-self.length / 2, self.length / 2)
+            ax.axes.set_ylim(-self.length / 2, self.length / 2)
         else:
             ax = plt.axes(projection="3d")
-            ax.axes.set_xlim3d(-self.length // 2, self.length // 2)
-            ax.axes.set_ylim3d(-self.length // 2, self.length // 2)
-            ax.axes.set_zlim3d(-self.length // 2, self.length // 2)
+            ax.axes.set_xlim3d(-self.length / 2, self.length / 2)
+            ax.axes.set_ylim3d(-self.length / 2, self.length / 2)
+            ax.axes.set_zlim3d(-self.length / 2, self.length / 2)
 
         
         for findex in range(frames):
-            pl = aux(findex, ax, sight, gui)
+            pl = aux(findex, ax, sight)
             images.append(pl)
 
         ani = animation.ArtistAnimation(fig, images, interval=interval)
         ani.save(filename + ".gif")
 
-    def run(self, steps: int=20, check_field: bool=True, dt: float=0.5):
+    def run(self, steps: int=20, check_field: bool=True, check_wall: bool=True, dt: float=0.5):
         """
         Fait avancer le groupe d'agent sans gérérer d'animations.
         @arguments :
             steps       : nombre de pas                  [optionnel, defaut = 20]
             check_field : vérification de l'angle de vue [optionnel, defaut = True]
+            check_wall  : vérification des murs          [optionnel, defaut = True]
             dt          : pas de temps                   [optionnel, defaut = 0.5]
         """
         for index in range(steps):
             progress_bar(index, steps)
             for agent in self.agents:
-                if agent.agent_type != 3: agent.next_step(self.get_neighbours(agent, agent.sight, check_field), self.dimension, self.length, dt)
+                if agent.agent_type != 3: agent.next_step(self.get_neighbours(agent, agent.sight, check_field, check_wall), self.dimension, self.length, dt)
 
-    def alignment_parameter(self):
+    def order_parameter(self):
         """Renvoie le paramètre d'alignement."""
-        alignment = []
-        for index in range(self.nb_agents):
-            for index2 in range(self.nb_agents):
-                if (index != index2) and (abs(self.agents[index].speed - self.agents[index2].speed) <= np.array([1e-1, 1e-1])).all():
-                    alignment.append(1)
-                else:
-                    alignment.append(0)
+        speed = np.zeros(self.dimension)
+        velocity = 0
+        for agent in self.agents:
+            agent_speed = agent.velocity * agent.speed
 
-        return sum(alignment) / self.nb_agents ** 2
+            speed += agent_speed
+            velocity += norm(agent_speed)
+
+        return (1 / velocity) * norm(speed)
 
 
 class DimensionError(Exception):
@@ -405,7 +409,7 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: tupl
     @arguments :
         position    : valeurs limites de la position                             [optionnel, defaut = (-25, 25)]
         speed       : valeurs limites de la vitesse                              [optionnel, defaut = (-2, 2)]
-        noise       : valeurs limites du bruit de l'agent                        [optionnel, default = (0, 1)]
+        noise       : valeurs limites du bruit de l'agent                        [optionnel, defaut = (0, 1)]
         sight       : valeurs limites de la portée de la vue des agents          [optionnel, defaut = (5, 10)]
         field_sight : valeurs limites du champ de vision des agents              [optionnel, defaut = (math.pi/4, math.pi/2)]
         agent_type  : type de l'agent                                            [optionnel, defaut = 0]
@@ -489,8 +493,8 @@ def progress_bar(iteration: int, total: int, finished: str=""):
         finished  : texte à afficher une fois la barre complète [optionnel, defaut = ""]
     """
     iteration += 1
-    completed_length = math.floor(80 * iteration / total)
-    bar = "#" * completed_length + " " * (80 - completed_length)
+    completed_length = math.floor(75 * iteration / total)
+    bar = "#" * completed_length + " " * (75 - completed_length)
     print(f"\r[{bar}] {math.floor(100 * iteration / total)}%", end="\r")
 
     if iteration == total:
@@ -535,6 +539,20 @@ for _ in range(5):
     group_100.add_agent(agent_generator(agent_type=1))
 
 group_200 = group_generator(200, position=(-2, 2), speed=(-0.5, 0.5), sight=(0.5, 1), length=4)
+
+
+
+def op():
+    order_p = []
+    for noise in np.arange(0, 5, 0.5):
+        op_temp = 0
+        for _ in range(5):
+            grp = group_generator(50, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3)
+            grp.run(200, check_field=False, check_wall=False, dt=0.25)
+            op_temp += grp.order_parameter()
+        order_p.append(op_temp / 5)
+        print()
+    return list(np.arange(0, 5, 0.5)), order_p
 
 
 

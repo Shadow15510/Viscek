@@ -5,7 +5,6 @@
 # └──────────────────────────────────┘ #
 
 import tkinter as tk
-from tkinter.ttk import Progressbar
 from tkinter.messagebox import showinfo, showerror
 import vicsek
 import math
@@ -143,9 +142,6 @@ class VicsekGUI(tk.Tk):
         if (sight_min > sight_max) or (field_sight_min > field_sight_max) or (noise_min > noise_max) or (fear_min > fear_max) or (pos_min > pos_max) or (spd_min > spd_max):
             showerror("Erreur", "Les bornes ne correspondent pas.")
 
-        self.progress_bar = Progressbar(self.left_pane, orient="horizontal", mode="determinate", length=300)
-        self.progress_bar.grid(column=0, row=2)
-
         grp = vicsek.group_generator(
             nb=nb_agents,
             position=(pos_min, pos_max),
@@ -158,9 +154,8 @@ class VicsekGUI(tk.Tk):
             dim=dim
         )
 
-        grp.compute_animation(nb_frames, gui=self)
+        grp.compute_animation(nb_frames)
         showinfo("Succès", "Animation exportée au format GIF avec succès.")
-
 
 
 app = VicsekGUI()
