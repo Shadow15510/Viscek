@@ -1,17 +1,39 @@
+import matplotlib.pyplot as plt
+import numpy as np
 import vicsek as vi
 
-def op():
+
+def op_noise():
     order_p = []
-    for noise in np.arange(0, 5, 0.5):
+    noises = np.arange(0, 5.1, 0.1)
+    for noise in noises:
         op_temp = 0
         for _ in range(5):
             grp = vi.group_generator(40, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3.1)
             grp.run(200, check_field=False, check_wall=False, dt=0.25)
             op_temp += grp.order_parameter()
+        
         order_p.append(op_temp / 5)
         print()
-    return list(np.arange(0, 5, 0.5)), order_p
+    return list(noises), order_p
 
+
+def op_density():
+    order_p = []
+    density = [] 
+    for nb in np.arange(5, 100, 5):
+        op_temp = 0
+        density_temp = 0
+        for _ in range(5):
+            grp = vi.group_generator(nb, position=(-1.5, 1.5), speed=(-1, 1), noise=(1.5, 1.5), length=3)
+            grp.run(200, check_field=False, check_wall=False, dt=0.25)
+            op_temp += grp.order_parameter()
+            density_temp += grp.density
+
+        order_p.append(op_temp / 5)
+        density.append(density_temp / 5)
+        print()
+    return density, order_p
 
 
 def test():
