@@ -25,7 +25,7 @@ def op_density():
         op_temp = 0
         density_temp = 0
         for _ in range(5):
-            grp = vi.group_generator(nb, position=(-1.5, 1.5), speed=(-1, 1), noise=(1.5, 1.5), length=3)
+            grp = vi.group_generator(nb, position=(-1.5, 1.5), speed=(-1, 1), noise=(1, 1), length=3)
             grp.run(200, check_field=False, check_wall=False, dt=0.25)
             op_temp += grp.order_parameter()
             density_temp += grp.density
