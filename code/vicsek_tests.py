@@ -4,6 +4,7 @@ import vicsek as vi
 
 
 def op_noise():
+    """Calcule le paramètre d'alignement pour différentes valeurs de bruits et renvoie un tuple de la forme (bruit, paramètre d'alignement)."""
     order_p = []
     noises = np.arange(0, 5.1, 0.1)
     for noise in noises:
@@ -19,14 +20,15 @@ def op_noise():
 
 
 def op_density():
+    """Calcule le paramètre d'alignement pour différentes densités et renvoie un tuple de la forme (densité, paramètre d'alignement)."""
     order_p = []
     density = [] 
-    for nb in np.arange(5, 100, 5):
+    for nb in np.arange(25, 100, 5):
         op_temp = 0
         density_temp = 0
         for _ in range(5):
-            grp = vi.group_generator(nb, position=(-1.5, 1.5), speed=(-1, 1), noise=(1, 1), length=3)
-            grp.run(200, check_field=False, check_wall=False, dt=0.25)
+            grp = vi.group_generator(nb, position=(-10, 10), speed=(-1, 1), noise=(1.5, 1.5), length=20)
+            grp.run(10, check_field=False, check_wall=False, dt=0.5)
             op_temp += grp.order_parameter()
             density_temp += grp.density
 
@@ -34,6 +36,34 @@ def op_density():
         density.append(density_temp / 5)
         print()
     return density, order_p
+
+
+def neutral_alignment():
+    """Retourne le paramètre d'alignement en fonction de la densité sans itérer le modèle."""
+    def get_op():
+        order_p = []
+        density = [] 
+        for nb in np.arange(5, 100, 5):
+            op_temp = 0
+            density_temp = 0
+            for _ in range(5):
+                grp = vi.group_generator(nb, position=(-10, 10), speed=(-1, 1), noise=(1.5, 1.5), length=20)
+                op_temp += grp.order_parameter()
+                density_temp += grp.density
+
+            order_p.append(op_temp / 5)
+            density.append(density_temp / 5)
+        return density, order_p
+
+    runs = np.array([get_op() for _ in range(50)])
+    density = runs[:, 0]
+    order_p = runs[:, 1]
+
+    avg_op = []
+    for index in range(19):
+        avg_op.append(sum(order_p[:, index]) / 50)
+
+    return density[0], avg_op
 
 
 def test():
