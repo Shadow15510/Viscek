@@ -6,7 +6,7 @@ import vicsek as vi
 def op_noise():
     """Calcule le paramètre d'alignement pour différentes valeurs de bruits et renvoie un tuple de la forme (bruit, paramètre d'alignement)."""
     order_p = []
-    noises = np.arange(0, 5.2, 0.2)
+    noises = np.arange(0, 5.1, 0.1)
     for noise in noises:
         op_temp = 0
         for _ in range(5):
