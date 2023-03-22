@@ -9,9 +9,9 @@ def op_noise():
     noises = np.arange(0, 5.2, 0.2)
     for noise in noises:
         op_temp = 0
-        for _ in range(2):
+        for _ in range(5):
             grp = vi.group_generator(40, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3.1)
-            grp.run(200, check_field=False, check_wall=False, dt=0.25)
+            grp.run(100, check_field=False, check_wall=False, dt=0.25)
             op_temp += grp.order_parameter()
         
         order_p.append(op_temp / 5)
@@ -66,21 +66,21 @@ def neutral_alignment():
     return density[0], avg_op
 
 
-def stat(fct: builtin_function_or_method, iteration: int):
+def stat(fct, iteration: int=10):
     runs = []
     for i in range(iteration):
-        print(i) 
-        runs.append((fct()))
+        print(f"{i+1} / {iteration}") 
+        runs.append(fct())
     
     runs = np.array(runs)
-    x_axis = runs[:, 0]
+    x_axis = runs[:, 0][0]
     y_axis = runs[:, 1]
 
-    avg_op = []
-    for index in range(19):
-        avg_op.append(sum(order_p[:, index]) / 50)
+    avg_y = []
+    for index in range(len(x_axis)):
+        avg_y.append(sum(y_axis[:, index]) / len(y_axis[:, index]))
 
-    return noise[0], avg_op
+    return x_axis, avg_y
 
 
 def test():
