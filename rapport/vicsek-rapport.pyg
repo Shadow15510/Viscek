@@ -1,19 +1,3 @@
-\documentclass[french, a4paper, 12pt, openany]{report}
-
-\title{\sc Modèle de Vicsek}
-\author{Alexis Peyroutet, Antoine Royer}
-\date{Janvier – Juin 2023}
-\input{preambule.tex}
-
-\rfoot{L3 PCAME\\2022 — 2023}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
-
-% \usepackage[outputdir=/home/sha-chan/.cache/gummi]{minted}
-% \input{~/latex/minted.tex}
-
-
-
 \begin{document}
 \makeatletter
 \begin{titlepage}
@@ -30,7 +14,7 @@
 	{\huge {\sc \@title}} \\ \vspace{1cm}
 	{\Large \@author} \\
 	
-	\vfill 
+	\vfill
 	\includegraphics[width=0.7\linewidth]{images/page_garde2.png}
 	\vfill
 	{\Large \@date}
@@ -66,7 +50,7 @@
 
 	Le modèle de Vicsek est important pour étudier le comportement de certains animaux en biologie ou encore l'étude des foules. Ce modèle peut même être utile à la construction de bâtiment. En effet, le comportement des foules peut être intéressant dans la conception d'entrées et de sorties d'un espace fermé, notamment dans un moment de panique. La foule va s'éloigner du danger est emprunter les sorties. Il est alors crucial de prévoir le comportement des agents pour placer les sorties de manière à ce que le débit d'agent sortant soit le plus important possible.\\
 	
-	Nous pouvons également retrouver le modèle de Vicsek dans la robotique. C'est un précieux outil pour la technologie du monde moderne. Il peut être utiliser dans des programmes informatiques qui gèrent le déplacement de systèmes de robots (~comme les drones~).\\ 
+	Nous pouvons également retrouver le modèle de Vicsek dans la robotique. C'est un précieux outil pour la technologie du monde moderne. Il peut être utiliser dans des programmes informatiques qui gèrent le déplacement de systèmes de robots (~comme les drones~).\\
 
 	C'est avec tout cela que nous essayerons, à travers ce projet, de reproduire numériquement des mouvements collectifs et ainsi étudier le modèle de Vicsek.
 	
