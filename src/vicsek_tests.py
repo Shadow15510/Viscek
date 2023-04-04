@@ -9,9 +9,9 @@ def op_noise(check_field: bool=False, check_wall: bool=False):
     noises = np.arange(0, 5.1, 0.1)
     for noise in noises:
         op_temp = 0
-        for _ in range(5):
+        for _ in range(2):
             grp = vi.group_generator(40, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3.1)
-            grp.run(100, check_field=check_field, check_wall=check_wall, dt=0.25)
+            grp.run(50, check_field=check_field, check_wall=check_wall, dt=0.25)
             op_temp += grp.order_parameter()
         
         order_p.append(op_temp / 5)
