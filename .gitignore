@@ -1,8 +1,6 @@
 __pycache__/
 
-rapport/*.pdf
 rapport/build_*/
 rapport/_minted*/
-
-*.gif
+vicsek.gif
 
