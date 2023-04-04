@@ -1,9 +1,10 @@
-# ┌──────────────────────────────────┐ #
-# │          Vicsek — 1.7.4          │ #
-# │ Alexis Peyroutet & Antoine Royer │ #
-# │ GNU General Public Licence v3.0+ │ #
-# └──────────────────────────────────┘ #
-
+"""
+┌──────────────────────────────────┐
+│          Viscek — 1.7.4          │ 
+│ Alexis Peyroutet & Antoine Royer │
+│ GNU General Public Licence v3.0+ │
+└──────────────────────────────────┘
+"""
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -13,7 +14,7 @@ from matplotlib.collections import PatchCollection
 import random
 
 
-__name__ = "Vicsek"
+__name__ = "vicsek"
 __version__ = "1.7.4"
 
 
@@ -24,8 +25,8 @@ class Agent:
     """
     Simule un agent avec sa position, sa vitesse, et le bruit associé qui traduit sa tendance naturelle à suivre le groupe ou pas.
 
-    Parameters
-    ----------
+    Arguments
+    ---------
     position : np.array
         Vecteur position, sous forme d'un tableau numpy de deux ou trois entiers.
     speed : np.array
@@ -78,8 +79,8 @@ class Agent:
         """
         Retourne la distance entre les deux agents.
         
-        Parameters
-        ----------
+        Arguments
+        ---------
         agent : Agent
             Un autre agent.
 
@@ -96,8 +97,8 @@ class Agent:
         """
         Teste l'égalité entre deux agents.
         
-        Parameters
-        ----------
+        Arguments
+        ---------
         agent : Agent
             Un autre agent.
 
@@ -124,8 +125,8 @@ class Agent:
         """
         Fait évoluer l'agent d'un pas temporel en fonction de ses voisins.
         
-        Parameters
-        ----------
+        Arguments
+        ---------
         neighbours : list
             Liste des agents voisins.
         dim : int
@@ -185,8 +186,8 @@ class Group:
     """
     Simule un groupe d'agents, permet de le faire évoluer et de l'afficher.
     
-    Parameters
-    ----------
+    Arguments
+    ---------
     agents : list
         Liste des agents du groupe.
     length : int, optionnel
@@ -222,8 +223,8 @@ class Group:
         """
         Renvoie l'agent d'indice donné.
         
-        Parameters
-        ----------
+        Arguments
+        ---------
         index : int
             Indice de l'agent.
 
@@ -248,8 +249,8 @@ class Group:
         """
         Calcule les voisins d'un agent en fonction de la distance et de l'angle.
         
-        Parameters
-        ----------
+        Arguments
+        ---------
         targeted_agent : Agent
             Agent servant de référence pour le calcul de distance.
         dmin : int
@@ -314,8 +315,8 @@ class Group:
 
         return agents
 
-    def get_agents_parameters(self):
-        """Retourne un tuple de tableaux numpy contenant les positions et les vitesses de tous les agents du groupe."""
+    def get_agents_Arguments(self):
+        """Retourne un tupl de tableaux numpy contenant les positions et les vitesses de tous les agents du groupe."""
         positions = np.zeros((self.nb_agents, self.dimension))
         speeds = np.zeros((self.nb_agents, self.dimension))
 
@@ -368,8 +369,8 @@ class Group:
         """
         Génère une animation.
         
-        Parameters
-        ----------
+        Arguments
+        ---------
         frames : int, optionnel
             Nombre d'images voulues dans l'animation.
         interval : int, optionnel
@@ -447,8 +448,8 @@ class Group:
         """
         Fait avancer le groupe d'agent sans gérérer d'animations.
         
-        Parameters
-        ----------
+        Arguments
+        ---------
         steps : int, optionnel
             Nombre de pas dont il faut faire avancer le groupe.
         check_field : bool, optionnel
@@ -490,8 +491,8 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: tupl
     """
     Retourne un agent généré aléatoirement.
     
-    Parameters
-    ----------
+    Arguments
+    ---------
     position : tuple, optionnel
         Valeurs limites de la position.
     speed : tuple, optionnel
@@ -545,8 +546,8 @@ def group_generator(nb: int, position: tuple=(-25, 25), speed: tuple=(-2, 2), no
     """
     Retourne un groupe d'agents normaux générés aléatoirement dans les limites données.
     
-    Parameters
-    ----------
+    Arguments
+    ---------
     nb : int
         Nombre d'agents à générer pour le groupe.
     position : tuple, optionnel
@@ -579,8 +580,8 @@ def norm(vect: np.array):
     """
     Renvoie la norme du vecteur passé en argument.
     
-    Parameters
-    ----------
+    Arguments
+    ---------
     vect : np.array
         Vecteur n-dimensionnel.
 
@@ -611,8 +612,8 @@ def progress_bar(iteration: int, total: int, finished: str=""):
     """
     Affiche une barre de progression.
     
-    Parameters
-    ----------
+    Arguments
+    ---------
     iteration : int
         Itération courante à afficher.
     total: int
