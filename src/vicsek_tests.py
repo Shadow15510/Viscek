@@ -9,9 +9,9 @@ def op_noise(check_field: bool=False, check_wall: bool=False):
     noises = np.arange(0, 5.1, 0.1)
     for noise in noises:
         op_temp = 0
-        for _ in range(2):
+        for _ in range(5):
             grp = vi.group_generator(40, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3.1)
-            grp.run(50, check_field=check_field, check_wall=check_wall, dt=0.25)
+            grp.run(100, check_field=check_field, check_wall=check_wall, dt=0.25)
             op_temp += grp.order_parameter()
         
         order_p.append(op_temp / 5)
@@ -86,7 +86,7 @@ def stat(fct, iteration: int=10, *args):
 def test():
     group_1 = vi.group_generator(50, noise=(0, 0), fear=(0, 0))
     for _ in range(2):
-        group_1.add_agent(vi.agent_generator(speed=(-3, 3), noise=0.25, agent_type=1))
+        group_1.add_agent(vi.agent_generator(speed=(-3, 3), noise=(0.25, 0.25), agent_type=1))
 
     group_2 = group_1.copy()
     group_3 = group_1.copy()
@@ -102,4 +102,29 @@ def test():
     group_3.run(500)
     group_4.run(500)
 
-    return len(group_1.dead_agents), len(group_2.dead_agents), len(group_3.dead_agents), len(group_4.dead_agents)
+    return len(group_1.dead_agents) / 50, len(group_2.dead_agents) / 50, len(group_3.dead_agents) / 50, len(group_4.dead_agents) / 50
+
+
+def test2():
+    rslt = [-1, -1, -1, -1]
+    for i in range(10):
+        print(f"{i + 1}/10")
+        grps = test()
+        for i in range(4):
+            if rslt[i] != -1: rslt[i] = (rslt[i] + grps[i]) / 2
+            else: rslt[i] = grps[i]
+
+    print("noise | fear | % survivants")
+    print("1     | 0    |", round(1 - rslt[0], 2))
+    print("0     | 1    |", round(1 - rslt[1], 2))
+    print("1     | 1    |", round(1 - rslt[2], 2))
+    print("0     | 0    |", round(1 - rslt[3], 2))
+
+
+def run():
+    x_without, y_without = stat(op_noise, 10, False, False)
+    x_with, y_with = stat(op_noise, 10, True, False)
+
+    plt.plot(x_without, y_without, label="Sans le cône de vision")
+    plt.plot(x_with, y_with, label="Avec le cône de vision")
+    plt.show()
