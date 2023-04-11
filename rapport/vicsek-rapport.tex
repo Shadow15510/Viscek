@@ -1,6 +1,7 @@
 \documentclass[french, a4paper, 12pt, openany]{report}
 \input{../preambule.tex}
 \usepackage{titling}
+\usepackage{graphicx}
 
 
 \title{\sc Modèle de Vicsek}
@@ -94,23 +95,80 @@
 	
 	Ce premier abord du modèle, nous permettait déjà d'observer plusieurs images d'un groupe dans un espace. Notre fonction \verb|compute_figure| permettait déjà d'obtenir un nombre d'images en deux ou trois dimensions.Nous obtenions déjà des images comme celles-ci~:\\
 	
-%	\begin{figure}[!h]
-%		\centering
-%		\begin{tabular}{cc}
-%			\includegraphics[width=6cm]{images/montage_2.jpg} & \includegraphics[width=6cm]{images/montage_4.jpg} \\
-%		\end{tabular}
-%		\caption{Premières images obtenues en 2D et 3D }
-%	\end{figure} 
+	\begin{figure}[!h]
+		\centering
+		\begin{tabular}{cc}
+			\includegraphics[width=8cm]{images/image_2.png} & \includegraphics[width=10cm]{images/image_1.png} \\
+		\end{tabular}
+		\caption{Premières images obtenues en 2D et 3D }
+	\end{figure} 
 
 \section{Premiers résultats et interprétation physique}
 
    Pour pouvoir observer un mouvement, il est plus utile de regarder une vidéo que des images. Nous avons alors créer notre première fonction \verb|compute_animation| qui utilise la fonction \verb|Artist_animation| matplotlib.pyplot. Nous arrivions alors à générer des fichiers GIF avec le nombre de frames souhaité.
    
-   Après avoir générer plusieurs animations avec des groupes de tailles différentes. Nous avons pu déjà tirer quelques conclusions. En effet, nous observions des mouvements de groupes. Les agents qui avaient des positions de départ aléatoires, sont influencés les uns les autres selon la distance avec leurs voisins. On observe d'ailleurs des mouvements collectifs plus importants quand la densité d'agent est plus forte. En revanche, quand les agents sont moins nombreux dans un même espace, nous observons davantage de formations de petits groupes ou des agents solitaires. 
+   Après avoir généré plusieurs animations avec des groupes de tailles différentes. Nous avons pu déjà tirer quelques conclusions. En effet, nous observions des mouvements de groupes. Les agents qui avaient des positions de départ aléatoires, sont influencés les uns les autres selon la distance avec leurs voisins. On observe d'ailleurs des mouvements collectifs plus importants quand la densité d'agent est plus forte. En revanche, quand les agents sont moins nombreux dans un même espace, nous observons davantage de formations de petits groupes ou des agents solitaires. 
+   
+   
+	\begin{figure}[!h]
+		\centering
+		\begin{tabular}{cc}
+			\includegraphics[width=8cm]{images/image_3.png} & \includegraphics[width=8cm]{images/image_4.png} \\
+		\end{tabular}
+		\caption{Début et fin d'une animation 2D}
+	\end{figure} 
+   
+   
+\section{Mouvements de groupe}
+
+   Pour mieux observer les mouvements de groupe, nous avons décidé de mettre une couleur à nos agents selon la direction qu'il vont prendre. Cela permet de mieux visuliser les différents groupe et d'enlever les flèches qui pouvont être un peu gênantes pour bien discerner le mouvement collectif. Nous avons employé cette méthode pour tout le reste du projet.
+   
+   \begin{figure}[!h]
+		\centering
+		\includegraphics[width=10cm]{images/image_6.png}
+		\caption{Image colorée pour la visualisation de groupe}
+		\label{couleurs_image}
+	\end{figure}  
+   
+   Sur cette nouvelle figure \ref{couleurs_image}, nous voyons bien les différents groupe crées. Sur l'image de droite, on discerne trois groupe principaux en violet,vert et cyan. On distingue encore mieux les mouvements lors de l'animation.
+   
+   Nous avons d'ailleurs pu observer une organisation intéréssante des agents sur certaines animations. En effet, les agents se regroupent premièrement en plusieurs petits groupes. Enfin, les petits groupes s'unissent pour former un seul et même grand groupe.
+   
+    \begin{figure}[!h]
+		\centering
+		\includegraphics[width=10cm]{images/image_8.png}
+		\caption{Image de départ }
+		\label{couleurs_image}
+	\end{figure} 
+	
+   \begin{figure}[!h]
+		\centering
+		\begin{tabular}{cc}
+			\includegraphics[width=10cm]{images/image_7.png} & \includegraphics[width=10cm]{images/image_9.png} \\
+		\end{tabular}
+		\caption{Formations de petits groupe puis d'un seul et même groupe}
+	\end{figure} 
+	
+	Ceci montre encore un fois très bien l'influence entre les agents.
+\newpage
+\section{Paramètre de bruit}
+   
    
    Nous avons déjà pu observer l'impact du bruit sur les populations. Nous voyons alors que ce paramètre est capital pour l'observation de mouvements collectifs. Si celui-ci est trop fort, les agents feront route seul et ne s'occuperont pas du tout du mouvement des voisins. En revnache, les mouvements collectifs seront davantages présents avec un bruit qui tend vers zéro.
+
+Par exemple, en regardant ces images~:
+
+
    
-   METTRE UNE IMAGE COOL BRO !
+	\begin{figure}[!h]
+		\centering
+		\begin{tabular}{cc}
+			\includegraphics[width=8cm]{images/image_3.png} & \includegraphics[width=8cm]{images/image_4.png} \\
+		\end{tabular}
+		\caption{Visualisation de l'impact du bruit}
+	\end{figure} 
+
+
    
    
    
