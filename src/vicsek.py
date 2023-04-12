@@ -27,7 +27,7 @@ class Agent:
     Simule un agent avec sa position, sa vitesse, et le bruit associé qui traduit sa tendance
     naturelle à suivre le groupe ou pas.
 
-    Arguments
+    Paramètres
     ---------
     position : np.array
         Vecteur position, sous forme d'un tableau numpy de deux ou trois entiers.
@@ -90,12 +90,12 @@ class Agent:
         """
         Retourne la distance entre les deux agents.
 
-        Arguments
+        Paramètres
         ---------
         agent : Agent
             Un autre agent.
 
-        Returns
+        Signatures
         -------
         out : float
             Distance entre self et agent.
@@ -108,12 +108,12 @@ class Agent:
         """
         Teste l'égalité entre deux agents.
 
-        Arguments
+        Paramètres
         ---------
         agent : Agent
             Un autre agent.
 
-        Returns
+        Signatures
         -------
         out : bool
             True si les deux agents ont la même position, False sinon.
@@ -137,7 +137,7 @@ class Agent:
         """
         Fait évoluer l'agent d'un pas temporel en fonction de ses voisins.
 
-        Arguments
+        Paramètres
         ---------
         neighbours : list
             Liste des agents voisins.
@@ -205,7 +205,7 @@ class Group:
     """
     Simule un groupe d'agents, permet de le faire évoluer et de l'afficher.
 
-    Arguments
+    Paramètres
     ---------
     agents : list
         Liste des agents du groupe.
@@ -242,12 +242,12 @@ class Group:
         """
         Renvoie l'agent d'indice donné.
 
-        Arguments
+        Paramètres
         ---------
         index : int
             Indice de l'agent.
 
-        Returns
+        Signatures
         -------
         out : Agent
             Agent du groupe à l'indice donné.
@@ -278,7 +278,7 @@ class Group:
         """
         Calcule les voisins d'un agent en fonction de la distance et de l'angle.
 
-        Arguments
+        Paramètres
         ---------
         targeted_agent : Agent
             Agent servant de référence pour le calcul de distance.
@@ -289,7 +289,7 @@ class Group:
         check_wall : bool, optionnel
             Vérification des murs. Si ``check_wall=False``, l'espace est considéré torique.
 
-        Returns
+        Signatures
         -------
         agents : list
             liste des agents voisins
@@ -478,7 +478,7 @@ class Group:
         """
         Génère une animation.
 
-        Arguments
+        Paramètres
         ---------
         frames : int, optionnel
             Nombre d'images voulues dans l'animation.
@@ -573,7 +573,7 @@ class Group:
         """
         Fait avancer le groupe d'agent sans gérérer d'animations.
 
-        Arguments
+        Paramètres
         ---------
         steps : int, optionnel
             Nombre de pas dont il faut faire avancer le groupe.
@@ -640,7 +640,7 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: tupl
     """
     Retourne un agent généré aléatoirement.
 
-    Arguments
+    Paramètres
     ---------
     position : tuple, optionnel
         Valeurs limites de la position.
@@ -663,7 +663,7 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: tupl
     dim : int, optionnel
         Dimension de l'espace, peut être 2 ou 3.
 
-    Returns
+    Signatures
     -------
     agent : Agent
         Agent généré dans la limite des paramètres donnés.
@@ -699,7 +699,7 @@ def group_generator(nb_agents: int, position: tuple=(-25, 25), speed: tuple=(-2,
     """
     Retourne un groupe d'agents normaux générés aléatoirement dans les limites données.
 
-    Arguments
+    Paramètres
     ---------
     nb_agents : int
         Nombre d'agents à générer pour le groupe.
@@ -720,7 +720,7 @@ def group_generator(nb_agents: int, position: tuple=(-25, 25), speed: tuple=(-2,
     dim : int, optionnel
         Dimension de l'espace, peut être 2 ou 3.
 
-    Returns
+    Signatures
     -------
     out : Group
         Groupe contenant les agents générés dans les limites données et avec les paramètres de
@@ -735,12 +735,12 @@ def norm(vect: np.array):
     """
     Renvoie la norme du vecteur passé en argument.
 
-    Arguments
+    Paramètres
     ---------
     vect : np.array
         Vecteur n-dimensionnel.
 
-    Returns
+    Signatures
     -------
     out : float
         Norme du vecteur.
@@ -773,7 +773,7 @@ def progress_bar(iteration: int, total: int, finished: str=""):
     """
     Affiche une barre de progression.
 
-    Arguments
+    Paramètres
     ---------
     iteration : int
         Itération courante à afficher.
@@ -785,7 +785,7 @@ def progress_bar(iteration: int, total: int, finished: str=""):
     iteration += 1
     completed_length = math.floor(75 * iteration / total)
     track = "#" * completed_length + " " * (75 - completed_length)
-    print(f"\red[{track}] {math.floor(100 * iteration / total)}%", end="\red")
+    print(f"[{track}] {math.floor(100 * iteration / total)}%", end="\r")
 
     if iteration == total:
         if finished:
