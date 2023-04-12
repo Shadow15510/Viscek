@@ -399,8 +399,8 @@ class Group:
 
                 if agent != targeted_agent:
                     pos = agent.position - targeted_agent.position
-                    angle_spd = np.angle(targeted_agent.speed[0] + 1j * (targeted_agent.speed[1]) %
-                                (2 * math.pi))
+                    angle_spd = (np.angle(targeted_agent.speed[0] + 1j * targeted_agent.speed[1]) %
+                                2 * math.pi)
                     angle_pos = np.angle(pos[0] + 1j * pos[1]) % (2 * math.pi)
                     if agent.agent_type != 3:
                         if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or
