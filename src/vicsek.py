@@ -95,8 +95,8 @@ class Agent:
         agent : Agent
             Un autre agent.
 
-        Signatures
-        -------
+        Signature
+        ---------
         out : float
             Distance entre self et agent.
         """
@@ -113,8 +113,8 @@ class Agent:
         agent : Agent
             Un autre agent.
 
-        Signatures
-        -------
+        Signature
+        ---------
         out : bool
             True si les deux agents ont la même position, False sinon.
         """
@@ -247,8 +247,8 @@ class Group:
         index : int
             Indice de l'agent.
 
-        Signatures
-        -------
+        Signature
+        ---------
         out : Agent
             Agent du groupe à l'indice donné.
         """
@@ -289,8 +289,8 @@ class Group:
         check_wall : bool, optionnel
             Vérification des murs. Si ``check_wall=False``, l'espace est considéré torique.
 
-        Signatures
-        -------
+        Signature
+        ---------
         agents : list
             liste des agents voisins
         """
@@ -400,7 +400,7 @@ class Group:
                 if agent != targeted_agent:
                     pos = agent.position - targeted_agent.position
                     angle_spd = (np.angle(targeted_agent.speed[0] + 1j * targeted_agent.speed[1]) %
-                                2 * math.pi)
+                            2 * math.pi)
                     angle_pos = np.angle(pos[0] + 1j * pos[1]) % (2 * math.pi)
                     if agent.agent_type != 3:
                         if (targeted_agent - agent) <= dmin and (agent.agent_type == 1 or
@@ -663,8 +663,8 @@ def agent_generator(position: tuple=(-25, 25), speed: tuple=(-2, 2), noise: tupl
     dim : int, optionnel
         Dimension de l'espace, peut être 2 ou 3.
 
-    Signatures
-    -------
+    Signature
+    ---------
     agent : Agent
         Agent généré dans la limite des paramètres donnés.
     """
@@ -720,8 +720,8 @@ def group_generator(nb_agents: int, position: tuple=(-25, 25), speed: tuple=(-2,
     dim : int, optionnel
         Dimension de l'espace, peut être 2 ou 3.
 
-    Signatures
-    -------
+    Signature
+    ---------
     out : Group
         Groupe contenant les agents générés dans les limites données et avec les paramètres de
         longueur et de dimension donnés.
@@ -740,8 +740,8 @@ def norm(vect: np.array):
     vect : np.array
         Vecteur n-dimensionnel.
 
-    Signatures
-    -------
+    Signature
+    ---------
     out : float
         Norme du vecteur.
     """
