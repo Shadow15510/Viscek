@@ -1,9 +1,39 @@
 """
-┌──────────────────────────────────┐
-│          Viscek — 1.7.4          │
-│ Alexis Peyroutet & Antoine Royer │
-│ GNU General Public Licence v3.0+ │
-└──────────────────────────────────┘
+Vicsek — 1.7.4
+==============
+(Alexis Peyroutet et Antoine Royer)
+
+Licence
+-------
+GNU General Public Licence v3.0+c
+
+Description
+-----------
+Implémentation d'un modèle de Viscek en Python. Permet de simuler un groupe d'agents en deux ou
+trois dimensions.
+
+Cette adaptation se distingue du modèle de Vicsek par plusieurs aspects :
+ – gestion d'agents attractifs, répulsifs et d'obstacles ;
+ – gestion de l'espace (fermé ou torique) ;
+ – les agents ont un angle de vue limité.
+
+Exemples
+--------
+En important le module comme suit :
+
+>>> import vicsek as vk
+
+Pour créer un groupe de 20 agents avec les paramètres par défaut :
+
+>>> mon_groupe = vk.group_generator(20)
+
+Générer une animation de 100 images:
+
+>>> mon_groupe.compute_animation(100)
+
+Faire évoluer le groupe de 100 pas sans garder d'images : 
+
+>>> mon_groupe.run(100)
 """
 import math
 import random
@@ -37,8 +67,8 @@ class Agent:
         Norme de la vitesse.
     noise : float
         Taux de bruit, qui traduit une déviation aléatoire sur la direction de la vitesse.
-        Si ``noise = 0``, l'agent ne s'écartera jamais de sa trajectoire.
-        Si ``noise = 1``, l'agent aura une trajectoire très bruitée
+        Si ``noise=0``, l'agent ne s'écartera jamais de sa trajectoire.
+        Si ``noise=1``, l'agent aura une trajectoire très bruitée
     sight : float
         Distance à laquelle l'agent voit les autres.
     field_sight : float, optionnel
