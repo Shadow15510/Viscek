@@ -92,7 +92,7 @@
     
 	Ainsi, nous pouvons retrouver dans chaque classe, plusieurs méthodes qui vont nous aider à mieux définir les groupes et les agents ainsi qu'à les faire évoluer. \\
    
-\section{Historique du code}
+\section{Début de la programmation}
 	Nous avons commencé par programmer les classes avec des méthodes basiques qui permettaient d'initialiser, de faire évoluer et de représenter les agents.
    
 	Une fois les deux équations implémentées, nous avons créé la fonction \verb|group_generator| qui nous permettait de créer simplement un groupe en prenant des paramètres aléatoires dans des limites fixées pour les agents.
@@ -108,7 +108,8 @@
 		\caption{Premières images obtenues en 2D et 3D }
 	\end{figure} \newpage
 
-\section{Premiers résultats et interprétation physique}
+\chapter{Premières interprétations physiques}
+\section{Premiers résultats}
 
    Pour pouvoir observer un mouvement, il est plus utile de regarder une vidéo que des images. Nous avons alors créé une méthode~: \verb|Group.compute_animation| qui utilise la classe \verb|Artist_animation| du module \verb|matplotlib|. Nous arrivions alors à générer des fichiers GIF avec le nombre de frames souhaité.
    
@@ -140,15 +141,15 @@
 		\label{couleurs_image}
 	\end{figure}  
    
-   Sur cette nouvelle figure \ref{couleurs_image}, nous voyons bien les différents groupe crées. Sur l'image de droite, on discerne trois groupe principaux en violet, vert et cyan. On distingue encore mieux les mouvements lors de l'animation.
+   Sur cette nouvelle figure \ref{couleurs_image}, nous voyons bien les différents groupes crées. On distingue encore mieux les mouvements lors de l'animation.\\
    
-   Nous avons d'ailleurs pu observer une organisation intéressante des agents sur certaines animations. En effet, les agents se regroupent premièrement en plusieurs petits groupes. Enfin, les petits groupes s'unissent pour former un seul et même grand groupe.
+   Nous avons d'ailleurs pu observer une organisation intéressante des agents sur certaines animations. En effet, les agents se regroupent premièrement en plusieurs petits groupes (~sur l'image de gauche de la figure \ref{mouvement_grp2}, on discerne en effet trois groupe principaux en violet, vert et cyan~). Enfin, les petits groupes s'unissent pour former un seul et même grand groupe.
    
     \begin{figure}[!h]
 		\centering
 		\includegraphics[width=10cm]{images/image_8.png}
 		\caption{Image de départ }
-		\label{couleurs_image}
+		\label{mouvement_grp}
 	\end{figure} 
 	
    \begin{figure}[!h]
@@ -157,10 +158,10 @@
 			\includegraphics[width=8cm]{images/image_7.png} & \includegraphics[width=8cm]{images/image_9.png} \\
 		\end{tabular}
 		\caption{Formations de petits groupe puis d'un seul et même groupe}
+		\label{mouvement_grp2}
 	\end{figure} 
 	
 	Ceci montre encore un fois très bien l'influence entre les agents.
-\newpage
 
 \section{Paramètre de bruit}
     
@@ -175,7 +176,8 @@ Par exemple, en regardant ces images~:
 		\end{tabular}
 		\caption{Visualisation de l'impact du bruit (~début et fin d'animation~)}
 	\end{figure} 
-
+	
+Nous voyons bien ici que les agents ont des directions plutôt différentes (~hormis un petit groupe de coordonnées (~25 ; -10~)~). Le bruit est fort dans ce cas, et les agents ont tendance à prendre des directions sans s'occuper de leurs voisins.
    
 \chapter{Résultats expérimentaux}
 \section{Résultats historiques de Viscek}
@@ -196,6 +198,7 @@ Par exemple, en regardant ces images~:
 
 \section{Autres paramètres en jeu}
 	\subsection{Cône de vision}
+	
 		Afin de mieux visualiser ce que peut voir un agent en particulier, nous avons alors décidé de rajouter un cône de vision.
 		
 		Nous serons ainsi capable de mieux voir comment un agent réagit selon ce qu'il voit. \\
@@ -203,10 +206,48 @@ Par exemple, en regardant ces images~:
 		Ainsi, un agent un considéré comme voisin s'il est dans le cône de vision de l'agent testé. En refaisant le même test que précédemment, nous observons que les agents restent alignés moins longtemps.
 		
 		En effet, les agents étant plus sensible à l'orientation pour voir les autres, si le bruit augmente, les agents vont avoir des déviations angulaires plus importante et peuvent donc perdre de vue les autres agents plus facilement ce qui fait chuter le paramètre d'alignement plus rapidement.
-		[image]
+	
+	
+   \begin{figure}[!h]
+		\centering
+		\includegraphics[width=10cm]{images/image_12.png}
+		\caption{Image de l'animation générée avec cône de vision}
+		\label{cone_vision}
+	\end{figure}  
+  
+    Nous avons cependant préféré retirer ce cône dans la suite du projet. En effet, l'animation générée devenait trop chargée et riche en informations. Il était alors difficile de bien observer le comportement des agents.
+    
+    \subsection{Création d'un agent leader}
+       
+       Nous avons maintenant voulu nous écarté un peu du modèle de Viscek, en étudiant un nouveau type de mouvement collectif. Nous avons alors crée un nouveau type d'agent, dit leader, qui influence davantage les agents normaux. Nous pouvons définir à quel point celui-ci à de l'influence (~nous avons choisi une influence équivalente à 4 agents~).
+       
+       Nous nous attendions à observer des groupe en forme de pyramide. C'est à dire une organisation hiérarchique des agents pour créer un mouvement de groupe. Nous pouvons par exemple observer ce comportement chez certains animaux, notamment lors de la migrations des grues. 
+       
+       Nous avons choisi de représenter l'agent leader en noir.
+       
+       [IMAGES]
+    
+       
+       Nous avons d'ailleurs pu observer quelque chose d'intéressant. En effet, sur une animation, nous pouvons voir un groupe d'agent qui suit l'agent leader pendant un moment. Mais, ce groupe croise un autre groupe d'agent. Les agents qui suivait l'agent leader se sont mis subitement à suivre le nouveau groupe. 
+       
+       [IMAGES]
+       
+       Ainsi, nous en déduisons que le groupe a eu plus d'influence que l'agent leader à ce moment là.
+       
+       
+   \subsection{Mise en place d'une prédation}
+       
+       Nous avons trouvé intéressant de rajouter des agents dit répulsifs, qui joue le rôle de prédateurs. Ces nouveaux agents sont plus rapides que leurs proies. Ainsi, nous avons pu voir comment s'organisent les agents face à la menace. 
+       
+       [IMAGES AVEC AGENT SEUL AU MILIEU ECT]
+       
+       
+   
 
 	\subsection{Système évolutif}
-		En ajoutant les agents répulsifs, nous avons eu l'idée de créer un système de «mort» où les agents touchés par un agent répulsifs sont retirés de la liste des agents et placés dans un autre attribut du groupe. Cela permet notamment de comparer les caractéristiques des agents morts avec celles des survivants et de voir quels paramètres permettent de survivre. En mettant des valeurs limites pour le bruit et la sensibilité aux agents répulsifs et en moyennant les résultats sur 10 mesures, nous obtenons les résultats suivants 
+	
+		En ajoutant les agents répulsifs, nous avons eu l'idée de créer un système de «mort» où les agents touchés par un agent répulsifs sont retirés de la liste des agents et placés dans un autre attribut du groupe. Cela permet notamment de comparer les caractéristiques des agents morts avec celles des survivants et de voir quels paramètres permettent de survivre. En mettant des valeurs limites pour le bruit et la sensibilité aux agents répulsifs et en moyennant les résultats sur 10 mesures, nous obtenons les résultats suivants~:
+		
 		\begin{tabular}{|c|c|c|} \hline
 			bruit & sensibilité & pourcentage de survivants \\ \hline
 			1 & 0 & 30 \\ \hline
@@ -215,6 +256,6 @@ Par exemple, en regardant ces images~:
 			0 & 0 & 39 \\ \hline
 		\end{tabular}
 
- 
+\subsection{Ajout d'obstacles}
 	
 \end{document}
