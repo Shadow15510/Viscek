@@ -4,7 +4,7 @@
 \usepackage{graphicx}
 
 
-\title{\sc Modèle de Vicsek}
+\title{\sc Modèle de \textsc{Vicsek}}
 \author{Alexis {\sc Peyroutet}, Antoine {\sc Royer}}
 \date{Janvier – Juin 2023}
 
@@ -47,30 +47,30 @@
 \nnchapter{Introduction}
 
 
-	Notre sujet est intitulé «~Modèle de \textsc{Vicsek}~». Le but de ce projet numérique est de reproduire de manière numérique le modèle de \textsc{Vicsek}.
+	Notre sujet est intitulé «~Modèle de \textsc{\textsc{Vicsek}}~». Le but de ce projet numérique est de reproduire de manière numérique le modèle de \textsc{\textsc{Vicsek}}.
 
-	Le modèle de \textsc{Vicsek} a été crée par le scientifique Tamás \textsc{Vicsek}. Il s'agit d'un physicien hongrois connu pour ses contributions à la physique statistique, à la biologie et à la dynamique des systèmes. Il est né le 10 mai 1948 (~74 ans aujourd'hui~) à Budapest. Il est aujourd'hui professeur à l'Université Eötvös \textsc{Loránd} de Budapest. Ce brillant physicien est d'ailleurs un des membres de l'Académie hongroise des sciences et a reçu de nombreux prix pour ses contributions à la physique, notamment le prix \textsc{Széchenyi} (~en 1999~) ou encore le prix Lars \textsc{Onsager} (~en 2020~). \\
+	Le modèle de \textsc{\textsc{Vicsek}} a été crée par le scientifique Tamás \textsc{\textsc{Vicsek}}. Il s'agit d'un physicien hongrois connu pour ses contributions à la physique statistique, à la biologie et à la dynamique des systèmes. Il est né le 10 mai 1948 (~74 ans aujourd'hui~) à Budapest. Il est aujourd'hui professeur à l'Université Eötvös \textsc{Loránd} de Budapest. Ce brillant physicien est d'ailleurs un des membres de l'Académie hongroise des sciences et a reçu de nombreux prix pour ses contributions à la physique, notamment le prix \textsc{Széchenyi} (~en 1999~) ou encore le prix Lars \textsc{Onsager} (~en 2020~). \\
 
-	Mais Tamás \textsc{Vicsek} est surtout connu pour son travail sur les systèmes auto-organisés~; ces modèles permettent d'étudier les mouvements collectifs. Il a ainsi travaillé sur le comportement d'agents individuels qui interagissent avec d'autres agents aux alentours, ses observations montrent que des motifs de mouvements collectifs emmergent d'eux-même.
+	Mais Tamás \textsc{\textsc{Vicsek}} est surtout connu pour son travail sur les systèmes auto-organisés~; ces modèles permettent d'étudier les mouvements collectifs. Il a ainsi travaillé sur le comportement d'agents individuels qui interagissent avec d'autres agents aux alentours, ses observations montrent que des motifs de mouvements collectifs emmergent d'eux-même.
 	
 	Le groupe se déplace alors de manière coordonnée sans qu'il n'y ait de leader comme on peut l'observer notamment dans la migration des grues. Nous pouvons citer comme exemples~: les bancs de poissons, les regroupements de certains oiseaux, les essaims d'insectes, ou encore le mouvement de foules.
 
-	 Le premier modèle de \textsc{Vicsek} voit ainsi le jour en 1995.\\
+	 Le premier modèle de \textsc{\textsc{Vicsek}} voit ainsi le jour en 1995.\\
 	 
 	
 \chapter{Présentation et explications}	
 
-	Le modèle de \textsc{Vicsek} permet d'étudier un groupe d'agents qui se déplace dans un espace.
+	Le modèle de \textsc{\textsc{Vicsek}} permet d'étudier un groupe d'agents qui se déplace dans un espace.
 	
 	Chacun des agents a une vitesse donnée (~en norme et en direction~) et va interagir avec ses voisins. Ce qui concrètement se traduit par des changements concernant la norme et la direction de la vitesse.
 	
 	Nous nous attendons alors à observer la création d'un mouvement de groupe du aux interactions entre les agents. \\
 	
-	Cependant, les agents observables dans la vie réelle ne suivent pas toujours le groupe à la perfection, et il peut arriver qu'un agent s'écarte, de manière aléatoire, des autres. C'est pour cela que \textsc{Vicsek} a introduit une notion de bruit dans son modèle. En effet, à chaque pas de temps, chaque agent va prendre la direction moyenne des agents autour de lui et à cette direction va venir se superposer un bruit qui le fera peut-être dévier dans une autre direction.
+	Cependant, les agents observables dans la vie réelle ne suivent pas toujours le groupe à la perfection, et il peut arriver qu'un agent s'écarte, de manière aléatoire, des autres. C'est pour cela que \textsc{\textsc{Vicsek}} a introduit une notion de bruit dans son modèle. En effet, à chaque pas de temps, chaque agent va prendre la direction moyenne des agents autour de lui et à cette direction va venir se superposer un bruit qui le fera peut-être dévier dans une autre direction.
 	
 	En augmentant significativement le bruit, le groupe pert son mouvement collectif et les agents prennent alors des directions aléatoires.\\
 
-	Le modèle de \textsc{Vicsek} s'implémente très simplement puisqu'il se réduit à deux équations~:
+	Le modèle de \textsc{\textsc{Vicsek}} s'implémente très simplement puisqu'il se réduit à deux équations~:
 	\[ \left\{ \begin{array}{rcl}
 		\Theta_{i}(t + \text dt) & = & \Theta_{j |r_{i}-r_{j}|<r} + \eta_{i}(t) \\[0.2cm]
 		r_{i}(t + \text dt) & = & r_{i}(t) + v_{i}\Delta t
@@ -79,11 +79,11 @@
 
 	Ce qui est intéressant, c'est que nous pouvons, en modifiant certains paramètres du système étudié, observer un mouvement de foule plus fort ou plus faible. Nous pourrons alors jouer sur la surface et les dimensions du plan étudié, le nombre d'agent et donc par conséquent la densité de population et même le bruit.\\
 
-	Le modèle de \textsc{Vicsek} est important pour étudier le comportement de certains animaux en biologie ou encore l'étude des foules. Ce modèle peut même être utile à la construction de bâtiment. En effet, le comportement des foules peut être intéressant dans la conception d'entrées et de sorties d'un espace fermé, notamment dans un moment de panique. La foule va s'éloigner du danger est emprunter les sorties. Il est alors crucial de prévoir le comportement des agents pour placer les sorties de manière à ce que le débit d'agent sortant soit le plus important possible.\\
+	Le modèle de \textsc{\textsc{Vicsek}} est important pour étudier le comportement de certains animaux en biologie ou encore l'étude des foules. Ce modèle peut même être utile à la construction de bâtiment. En effet, le comportement des foules peut être intéressant dans la conception d'entrées et de sorties d'un espace fermé, notamment dans un moment de panique. La foule va s'éloigner du danger est emprunter les sorties. Il est alors crucial de prévoir le comportement des agents pour placer les sorties de manière à ce que le débit d'agent sortant soit le plus important possible.\\
 	
-	Nous pouvons également retrouver le modèle de \textsc{Vicsek} dans la robotique. C'est un précieux outil pour la technologie du monde moderne. Il peut être utiliser dans des programmes informatiques qui gèrent le déplacement de systèmes de robots (~comme les drones~).\\ 
+	Nous pouvons également retrouver le modèle de \textsc{\textsc{Vicsek}} dans la robotique. C'est un précieux outil pour la technologie du monde moderne. Il peut être utiliser dans des programmes informatiques qui gèrent le déplacement de systèmes de robots (~comme les drones~).\\ 
 
-	C'est avec tout cela que nous essayerons, à travers ce projet, de reproduire numériquement des mouvements collectifs et ainsi étudier le modèle de \textsc{Vicsek}.
+	C'est avec tout cela que nous essayerons, à travers ce projet, de reproduire numériquement des mouvements collectifs et ainsi étudier le modèle de \textsc{\textsc{Vicsek}}.
 	
 \chapter{Méthode employée}
 \section{Classes et méthodes}
@@ -163,39 +163,6 @@
 	
 	Ceci montre encore un fois très bien l'influence entre les agents.
 
-\section{Paramètre de bruit}
-    
-   Nous avons déjà pu observer l'impact du bruit sur les populations. Nous voyons alors que ce paramètre est capital pour l'observation de mouvements collectifs. Si celui-ci est trop fort, les agents feront route seuls et ne s'occuperont pas du mouvement des voisins. En revanche, les mouvements collectifs seront davantages présents avec un bruit qui tend vers zéro.
-
-Par exemple, en regardant ces images~:
-   
-	\begin{figure}[!h]
-		\centering
-		\begin{tabular}{cc}
-			\includegraphics[width=8cm]{images/image_10.png} & \includegraphics[width=8cm]{images/image_11.png} \\
-		\end{tabular}
-		\caption{Visualisation de l'impact du bruit (~début et fin d'animation~)}
-	\end{figure} 
-	
-Nous voyons bien ici que les agents ont des directions plutôt différentes (~hormis un petit groupe de coordonnées (~25 ; -10~)~). Le bruit est fort dans ce cas, et les agents ont tendance à prendre des directions sans s'occuper de leurs voisins.
-   
-\chapter{Résultats expérimentaux}
-\section{Résultats historiques de Viscek}
-	Nous avons commencé par chercher à reproduire les résultats obtenus par Vicsek en reprenant les mêmes paramètres.
-	
-	Chaque agent n'est ainsi influencé que par ses plus proches voisins et évolue dans un espace torique. En laissant la densité constante et en faisant varier le bruit pour voir son influence sur le paramètre d'alignement, nous observons alors un profil de transition de phase.
-	
-	Sur la figure suivante chaque points est la moyenne sur cinq mesures de 200 pas et 50 agents.
-	\begin{figure}[!h]
-		\centering
-		\includegraphics[width=12cm]{images/bruit_4.png}
-		\caption{Paramètre d'alignement en fonction du bruit}
-	\end{figure}
-	
-	Pour un bruit très faible, les agents sont alignés avec un paramètre d'alignement de 1 ce qui est cohérent puisqu'ils vont s'aligner sans aucune part d'aléatoire. Pour un bruit élevé, ce qui correspond en fait à une probabilité d'avoir une déviation angulaire importante par rapport à la direction moyenne, les agents sont très peu alignés pour un même nombre d'itération. \\
-	
-	Nous avons ici exactement les mêmes résultats que ceux obtenus par \textsc{Vicsek} et son équipe.
-
 \section{Autres paramètres en jeu}
 	\subsection{Cône de vision}
 	
@@ -214,20 +181,76 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes (~ho
 		\caption{Image de l'animation générée avec cône de vision}
 		\label{cone_vision}
 	\end{figure}  
+	
+	Nous avons cependant préféré retirer la représentation visuelle de ce cône dans la suite du projet. En effet, l'animation générée devenait trop chargée et riche en informations. Il était alors difficile de bien observer le comportement des agents.\\  
   
-    Nous avons cependant préféré retirer ce cône dans la suite du projet. En effet, l'animation générée devenait trop chargée et riche en informations. Il était alors difficile de bien observer le comportement des agents.
+  \subsection{Paramètre de bruit}
     
+   Nous avons déjà pu observer l'impact du bruit sur les populations. Nous voyons alors que ce paramètre est capital pour l'observation de mouvements collectifs. Si celui-ci est trop fort, les agents feront route seuls et ne s'occuperont pas du mouvement des voisins. En revanche, les mouvements collectifs seront davantages présents avec un bruit qui tend vers zéro.
+
+Par exemple, en regardant ces images~:
+
+   \begin{figure}[!h]
+		\centering
+		\includegraphics[width=10cm]{images/image_10.png}
+		\caption{Visualisation de l'impact du bruit}
+		\label{bruit}
+	\end{figure}  
+
+	
+Nous voyons bien ici que les agents ont des directions plutôt différentes. Nous avons un bruit qui est fort dans ce cas, et nous remarquons que les agents ont tendance à prendre des directions sans s'occuper de leurs voisins. Il est alors évident que le bruit est un paramètre essentiel dans le modèle de \textsc{Vicsek}.
+   
+\chapter{Résultats expérimentaux}
+\section{Résultats historiques de \textsc{Vicsek}}
+	Nous avons commencé par chercher à reproduire les résultats obtenus par \textsc{Vicsek} en reprenant les mêmes paramètres.
+	
+	Chaque agent n'est ainsi influencé que par ses plus proches voisins et évolue dans un espace torique. En laissant la densité constante et en faisant varier le bruit pour voir son influence sur le paramètre d'alignement, nous observons alors un profil de transition de phase.
+	
+	Sur la figure suivante chaque points est la moyenne sur cinq mesures de 200 pas et 50 agents.
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=12cm]{images/bruit_4.png}
+		\caption{Paramètre d'alignement en fonction du bruit}
+	\end{figure}
+	
+	Pour un bruit très faible, les agents sont alignés avec un paramètre d'alignement de 1 ce qui est cohérent puisqu'ils vont s'aligner sans aucune part d'aléatoire. Pour un bruit élevé, ce qui correspond en fait à une probabilité d'avoir une déviation angulaire importante par rapport à la direction moyenne, les agents sont très peu alignés pour un même nombre d'itération. \\
+	
+	Nous avons ici exactement les mêmes résultats que ceux obtenus par \textsc{\textsc{Vicsek}} et son équipe.\\
+	
+	Nous en avons d'ailleurs profité pour mesurer l'effet du cône de vision sur le paramètre d'alignement, nous avons tracé ce graphe avec 50 mesures par points sur la figure \ref{cone_vision_alignement}. 
+	
+	Nous pouvons ainsi constater que les agents ont tendance à prendre la même direction plus rapidement avec un cône de vision. C'est donc un paramètre très important dans le modèle.
+	
+	 \begin{figure}[!h]
+		\centering
+		\includegraphics[width=10cm]{images/bruit_comparaison[50 mesures par pts].png}
+		\caption{Effet du cône de vision sur le paramètre d'alignement}
+		\label{cone_vision_alignement}
+	\end{figure}
+    
+    \textbf{AJOUTER PAR RAPPORT A LA DENSITE }
+    \section{Au-delà du modèle de \textsc{Vicsek}}
     \subsection{Création d'un agent leader}
        
-       Nous avons maintenant voulu nous écarté un peu du modèle de Viscek, en étudiant un nouveau type de mouvement collectif. Nous avons alors crée un nouveau type d'agent, dit leader, qui influence davantage les agents normaux. Nous pouvons définir à quel point celui-ci à de l'influence (~nous pouvons choisi une influence équivalente à n agents~).
+       Nous avons maintenant voulu nous écarté un peu du modèle de \textsc{Vicsek}, en étudiant un nouveau type de mouvement collectif. Nous avons alors crée un nouveau type d'agent, dit leader, qui influence davantage les agents normaux. Nous pouvons définir à quel point celui-ci à de l'influence (~nous pouvons choisi une influence équivalente à n agents~).\\
        
        Nous nous attendions à observer des groupe en forme de pyramide. C'est à dire une organisation hiérarchique des agents pour créer un mouvement de groupe. Nous pouvons par exemple observer ce comportement chez certains animaux, notamment lors de la migrations des grues. 
        
        Nous avons choisi de représenter l'agent leader en noir.
        
-       [IMAGES]
+       	
+   \begin{figure}[!h]
+		\centering
+		\includegraphics[width=10cm]{images/image_15.png}
+		\caption{Effet observée avec un agent leader}
+		\label{leader}
+	\end{figure}  
+	
+	   En effet, nous avons observé plusieurs fois une organisation en «~triangle ou en arc de cercle~», comme une sorte de hiérarchie. L'agent leader produit un mouvement de groupe organisé différemment de ce qu'on a pu observer dans le modèle de \textsc{Vicsek}.
+	   
+	   Ainsi, cela montre que le mouvement collectif peut être amené de différentes manières et qu'il n'y a pas de méthode unique pour un déplacement d'un ensemble d'agent.\\
     
-       
+  
        Nous avons d'ailleurs pu observer quelque chose d'intéressant. En effet, sur une animation, nous pouvons voir un groupe d'agent qui suit l'agent leader pendant un moment. Mais, ce groupe croise un autre groupe d'agent. Les agents qui suivait l'agent leader se sont mis subitement à suivre le nouveau groupe. 
        
        \begin{figure}[!h]
@@ -243,18 +266,31 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes (~ho
        
    \subsection{Mise en place d'une prédation}
        
-       Nous avons trouvé intéressant de rajouter des agents dit répulsifs, qui joue le rôle de prédateurs. Ces nouveaux agents sont plus rapides que leurs proies. Ainsi, nous avons pu voir comment s'organisent les agents face à la menace. 
+       Nous avons trouvé intéressant de rajouter des agents dit répulsifs, qui joue le rôle de prédateurs. Ces nouveaux agents sont plus rapides que leurs proies. Ainsi, nous avons pu voir comment s'organisent les agents face à la menace.
        
-       [IMAGES AVEC AGENT SEUL AU MILIEU ECT]
+       Nous avons choisit de paramétrer la réaction des agents quand cet agent répulsif rentre dans leur cône de vision. L'agent prendra immédiatement le vecteur de sens opposé à celui vers l'agent répulsif. Nous avons choisit de représenter les agents répulsifs en noir.\\
+       
+       Avec cette expérience, nous constatons que le mouvement de groupe est toujours présents avec un seul agent répulsif. Cet effet collectif est même souvent renforcé. Les agents fuient dans la même direction, tout en se servant de leur influence les uns sur les autres.
+       
+        Cependant, lorsqu'il y a plusieurs agents répulsifs, le mouvement collectif n'est plus observé ou très peu. Ces prédateurs (~qui prennent des directions différentes~)  sèment la panique au sein du groupe qui pert visiblement toute cohésion. Chaque agent développe alors un instinct de survie qui le pousse à fuir. La panique et la fuite prennent visiblement le pas sur la cohésion de groupe.
+       
+     \begin{figure}[!h]
+		\centering
+		\begin{tabular}{cc}
+			\includegraphics[width=8cm]{images/image_17.png} & \includegraphics[width=8cm]{images/image_16.png} \\
+		\end{tabular}
+		\caption{Effet d'un (~à gauche~) ou plusieurs agents répulsifs (~à droite~) sur le groupe}
+	\end{figure}
        
        
    
-
+   \newpage
 	\subsection{Système évolutif}
 	
-		En ajoutant les agents répulsifs, nous avons eu l'idée de créer un système de «mort» où les agents touchés par un agent répulsifs sont retirés de la liste des agents et placés dans un autre attribut du groupe. Cela permet notamment de comparer les caractéristiques des agents morts avec celles des survivants et de voir quels paramètres permettent de survivre. En mettant des valeurs limites pour le bruit et la sensibilité aux agents répulsifs et en moyennant les résultats sur 10 mesures, nous obtenons les résultats suivants~:
+		En ajoutant des agents répulsifs, nous avons eu l'idée de créer un système de «~mort~» où les agents touchés par un agent répulsifs sont retirés de la liste des agents et placés dans un autre attribut du groupe. Cela permet notamment de comparer les caractéristiques des agents morts avec celles des survivants et de voir quels paramètres permettent de survivre. En mettant des valeurs limites pour le bruit et la sensibilité aux agents répulsifs et en moyennant les résultats sur 10 mesures, nous obtenons les résultats suivants~:
 		
 		\begin{tabular}{|c|c|c|} \hline
+		\centering
 			bruit & sensibilité & pourcentage de survivants \\ \hline
 			1 & 0 & 30 \\ \hline
 			0 & 1 & 79 \\ \hline
