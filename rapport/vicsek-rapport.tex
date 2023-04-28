@@ -93,6 +93,7 @@
 	Ainsi, nous pouvons retrouver dans chaque classe, plusieurs méthodes qui vont nous aider à mieux définir les groupes et les agents ainsi qu'à les faire évoluer. \\
    
 \section{Début de la programmation}
+
 	Nous avons commencé par programmer les classes avec des méthodes basiques qui permettaient d'initialiser, de faire évoluer et de représenter les agents.
    
 	Une fois les deux équations implémentées, nous avons créé la fonction \verb|group_generator| qui nous permettait de créer simplement un groupe en prenant des paramètres aléatoires dans des limites fixées pour les agents.
@@ -115,7 +116,7 @@
    
    Après avoir généré plusieurs animations avec des groupes de tailles différentes. Nous avons pu déjà tirer quelques conclusions. En effet, nous observions des mouvements de groupes. Les agents qui avaient des positions de départ aléatoires, sont influencés les uns les autres selon la distance avec leurs voisins.
    
-   On observe d'ailleurs des mouvements collectifs plus importants quand la densité d'agent est plus forte. En revanche, quand les agents sont moins nombreux dans un même espace, nous observons davantage de formations de petits groupes ou des agents solitaires. 
+   On observe d'ailleurs des mouvements collectifs plus importants quand la densité d'agent est plus forte. En revanche, quand les agents sont moins nombreux dans un même espace, nous observons davantage de formations de petits groupes ou des agents solitaires. Nous pouvons régler ce paramètre de densité avec \verb|length| qui correspond à la longueur de l'espace considéré.
    
    Cela s'explique par le fait que les agents ne se voient plus.
    
@@ -166,7 +167,7 @@
 \section{Autres paramètres en jeu}
 	\subsection{Cône de vision}
 	
-		Afin de mieux visualiser ce que peut voir un agent en particulier, nous avons alors décidé de rajouter un cône de vision.
+		Afin de mieux visualiser ce que peut voir un agent en particulier, nous avons alors décidé de rajouter un cône de vision. Pour ce faire, nous importons le module \verb|import matplotlib.patches| qui nous permettra de tracer ces cônes en 2 dimensions.
 		
 		Nous serons ainsi capable de mieux voir comment un agent réagit selon ce qu'il voit. \\
 		
@@ -186,6 +187,8 @@
   
   \subsection{Paramètre de bruit}
     
+   Le bruit correspond à l'influence des voisins sur un agent du groupe. Plus le bruit est fort, plus celui-ci aura tendance à ne pas s'occuper de ses voisins et prendre sa propre direction. A l'inverse, avec un bruit qui tend vers zéro, l'agent aura tendance à imiter ses voisins et prendre une direction similaire aux agents autour de lui. \\
+    
    Nous avons déjà pu observer l'impact du bruit sur les populations. Nous voyons alors que ce paramètre est capital pour l'observation de mouvements collectifs. Si celui-ci est trop fort, les agents feront route seuls et ne s'occuperont pas du mouvement des voisins. En revanche, les mouvements collectifs seront davantages présents avec un bruit qui tend vers zéro.
 
 Par exemple, en regardant ces images~:
@@ -193,7 +196,7 @@ Par exemple, en regardant ces images~:
    \begin{figure}[!h]
 		\centering
 		\includegraphics[width=10cm]{images/image_10.png}
-		\caption{Visualisation de l'impact du bruit}
+		\caption{Visualisation de l'impact du bruit (~bruit fort dans ce cas~)}
 		\label{bruit}
 	\end{figure}  
 
@@ -229,6 +232,9 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 	\end{figure}
     
     \textbf{AJOUTER PAR RAPPORT A LA DENSITE }
+    
+    Mais \textsc{Vicsek} avait aussi mesurer le paramètre d'alignement en fonction de la densité d'agent dans l'espace.
+     
     \section{Au-delà du modèle de \textsc{Vicsek}}
     \subsection{Création d'un agent leader}
        
@@ -264,7 +270,7 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
        Ainsi, nous en déduisons que le groupe a eu plus d'influence que l'agent leader à ce moment là.
        
        
-   \subsection{Mise en place d'une prédation}
+   \subsection{Mise en place d'une prédation et du paramètre de sensibilité}
        
        Nous avons trouvé intéressant de rajouter des agents dit répulsifs, qui joue le rôle de prédateurs. Ces nouveaux agents sont plus rapides que leurs proies. Ainsi, nous avons pu voir comment s'organisent les agents face à la menace.
        
@@ -272,7 +278,7 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
        
        Avec cette expérience, nous constatons que le mouvement de groupe est toujours présents avec un seul agent répulsif. Cet effet collectif est même souvent renforcé. Les agents fuient dans la même direction, tout en se servant de leur influence les uns sur les autres.
        
-        Cependant, lorsqu'il y a plusieurs agents répulsifs, le mouvement collectif n'est plus observé ou très peu. Ces prédateurs (~qui prennent des directions différentes~)  sèment la panique au sein du groupe qui pert visiblement toute cohésion. Chaque agent développe alors un instinct de survie qui le pousse à fuir. La panique et la fuite prennent visiblement le pas sur la cohésion de groupe.
+        Cependant, lorsqu'il y a plusieurs agents répulsifs, le mouvement collectif n'est plus observé ou très peu. Ces prédateurs (~qui prennent des directions différentes~)  sèment la panique au sein du groupe qui pert visiblement toute cohésion. Chaque agent développe alors un instinct de survie qui le pousse à fuir. La panique et la fuite prennent visiblement le pas sur la cohésion de groupe (~cf. figure \ref{repulsifs_agents}~).
        
      \begin{figure}[!h]
 		\centering
@@ -280,14 +286,17 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 			\includegraphics[width=8cm]{images/image_17.png} & \includegraphics[width=8cm]{images/image_16.png} \\
 		\end{tabular}
 		\caption{Effet d'un (~à gauche~) ou plusieurs agents répulsifs (~à droite~) sur le groupe}
+		\label{repulsifs_agents}
 	\end{figure}
        
-       
+   Nous avons ensuite décidé de rajouter un nouveau paramètre que nous appelons \verb|fear| dans notre code. Il s'agit de la sensibilité des agents face aux prédateurs, c'est à dire à la peur des agents pour les agents répulsifs. 
    
-   \newpage
+   Ainsi, les agents prennent plus facilement la fuite face aux prédateurs.      
+   
+
 	\subsection{Système évolutif}
 	
-		En ajoutant des agents répulsifs, nous avons eu l'idée de créer un système de «~mort~» où les agents touchés par un agent répulsifs sont retirés de la liste des agents et placés dans un autre attribut du groupe. Cela permet notamment de comparer les caractéristiques des agents morts avec celles des survivants et de voir quels paramètres permettent de survivre. En mettant des valeurs limites pour le bruit et la sensibilité aux agents répulsifs et en moyennant les résultats sur 10 mesures, nous obtenons les résultats suivants~:
+		En ajoutant des agents répulsifs, nous avons eu l'idée de créer un système de «~mort~» où les agents touchés par un agent répulsifs sont retirés de la liste des agents et placés dans un autre attribut du groupe. Cela permet notamment de comparer les caractéristiques des agents morts avec celles des survivants et de voir quels paramètres permettent de survivre. En mettant des valeurs limites pour le bruit et la sensibilité aux agents répulsifs et en moyennant les résultats sur 10 mesures, nous obtenons les résultats suivants~:\\
 		
 		\begin{tabular}{|c|c|c|} \hline
 		\centering
@@ -296,7 +305,16 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 			0 & 1 & 79 \\ \hline
 			1 & 1 & 86 \\ \hline
 			0 & 0 & 39 \\ \hline
-		\end{tabular}
+		\end{tabular}\\
+
+   Nous voyons bien que statistiquement, les agents ont plus de chance de survivre avec un bruit et une sensibilité à 1. En effet, dans ce cas là, les agents avec une grande sensibilité cherche à fuir à tout prix le prédateur. De plus, le bruit fort fait que les agents ne cherche pas à imiter leurs voisins, ce qui ne perturbe pas la fuite qu'il avait entrepris. 
+   
+   Cependant, en enlevant le bruit, nous voyons tout de même que le pourcentage de survivant reste très élevé. La sensibilité est un élément clé pour la survie des agents.\\
+
+  Au contraire, les agents ont peu de chance de survie avec un bruit fort et un sensibilité nulle. En effet, les agents n'ont pas peur de leurs prédateurs, ce qui devient très dangeureux. De plus, le bruit élevé, fait qu'il n'y a aucun mouvement de groupe.
+  
+  Cependant, en retirant le bruit, nous voyons le que pourcentage de survivant est à peine plus haut. Nous revenons à la même conclusion~: la sensibilité est un élément clé pour la survie des agents.
+  
 
 \subsection{Ajout d'obstacles}
 	
