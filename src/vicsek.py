@@ -302,6 +302,7 @@ class Group:
             raise DimensionError("dimension of agent doesn't match")
         self.agents.append(agent.copy())
         self.nb_agents += 1
+        self.density = self.nb_agents / (self.length ** self.dimension)
 
     def get_neighbours(self, targeted_agent: Agent, dmin: int, check_field: bool=True,
                 check_wall: bool=True):
@@ -447,7 +448,7 @@ class Group:
         return agents
 
     def get_agents_arguments(self):
-        """Retourne un tupl de tableaux numpy contenant les positions et les vitesses de tous les
+        """Retourne un tuple de tableaux numpy contenant les positions et les vitesses de tous les
         agents du groupe."""
         positions = np.zeros((self.nb_agents, self.dimension))
         speeds = np.zeros((self.nb_agents, self.dimension))

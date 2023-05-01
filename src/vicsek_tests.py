@@ -11,7 +11,7 @@ def op_noise(check_field: bool=False, check_wall: bool=False):
         op_temp = 0
         for _ in range(5):
             grp = vi.group_generator(40, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3.1)
-            grp.run(100, check_field=check_field, check_wall=check_wall, dt=0.25)
+            grp.run(100, check_field=check_field, check_wall=check_wall, step=0.25)
             op_temp += grp.order_parameter()
         
         order_p.append(op_temp / 5)
@@ -23,17 +23,17 @@ def op_density():
     """Calcule le paramètre d'alignement pour différentes densités et renvoie un tuple de la forme (densité, paramètre d'alignement)."""
     order_p = []
     density = [] 
-    for nb in np.arange(25, 100, 5):
-        op_temp = 0
-        density_temp = 0
-        for _ in range(5):
-            grp = vi.group_generator(nb, position=(-10, 10), speed=(-1, 1), noise=(1.5, 1.5), length=20)
-            grp.run(10, check_field=False, check_wall=False, dt=0.5)
-            op_temp += grp.order_parameter()
-            density_temp += grp.density
+    grp = vi.group_generator(2, position=(-0.5, 0.5), speed=(-0.5, 0.5), noise=(1.5, 1.5), length=1)
+    
+    for nb in range(100):
+        for _ in range(1):
+            agent = vi.agent_generator(position=(-0.5, 0.5), speed=(-0.5, 0.5), noise=(1.5, 1.5))
+            grp.add_agent(agent)
 
-        order_p.append(op_temp / 5)
-        density.append(density_temp / 5)
+        grp.run(10, check_field=False, check_wall=False, step=0.25)
+
+        order_p.append(grp.order_parameter())
+        density.append(grp.density)
         print()
     return density, order_p
 
