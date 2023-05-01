@@ -124,7 +124,7 @@
 	
 	Tout d'abord, nous avons écrit une méthode qui permet de rajouter des agents au groupe. Cela est pratique en particulier pour rajouter des agents spéciaux. Nous pouvons ainsi générer un groupe de 50 agents et rajouter un agent répulsif.
 	
-	Comme pour la classe \verb|Argent|, nous avons également créer une méthode de copie profonde qui nous permet de dupliquer le groupe en nous affranchissant des problèmes d'alias.
+	Comme pour la classe \verb|Agent|, nous avons également créer une méthode de copie profonde qui nous permet de dupliquer le groupe en nous affranchissant des problèmes d'alias.
 	
 	La méthode \verb|Group.get_neighbours| retrouve tous les agents voisins d'un agent donné en argument en fonction de ses caractéristiques.
 	
@@ -134,7 +134,7 @@
 	\[
 		\sum_{i=1}^N \frac{\textbf{v}_i}{v_i}
 	\]
-	où $\textbf v_i$ est le vecteur vitesse de l'agent $i$ et où $v_i$ est la norme ce de même vecteur. Dans son papier \textsc{Vicsek} divise la somme des vitesse par le nombre d'agents multiplié par la norme de la vitesse ce qui présuppose que tous les agents n'ont pas la même vitesse. Dans notre implémentation, nous avons choisit de ne pas imposer une vitesse unique et tous nos agents ont des vitesses qui leur sont propres.*
+	où $\textbf v_i$ est le vecteur vitesse de l'agent $i$ et où $v_i$ est la norme ce de même vecteur. Dans son papier \textsc{Vicsek} divise la somme des vitesses par le nombre d'agents multipliés par la norme de la vitesse ce qui présuppose que tous les agents n'ont pas la même vitesse. Dans notre implémentation, nous avons choisit de ne pas imposer une vitesse unique et tous nos agents ont des vitesses qui leur sont propres.
 
    
 \chapter{Premières interprétations physiques}

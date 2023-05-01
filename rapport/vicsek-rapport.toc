@@ -1,0 +1,23 @@
+\babel@toc {french}{}\relax 
+\contentsline {starchapter}{Introduction}{2}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Présentation et explications}{3}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Méthode employée}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Classes et méthodes}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Création et manipulations d'agents}{5}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Création et manipulations de groupes}{6}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Premières interprétations physiques}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Animations en fichier GIF}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Mouvements de groupe}{8}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Autres paramètres en jeu}{9}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Cône de vision}{9}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Paramètre de bruit}{10}{subsection.3.3.2}%
+\contentsline {chapter}{\numberline {4}Résultats expérimentaux}{11}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Résultats historiques de \textsc {Vicsek}}{11}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Paramètre d'alignement en fonction du bruit}{11}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Paramètre d'alignement en fonction de la densité}{12}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Au-delà du modèle de \textsc {Vicsek}}{12}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Création d'un agent leader}{12}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Mise en place d'une prédation et du paramètre de sensibilité}{14}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Système évolutif}{14}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Ajout d'obstacles}{15}{subsection.4.2.4}%
+\contentsline {starchapter}{Conclusion}{17}{chapter*.3}%
