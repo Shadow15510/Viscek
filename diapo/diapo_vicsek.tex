@@ -1,0 +1,99 @@
+\documentclass[aspectratio=43, a4paper, 12pt]{beamer}
+
+% Packages
+\usepackage{animate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{charter}
+
+% Language
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+
+
+% Beamer
+\usetheme{Singapore}
+\usecolortheme{default}
+
+\setbeamertemplate{items}[ball]
+\setbeamertemplate{section in toc}[ball]
+\setbeamertemplate{subsection in toc}[ball]
+\setbeamercolor{section number projected}{bg=gray,fg=white}
+\setbeamercolor{subsection number projected}{bg=gray, fg=white}
+\setbeamercolor{item}{fg=gray}
+\setbeamercolor{navigation symbols}{fg=black}
+\addtobeamertemplate{background canvas}{\transfade[duration=0.2]}{}
+
+\setbeamertemplate{navigation symbols}{}
+
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+
+% Footline
+\definecolor{author_bg}{RGB}{204, 204, 236}
+\setbeamercolor*{author_foot}{bg=author_bg, fg=black}
+\setbeamercolor*{title_foot}{parent=palette secondary}
+
+\setbeamertemplate{footline}
+{	
+	\hbox{
+	 	\begin{beamercolorbox}[wd=0.5\paperwidth, ht=2.25ex, dp=1ex, right]{title_foot}
+			\insertshorttitle \hspace{1em} 
+		\end{beamercolorbox}%
+		
+	 	\begin{beamercolorbox}[wd=0.4\paperwidth, ht=2.25ex, dp=1ex, left]{author_foot}
+		   	\hspace{1em} \insertshortauthor
+	  	\end{beamercolorbox}%
+	  	
+	  	\begin{beamercolorbox}[wd=0.1\paperwidth, ht=2.25ex, dp=1ex, left]{author_foot}
+		   	\hspace{1em} \insertframenumber~|\ \inserttotalframenumber
+	  	\end{beamercolorbox}%	  	 
+	}
+}
+
+
+\title{Projet numérique~: Soutenance finale}
+\subtitle{Modèle de Vicsek}
+\author{ROYER Antoine and PEYROUTET Alexis}
+\institute{L3 PCAME – Tarbes}
+\date{}
+
+\begin{document}
+	\begin{frame}
+		\titlepage
+		\includegraphics[width=3cm]{images/ut3.png} \hfill \includegraphics[width=2.5cm]{images/uppa.png}
+	\end{frame}
+	
+\section{Présentation et explication sur le modèle de \textsc{Vicsek}}
+
+\begin{frame}{Présentation du modèle}
+		\begin{columns}
+			\begin{column}{0.5\paperwidth}
+			\only<1>{\begin{center} \includegraphics[width=4cm]{images/photo_vicsek.jpg}  \end{center}}
+			\only<2>{\begin{center} \includegraphics[width=6cm]{images/essaim_oiseau.jpg} \\ Essaim d'oiseaux \end{center}}
+			\only<3>{\begin{center} \includegraphics[width=6cm]{images/grues.jpg} \\ Migration des grues \end{center}}
+			
+			\only<4>{\begin{center} \includegraphics[width=6cm]{images/calendrier.jpg} \end{center}}
+			\end{column}
+			
+			\begin{column}{0.5\paperwidth}
+				\begin{itemize}
+					\item<1-> Tamás \textsc{Vicsek} (74 ans)~;
+					\item<2-> Etude des mouvements collectifs (systèmes auto-organisés)~;
+					\item<3-> Auncun agent leader dans le modèle~;
+					\item<4-> Création du modèle en 1995.
+				\end{itemize}			
+			\end{column}
+		\end{columns}		
+	\end{frame}
+
+\end{document}
+
+
+
