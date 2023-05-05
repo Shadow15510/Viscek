@@ -70,7 +70,7 @@
 	
 	En augmentant significativement le bruit, le groupe pert son mouvement collectif et les agents prennent alors des directions aléatoires.\\
 
-	Le modèle de \textsc{Vicsek} s'implémente très simplement puisqu'il se réduit à deux équations~:
+	Le modèle de \textsc{Vicsek} s'implémente très simplement puisqu'il se réduit à deux équations~: \label{equations} 
 	\[ \left\{ \begin{array}{rcl}
 		\Theta_{i}(t + \text dt) & = & \Theta_{j |r_{i}-r_{j}|<r} + \eta_{i}(t) \\[0.2cm]
 		r_{i}(t + \text dt) & = & r_{i}(t) + v_{i}\Delta t
@@ -95,7 +95,7 @@
 \section{Création et manipulations d'agents}
 	Pour représenter nos agents, nous avons créé une classe qui contient la position de l'agent, sa direction, ainsi que sa vitesse.
 	
-	À ces paramètres de bases, nous avons rajouté la distance de vision qui permet à chaque agent d'avoir une vue limitée d'une part, mais aussi variable d'un agent à l'autre, ce qui nous permet de simuler une population avec des aveugles par exemple ou des individus d'âges différents. Les agents ont également un champs de vision unique. Cela caractérise son angle de vue.
+	À ces paramètres de bases, nous avons rajouté la distance de vision qui permet à chaque agent d'avoir une vue limitée d'une part, mais aussi variable d'un agent à l'autre, ce qui nous permet de simuler une population avec des aveugles par exemple ou des individus d'âges différents (~ce qui n'est pas le cas dans le modèle de \textsc{Vicsek}~) . Les agents ont également un champs de vision unique. Cela caractérise son angle de vue.  
 	
 	Le bruit d'un agent caractérise l'écart angulaire aléatoire entre sa direction et la direction moyenne de ses voisins. Un bruit fort entraîne donc des écarts importants et les groupes se dissocient plus facilement.
 	
@@ -118,13 +118,13 @@
 	
 	Les groupes ont également une liste d'agents morts et qui correspondent aux agents qui ont été touchés par des agents répulsifs. Les stocker permet de faire des statistiques sur ces agents à la fin de la simulation.
 	
-	Les deux derniers attributs concernent l'espace~: la longueur, la dimension (2 ou 3) et la densité du groupe. \\
+	Les deux derniers attributs concernent l'espace~: la longueur, la dimension (~2 ou 3~) et la densité du groupe. \\
 	
 	La classe \verb|Group| contient cependant bien plus de méthodes que les agents.
 	
 	Tout d'abord, nous avons écrit une méthode qui permet de rajouter des agents au groupe. Cela est pratique en particulier pour rajouter des agents spéciaux. Nous pouvons ainsi générer un groupe de 50 agents et rajouter un agent répulsif.
 	
-	Comme pour la classe \verb|Argent|, nous avons également créer une méthode de copie profonde qui nous permet de dupliquer le groupe en nous affranchissant des problèmes d'alias.
+	Comme pour la classe \verb|Agent|, nous avons également créer une méthode de copie profonde qui nous permet de dupliquer le groupe en nous affranchissant des problèmes d'alias.
 	
 	La méthode \verb|Group.get_neighbours| retrouve tous les agents voisins d'un agent donné en argument en fonction de ses caractéristiques.
 	
@@ -134,7 +134,7 @@
 	\[
 		\sum_{i=1}^N \frac{\textbf{v}_i}{v_i}
 	\]
-	où $\textbf v_i$ est le vecteur vitesse de l'agent $i$ et où $v_i$ est la norme ce de même vecteur. Dans son papier \textsc{Vicsek} divise la somme des vitesse par le nombre d'agents multiplié par la norme de la vitesse ce qui présuppose que tous les agents n'ont pas la même vitesse. Dans notre implémentation, nous avons choisit de ne pas imposer une vitesse unique et tous nos agents ont des vitesses qui leur sont propres.*
+	où $\textbf v_i$ est le vecteur vitesse de l'agent $i$ et où $v_i$ est la norme ce de même vecteur. Dans son papier \textsc{Vicsek} divise la somme des vitesses par le nombre d'agents multipliés par la norme de la vitesse ce qui présuppose que tous les agents n'ont pas la même vitesse. Dans notre implémentation, nous avons choisit de ne pas imposer une vitesse unique et tous nos agents ont des vitesses qui leur sont propres.	
 
    
 \chapter{Premières interprétations physiques}
@@ -160,7 +160,13 @@
    
 \section{Mouvements de groupe}
 
-   Pour mieux observer les mouvements de groupe, nous avons décidé de mettre une couleur à nos agents selon leur direction. Cela permet de mieux visuliser les différents groupe et de s'affranchir des flèches qui étaient devenues gênantes pour bien discerner le mouvement collectif à haute densité.
+   Pour mieux observer les mouvements de groupe, nous avons décidé de mettre une couleur à nos agents selon leur direction. Cela permet de mieux visuliser les différents groupe et de s'affranchir des flèches qui étaient devenues gênantes pour bien discerner le mouvement collectif à haute densité.\\
+   
+   Nous avons alors crée une fonction appelée \verb|get_colors|. Avec une boucle \verb|for| et 361 itérations, nous balayons les 360 degrés de l'espace considéré. Avec une suite de \verb|if| et \verb|elif|, nous répartissons la gamme de couleur sur l'ensemble des angles.
+   
+   Puis, en appelant cette fonction, dans la méthode \verb|get_color| de la classe \verb|Agent|, nous pouvons en fonction de l'angle entre l'horizontale ascendante et le vecteur vitesse de l'agent considéré, associé une couleur particulière.
+   
+   
    
    Nous avons gardé cette représentation de l'angle des agents pour tout le reste du projet.
    \begin{figure}[!h]
@@ -191,13 +197,17 @@
 	\end{figure} 
 	
 	Ceci montre encore un fois très bien l'influence entre les agents.
-
-\section{Autres paramètres en jeu}
+\newpage
+\section{Paramètres en jeu}
 	\subsection{Cône de vision}
 	
-		Afin de mieux visualiser ce que peut voir un agent en particulier, nous avons alors décidé de rajouter un cône de vision. Pour ce faire, nous avons utilisé le module \verb|import matplotlib.patches| qui nous a permis de tracer ces cônes en 2 dimensions.
+		Afin de mieux visualiser ce que peut voir un agent en particulier, nous avons alors décidé de rajouter un cône de vision.
+     
+      Pour ce faire, nous avons utilisé le module \verb|import matplotlib.patches| qui nous a permis de tracer ces cônes en 2 dimensions. Nous nous sommes servis de ce module, qui demande la position et l'angle de vue de l'agent en radian. Nous avons alors converti au préalable l'angle de vue (~paramètre \verb|field_sight|~) en radians.
+      
+      Puis, avec le module \verb|matplotlib.collections|, nous avons fait apparaître le cône directement sur la figure générée.
 		
-		Nous serons ainsi capable de mieux voir comment un agent réagit selon ce qu'il voit. \\
+		Nous sommes ainsi capable de mieux voir comment un agent réagit selon ce qu'il voit. \\
 		
 		Ainsi, un agent un considéré comme voisin s'il est dans le cône de vision de l'agent testé. En refaisant le même test que précédemment, nous observons que les agents restent alignés moins longtemps.
 		
@@ -214,15 +224,18 @@
   
   \subsection{Paramètre de bruit}
     
-   Le bruit correspond à l'influence des voisins sur un agent du groupe. Plus le bruit est fort, plus celui-ci aura tendance à ne pas s'occuper de ses voisins et prendre sa propre direction. A l'inverse, avec un bruit qui tend vers zéro, l'agent aura tendance à imiter ses voisins et prendre une direction similaire aux agents autour de lui. \\
+   Le bruit correspond à l'influence des voisins sur un agent du groupe. C'est un paramètre essentiel du modèle de \textsc{Vicsek}. Nous le retrouvons (~sous la lettre grecque $\eta$~)  dans les équations qui définissent le modèle dont nous avons parlé dans le chapitre \ref{equations}.\\
+   
+   Plus le bruit est fort, plus celui-ci aura tendance à ne pas s'occuper de ses voisins et prendre sa propre direction. A l'inverse, avec un bruit qui tend vers zéro, l'agent aura tendance à imiter ses voisins et prendre une direction similaire aux agents autour de lui. \\
     
    Nous avons déjà pu observer l'impact du bruit sur les populations. Nous voyons alors que ce paramètre est capital pour l'observation de mouvements collectifs. Si celui-ci est trop fort, les agents feront route seuls et ne s'occuperont pas du mouvement des voisins. En revanche, les mouvements collectifs seront davantages présents avec un bruit qui tend vers zéro.
+\newpage
+Par exemple, en regardant cette figure~:
 
-Par exemple, en regardant ces images~:
 
    \begin{figure}[!h]
 		\centering
-		\includegraphics[width=10cm]{images/image_10.png}
+		\includegraphics[width=8cm]{images/image_10.png}
 		\caption{Visualisation de l'impact du bruit (~bruit fort dans ce cas~)}
 		\label{bruit}
 	\end{figure}  
@@ -274,12 +287,14 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 	Nous pouvons tout de même en déduire que plus le nombre d'agent est élévé dans un même espace (~et donc la densité aussi~), plus les agents s'aligneront sur la même direction rapidement. Nous pouvons même rajouter qu'à partir d'une valeur de densité d'environ de 0.13 agents par unité d'espace. 
 	
 	Nous n'avons pas clairement identifié quel paramètre différait entre notre modèle et celui de \textsc{Vicsek}. Cependant, il est probable qu'ils s'agisse d'une différence dans la manière de faire évoluer le groupe. En effet, pour chaque point nous repartons de zéro en regénérant un nouveau groupe alors qu'il est possible que \textsc{Viscek} garde le même groupe en rajoutant des agents pour faire augmenter la densité.
-     
+    \newpage
     \section{Au-delà du modèle de \textsc{Vicsek}}
     \subsection{Création d'un agent leader}
        Nous avons maintenant voulu nous écarter un peu du modèle de \textsc{Vicsek}, en étudiant un nouveau type de mouvement collectif. Nous avons alors crée un nouveau type d'agent, dit leader, qui influence davantage les agents normaux. Nous pouvons définir à quel point celui-ci à de l'influence (~nous pouvons choisi une influence équivalente à n agents~).\\
        
-       Nous nous attendions à observer des groupe en forme de pyramide. C'est-à-dire une organisation hiérarchique des agents pour créer un mouvement de groupe. Nous pouvons par exemple observer ce comportement chez certains animaux, notamment lors de la migrations des grues. 
+       Nous avons alors crée le paramètre \verb|agent_type| pour différencier les agents. Ainsi, il nous faut préciser l'indice correspondant à l'agent que l'on veut créer avec \verb|agent_generator|. Il nous faudra ensuite rajouté cette agent au groupe créer avec la méthode \verb|add_agent|. Nous avons décidé que agents classiques sont de type 0 et les agents leader de type 1.\\
+       
+       Avec l'apparition de ce nouveau type d'agent, nous nous attendions à observer des groupe en forme de pyramide. C'est-à-dire une organisation hiérarchique des agents pour créer un mouvement de groupe. Nous pouvons par exemple observer ce comportement chez certains animaux, notamment lors de la migrations des grues. 
        
    Nous avons choisi de représenter l'agent leader en noir.
    \begin{figure}[!h]
@@ -313,9 +328,11 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
        
        Nous avons choisit de paramétrer la réaction des agents quand cet agent répulsif rentre dans leur cône de vision. L'agent prendra immédiatement le vecteur de sens opposé à celui vers l'agent répulsif. Nous avons choisit de représenter les agents répulsifs en noir.\\
        
+       Pour créer ce type d'agent, il nous faut préciser \verb|agent_type = 2| dans la méthode \verb|agent_generator|.\\
+       
        Avec cette expérience, nous constatons que le mouvement de groupe est toujours présents avec un seul agent répulsif. Cet effet collectif est même souvent renforcé. Les agents fuient dans la même direction, tout en se servant de leur influence les uns sur les autres.
        
-        Cependant, lorsqu'il y a plusieurs agents répulsifs, le mouvement collectif n'est plus observé ou très peu. Ces prédateurs (~qui prennent des directions différentes~)  sèment la panique au sein du groupe qui pert visiblement toute cohésion. Chaque agent développe alors un instinct de survie qui le pousse à fuir. La panique et la fuite prennent visiblement le pas sur la cohésion de groupe (~cf. figure \ref{repulsifs_agents}~).
+        Cependant, lorsqu'il y a plusieurs agents répulsifs, le mouvement collectif n'est plus observé ou très peu. Ces prédateurs (~qui prennent des directions différentes~)  sèment la panique au sein du groupe qui pert visiblement toute cohésion. Chaque agent développe alors un instinct de survie qui le pousse à fuir. La panique et la fuite prennent visiblement le pas sur la cohésion de groupe (~cf. figure \ref{repulsifs_agents}~).\\
        
      \begin{figure}[!h]
 		\centering
@@ -359,7 +376,9 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
    
    Cette approche permet de se placer dans des conditions encore plus réalistes. Par exemple, un banc de poissons peut rencontrer des rochers lors de son déplacement. 
    
-   Nous avons alors crée des murs, qui font office d'agents répulsifs immobiles. A leur vue, les agents font marche arrière pour éviter l'obstacle.
+   Nous avons alors crée des murs, qui font office d'agents répulsifs immobiles. A leur vue, les agents font marche arrière pour éviter l'obstacle. \\
+   
+   Pour créer ces murs, il nous faut préciser \verb|agent_type = 3| dans la méthode \verb|agent_generator|.\\
    
 	\begin{figure}[!h]
 		\centering
