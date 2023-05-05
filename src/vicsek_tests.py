@@ -6,17 +6,25 @@ import vicsek as vi
 def op_noise(check_field: bool=False, check_wall: bool=False):
     """Calcule le paramètre d'alignement pour différentes valeurs de bruits et renvoie un tuple de la forme (bruit, paramètre d'alignement)."""
     order_p = []
-    noises = np.arange(0, 5.5, 0.5)
+    noises = np.arange(0, 5.5, 0.10)
     for noise in noises:
         op_temp = 0
         # for _ in range(5):
-        grp = vi.group_generator(400, position=(-5, 5), speed=(-1, 1), noise=(noise, noise), length=10)
+        grp = vi.group_generator(40, position=(-1.5, 1.5), speed=(-1, 1), noise=(noise, noise), length=3.1)
         grp.run(100, check_field=check_field, check_wall=check_wall, step=0.5)
         op_temp += grp.order_parameter()
         
         order_p.append(op_temp)
         print()
     return list(noises), order_p
+
+A=op_noise()
+plt.figure()
+plt.plot(A[0],A[1], label="N=40")
+plt.xlabel("Bruit")
+plt.ylabel("Paramètre d'alignement")
+plt.legend()
+plt.title("Paramètre d'alignement en fonction du bruit")
 
 
 def op_density():
