@@ -51,7 +51,7 @@
 
 	Le modèle de \textsc{Vicsek} a été crée par le scientifique Tamás \textsc{Vicsek}. Il s'agit d'un physicien hongrois connu pour ses contributions à la physique statistique, à la biologie et à la dynamique des systèmes. Il est né le 10 mai 1948 (~74 ans aujourd'hui~) à Budapest. Il est aujourd'hui professeur à l'Université Eötvös \textsc{Loránd} de Budapest. Ce brillant physicien est d'ailleurs un des membres de l'Académie hongroise des sciences et a reçu de nombreux prix pour ses contributions à la physique, notamment le prix \textsc{Széchenyi} (~en 1999~) ou encore le prix Lars \textsc{Onsager} (~en 2020~). \\
 
-	Mais Tamás \textsc{Vicsek} est surtout connu pour son travail sur les systèmes auto-organisés~; ces modèles permettent d'étudier les mouvements collectifs. Il a ainsi travaillé sur le comportement d'agents individuels qui interagissent avec d'autres agents aux alentours, ses observations montrent que des motifs de mouvements collectifs emmergent d'eux-même.
+	Mais Tamás \textsc{Vicsek} est surtout connu pour son travail sur les systèmes auto-organisés~; ces modèles permettent d'étudier les mouvements collectifs. Il a ainsi travaillé sur le comportement d'agents individuels qui interagissent avec d'autres agents aux alentours, ses observations montrent que des motifs de mouvements collectifs émergent d'eux-même.
 	
 	Le groupe se déplace alors de manière coordonnée sans qu'il n'y ait de leader comme on peut l'observer notamment dans la migration des grues. Nous pouvons citer comme exemples~: les bancs de poissons, les regroupements de certains oiseaux, les essaims d'insectes, ou encore le mouvement de foules.
 
@@ -75,7 +75,7 @@
 		\Theta_{i}(t + \text dt) & = & \Theta_{j |r_{i}-r_{j}|<r} + \eta_{i}(t) \\[0.2cm]
 		r_{i}(t + \text dt) & = & r_{i}(t) + v_{i}\Delta t
 	\end{array} \right. \]
-	dans lesquelles $r_{i}$ la position de chaque individu donnée par un vecteur de position, nous prendrons $i$ comme indice de l'agent en question et $t$ le temps. Nous noterons également $\eta$ le bruit et $\Theta$ pour l’angle définissant la direction de sa vitesse. Ici, $\Theta_{j |r_{i}-r_{j}|<r}$ nous indiquera la direction moyenne des vitesses des agents dans un cercle de rayon $r$. L'indice $j$ repésentera alors l'ensemble des voisins de $i$ compris dans ce cercle.\\
+	dans lesquelles $r_{i}$ la position de chaque individu donnée par un vecteur de position, nous prendrons $i$ comme indice de l'agent en question et $t$ le temps. Nous noterons également $\eta$ le bruit et $\Theta$ pour l’angle définissant la direction de sa vitesse. Ici, $\Theta_{j |r_{i}-r_{j}|<r}$ nous indiquera la direction moyenne des vitesses des agents dans un cercle de rayon $r$. L'indice $j$ représentera alors l'ensemble des voisins de $i$ compris dans ce cercle.\\
 
 	Ce qui est intéressant, c'est que nous pouvons, en modifiant certains paramètres du système étudié, observer un mouvement de foule plus fort ou plus faible. Nous pourrons alors jouer sur la surface et les dimensions du plan étudié, le nombre d'agent et donc par conséquent la densité de population et même le bruit.\\
 
@@ -99,7 +99,7 @@
 	
 	Le bruit d'un agent caractérise l'écart angulaire aléatoire entre sa direction et la direction moyenne de ses voisins. Un bruit fort entraîne donc des écarts importants et les groupes se dissocient plus facilement.
 	
-	Avec l'apparition des agents répulsifs (voir chapitre~\ref{chap:resultats}), nous avons également rajouté une sensibilité à ces agents, ce qui rend compte d'une peur des agents répulsif. Ainsi un agent normal avec une peur nulle ne fuira pas les agents répulsifs. Nous avons ainsi étudié des groupes avec des valeurs limites de bruits et de sensiblité.
+	Avec l'apparition des agents répulsifs (voir chapitre~\ref{chap:resultats}), nous avons également rajouté une sensibilité à ces agents, ce qui rend compte d'une peur des agents répulsif. Ainsi un agent normal avec une peur nulle ne fuira pas les agents répulsifs. Nous avons ainsi étudié des groupes avec des valeurs limites de bruits et de sensibilité.
 	
 	Les agents sont également muni d'un attribut qui caractérise leur type, cela permet de savoir si l'agent est un agent normal, leader, répulsif ou un obstacle. En effet, les obstacles sont gérés comme des agents répulsifs immobiles et qui ne peuvent pas tuer (contrairement aux agents répulsifs). La répulsion stérique n'ayant pas été prise en compte, les agents peuvent théoriquement traverser un obstacle, nous avons dit forcer les obstacles à avoir la priorité sur les autres agents. Autrement dit, si un agent normal fuit un agent répulsif et qu'il voit un mur, il fera demi tour car le mur est plus puissant que l'agent répulsif. Dans ce genre de cas, il arrive que l'agent normal fasse des aller-retours entre le mur et le prédateur jusqu'à sa mort. \\
 	
@@ -134,6 +134,7 @@
 	\[
 		\sum_{i=1}^N \frac{\textbf{v}_i}{v_i}
 	\]
+	\label{formule_align}
 	où $\textbf v_i$ est le vecteur vitesse de l'agent $i$ et où $v_i$ est la norme ce de même vecteur. Dans son papier \textsc{Vicsek} divise la somme des vitesses par le nombre d'agents multipliés par la norme de la vitesse ce qui présuppose que tous les agents n'ont pas la même vitesse. Dans notre implémentation, nous avons choisit de ne pas imposer une vitesse unique et tous nos agents ont des vitesses qui leur sont propres.	
 
    
@@ -248,34 +249,54 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 \subsection{Paramètre d'alignement en fonction du bruit} 
 	Nous avons commencé par chercher à reproduire les résultats obtenus par \textsc{Vicsek} en reprenant les mêmes paramètres.
 	
-	Chaque agent n'est ainsi influencé que par ses plus proches voisins et évolue dans un espace torique. En laissant la densité constante et en faisant varier le bruit pour voir son influence sur le paramètre d'alignement, nous observons alors un profil de transition de phase.
+	Chaque agent n'est ainsi influencé que par ses plus proches voisins et évolue dans un espace torique. En laissant la densité constante et en faisant varier le bruit pour voir son influence sur le paramètre d'alignement, nous observons alors un profil de transition de phase.\\
+	
+	Nous avons alors, créer de nouvelles fonctions qui permettent de calculé ce paramètre d'alignement. La première fonction \verb|op_noise| renvoie un tuple composé du bruit et des valeurs de paramètre d'alignement mesuré (~pour une densité fixe~). Il en va de même pour la seconde fonction \verb|op_density| qui renvoie un tuple composé de la densité et des valeurs de paramètre d'alignement mesuré (~pour un bruit fixe~).
+	
+	Bien sûr, pour calculé ce paramètre, nous nous sommes servi de la formule dont nous avions parlé dans la partie \ref{formule_align}.\\
 	
 	Sur la figure suivante chaque points est la moyenne sur cinq mesures de 200 pas et 50 agents.
 	\begin{figure}[!h]
 		\centering
-		\includegraphics[width=12cm]{images/bruit_4.png}
+		\includegraphics[width=10cm]{images/bruit_4bis.png}
 		\caption{Paramètre d'alignement en fonction du bruit}
+		\label{param_bruit}
 	\end{figure}
 	
-	\textcolor{red}{\textbf{Mettre aussi une figure avec différents nombre d'agent et LEGENDER LES AXES QUI N'EN ONT PAS}}
+	\newpage
 	Pour un bruit très faible, les agents sont alignés avec un paramètre d'alignement de 1 ce qui est cohérent puisqu'ils vont s'aligner sans aucune part d'aléatoire. Pour un bruit élevé, ce qui correspond en fait à une probabilité d'avoir une déviation angulaire importante par rapport à la direction moyenne, les agents sont très peu alignés pour un même nombre d'itération. \\
 	
-	Nous avons ici exactement les mêmes résultats que ceux obtenus par \textsc{Vicsek} et son équipe.\\
+	Nous avons ici exactement les mêmes résultats que ceux obtenus par \textsc{Vicsek} et son équipe. Nous sommes également cohérent avec ce que nous avions observé dans la partie \ref{bruit}.\\
+	
+	Nous avons voulu voir, pour une même densité, le même graphe pour différents nombres d'agents. Ainsi, nous avons augmenté progressivement le nombre d'agents ainsi que la longueur de l'espace considéré en gardant la même densité. Nous avons obtenu ce graphe~:
+	
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=10cm]{images/comparatif_4.png}
+		\caption{Paramètre d'alignement en fonction du bruit pour différents nombre d'agents}
+		\label{param_bruit_2}
+	\end{figure}
+	
+	 Nous remarquons que le paramètre d'alignement diminue drastiquement pour une valeur de bruit passant de 1,8 à 2 (~et ce, dans tous les cas que nous avons tracé~). 
+	 
+	 Malgré le fait que l'espace augmente considérablement à chaque fois, les agents ont tendances à s'aligner de moins en moins quand ils sont en grand nombre. En effet, le paramètre d'alignement est de plus en plus proche de zéro (~pour un bruit fixé à 2~) quand on augmente le nombre d'agents.
+	 
+	 C'est une constatation intéressante. Cela voudrait dire que plus le groupe est nombreux dans un même espace, plus le bruit affecte la cohésion de celui-ci. \\
+	  
 	
 	Nous en avons d'ailleurs profité pour mesurer l'effet du cône de vision sur le paramètre d'alignement, nous avons tracé ce graphe avec 50 mesures par points sur la figure \ref{cone_vision_alignement}. 
 	
-	Nous pouvons ainsi constater que le cône de vision précipite la transition de phase entre un état parfaitement ordonné et un état chaotique. Cela est logique puisqu'avec l'augmentation du bruit, les agents peuvent prendre des trajectoires de plus en plus aléatoires. Ses voisins peuvent alors sortir du cône de vision, ce qui change radicalement la manière dont l'agent se déplace.
-	
+	Nous pouvons ainsi constater que le cône de vision précipite la transition de phase entre un état parfaitement ordonné et un état chaotique. Cela est logique puisque avec l'augmentation du bruit, les agents peuvent prendre des trajectoires de plus en plus aléatoires. Ses voisins peuvent alors sortir du cône de vision, ce qui change radicalement la manière dont l'agent se déplace.
 	 \begin{figure}[!h]
 		\centering
 		\includegraphics[width=10cm]{images/bruit_comparaison[50 mesures par pts].png}
-		\caption{Effet du cône de vision sur le paramètre d'alignement}
+		\caption{Effet du cône de vision sur le paramètre d'alignement avec 50 agents}
 		\label{cone_vision_alignement}
 	\end{figure}
-    
+    \newpage
     \subsection{Paramètre d'alignement en fonction de la densité}
 
-    \textsc{Vicsek} avait aussi mesuré le paramètre d'alignement en fonction de la densité d'agent dans l'espace (~avec un bruit constant~). En traçant le paramètre d'alignement en fonction de la densité, nous obtenons pas excatement la même figure que \textsc{Vicsek} même si cela s'en rapproche.
+    \textsc{Vicsek} avait aussi mesuré le paramètre d'alignement en fonction de la densité d'agent dans l'espace (~avec un bruit constant~). En traçant le paramètre d'alignement en fonction de la densité, nous obtenons pas exactement la même figure que \textsc{Vicsek} même si cela s'en rapproche.
       
        \begin{figure}[!h]
 		\centering
@@ -284,9 +305,9 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 		\label{densité_alignement}
 	\end{figure}
 	
-	Nous pouvons tout de même en déduire que plus le nombre d'agent est élévé dans un même espace (~et donc la densité aussi~), plus les agents s'aligneront sur la même direction rapidement. Nous pouvons même rajouter qu'à partir d'une valeur de densité d'environ de 0.13 agents par unité d'espace. 
+	Nous pouvons tout de même en déduire que plus le nombre d'agent est élevé dans un même espace (~et donc la densité aussi~), plus les agents s'aligneront sur la même direction rapidement. Nous pouvons même rajouter qu'à partir d'une valeur de densité d'environ de 0.13 agents par unité d'espace. 
 	
-	Nous n'avons pas clairement identifié quel paramètre différait entre notre modèle et celui de \textsc{Vicsek}. Cependant, il est probable qu'ils s'agisse d'une différence dans la manière de faire évoluer le groupe. En effet, pour chaque point nous repartons de zéro en regénérant un nouveau groupe alors qu'il est possible que \textsc{Viscek} garde le même groupe en rajoutant des agents pour faire augmenter la densité.
+	Nous n'avons pas clairement identifié quel paramètre différait entre notre modèle et celui de \textsc{Vicsek}. Cependant, il est probable qu'ils s'agisse d'une différence dans la manière de faire évoluer le groupe. En effet, pour chaque point nous repartons de zéro en régénérant un nouveau groupe alors qu'il est possible que \textsc{Viscek} garde le même groupe en rajoutant des agents pour faire augmenter la densité.
     \newpage
     \section{Au-delà du modèle de \textsc{Vicsek}}
     \subsection{Création d'un agent leader}
@@ -332,7 +353,7 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
        
        Avec cette expérience, nous constatons que le mouvement de groupe est toujours présents avec un seul agent répulsif. Cet effet collectif est même souvent renforcé. Les agents fuient dans la même direction, tout en se servant de leur influence les uns sur les autres.
        
-        Cependant, lorsqu'il y a plusieurs agents répulsifs, le mouvement collectif n'est plus observé ou très peu. Ces prédateurs (~qui prennent des directions différentes~)  sèment la panique au sein du groupe qui pert visiblement toute cohésion. Chaque agent développe alors un instinct de survie qui le pousse à fuir. La panique et la fuite prennent visiblement le pas sur la cohésion de groupe (~cf. figure \ref{repulsifs_agents}~).\\
+        Cependant, lorsqu'il y a plusieurs agents répulsifs, le mouvement collectif n'est plus observé ou très peu. Ces prédateurs (~qui prennent des directions différentes~) sèment la panique au sein du groupe qui perd visiblement toute cohésion. Chaque agent développe alors un instinct de survie qui le pousse à fuir. La panique et la fuite prennent visiblement le pas sur la cohésion de groupe (~cf. figure \ref{repulsifs_agents}~).\\
        
      \begin{figure}[!h]
 		\centering
@@ -365,7 +386,7 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
    
    Cependant, en enlevant le bruit, nous voyons tout de même que le pourcentage de survivant reste très élevé. La sensibilité est un élément clé pour la survie des agents.\\
 
-  Au contraire, les agents ont peu de chance de survie avec un bruit fort et un sensibilité nulle. En effet, les agents n'ont pas peur de leurs prédateurs, ce qui devient très dangeureux. De plus, le bruit élevé, fait qu'il n'y a aucun mouvement de groupe.
+  Au contraire, les agents ont peu de chance de survie avec un bruit fort et un sensibilité nulle. En effet, les agents n'ont pas peur de leurs prédateurs, ce qui devient très dangereux. De plus, le bruit élevé, fait qu'il n'y a aucun mouvement de groupe.
   
   Cependant, en retirant le bruit, nous voyons le que pourcentage de survivant est à peine plus haut. Nous revenons à la même conclusion~: la sensibilité est un élément clé pour la survie des agents.
   
@@ -385,7 +406,7 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 		\begin{tabular}{cc}
 			\includegraphics[width=8cm]{images/image_19.png} & \includegraphics[width=8cm]{images/image_18.png} \\
 		\end{tabular}
-		\caption{Effet d'un obstacle sur le mouvement des agents (~arrivée des agents vers le mur à gauche, directions prisent par les agents après avoir vu le mur à droire~)}
+		\caption{Effet d'un obstacle sur le mouvement des agents (~arrivée des agents vers le mur à gauche, directions prisent par les agents après avoir vu le mur à droite~)}
 		\label{obstacles}
 	\end{figure}
 
@@ -393,6 +414,18 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 	
 	
 \nnchapter{Conclusion}
+
+   Avec la mise en place de ce programme, nous avons réussi à reproduire le modèle de \textsc{Vicsek} de manière numérique. Notre programme s'implémente de deux classes composées de plusieurs méthodes qui définissent les paramètres du groupe et de chaque agent.\\
+   
+    Nous avons pu observer les différents mouvements de groupe et observer le comportement des agents avec différents paramètres essentiels tels que le bruit ou encore le cône de vision. Le bruit, en augmentant, rend le groupe d'agent de plus en plus désordonné. Le cône de vision, nous a permis de mieux voir l'influence des agents entre eux en mettant en avant les agents voisins que l'individu était capable de voir.\\
+    
+    De plus, nous avons de plus réussi à retrouver les résultats historique de \textsc{Vicsek} et son équipe concernant le paramètre d'alignement. Nous avons vu l'effet du bruit (~densité fixe~) ou encore de la densité d'agents (~bruit fixe~) sur le paramètre d'alignement. Nous confirmons alors ce que nous avions observé précédemment concernant le bruit. Quant à la densité, celle ci en augmentant, rend l'alignement des agents plus facile. \\
+    
+    Par la suite, nous avons voulu aller plus loin que le modèle de base en créant de nouveaux types d'agents. Pour commencer, les agents leaders, qui prennent le rôle de guide dans le groupe. Ce comportement nous a fortement fait penser à la migration des grues. 
+    Ensuite, nous avons créer une prédation avec l'apparition des agents répulsifs qui sèment la panique dans le groupe. Avec nos statistiques, nous avons déterminer que la meilleure chance de survie est de 86 \% avec un bruit et une sensibilité forte. 
+    Pour finir, nous avons mis en place un mur qui fait office d'obstacle. Nous voyons ici, que les agents ont tendances à faire demi-tour face à l'obstacle. Cela semble différent de ce que l'on peut observer dans la réalité avec des agents qui contourne le mur.\\
+    
+    Il serait maintenant intéressant d'étudier les comportements collectifs chez certaines espèces végétales. Nous pensons notamment aux mécanismes de défense mis en place par certains arbres pour faire face à certains dangers (~incendies, certains animaux herbivores ou insectes~), notamment en communiquant avec leurs voisins. Lorsqu'un arbre est en danger, il peut émettre des signaux chimiques volatils. Ces signaux peuvent être détectés par d'autres arbres de la même espèce qui, à leur tour, peuvent déclencher des mécanismes de défense. Ce mécanisme est très souvent observé chez le séquoia géant (~épaisseur de l'écorce face aux feu~), ou encore l'eucalyptus (~productions de toxines et apparition d'épines~). 
 
 
 \end{document}
