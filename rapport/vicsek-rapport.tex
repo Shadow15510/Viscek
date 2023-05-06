@@ -57,6 +57,8 @@
 
 	 Le premier modèle de \textsc{Vicsek} voit ainsi le jour en 1995.\\
 	 
+	 
+	 
 	
 \chapter{Présentation et explications}	
 
@@ -83,8 +85,10 @@
 	
 	Nous pouvons également retrouver le modèle de \textsc{Vicsek} dans la robotique. C'est un précieux outil pour la technologie du monde moderne. Il peut être utiliser dans des programmes informatiques qui gèrent le déplacement de systèmes de robots (~comme les drones~).\\ 
 
-	C'est avec tout cela que nous essayerons, à travers ce projet, de reproduire numériquement des mouvements collectifs et ainsi étudier le modèle de \textsc{Vicsek}.
+	C'est avec tout cela que nous avons essayer, à travers ce projet, de reproduire numériquement des mouvements collectifs et ainsi étudier le modèle de \textsc{Vicsek}.\\
 	
+	
+		
 \chapter{Méthode employée}
 \section{Classes et méthodes}
 
@@ -229,9 +233,12 @@
    
    Plus le bruit est fort, plus celui-ci aura tendance à ne pas s'occuper de ses voisins et prendre sa propre direction. A l'inverse, avec un bruit qui tend vers zéro, l'agent aura tendance à imiter ses voisins et prendre une direction similaire aux agents autour de lui. \\
     
-   Nous avons déjà pu observer l'impact du bruit sur les populations. Nous voyons alors que ce paramètre est capital pour l'observation de mouvements collectifs. Si celui-ci est trop fort, les agents feront route seuls et ne s'occuperont pas du mouvement des voisins. En revanche, les mouvements collectifs seront davantages présents avec un bruit qui tend vers zéro.
+   Nous avons déjà pu observer l'impact du bruit sur les populations. Nous voyons alors que ce paramètre est capital pour l'observation de mouvements collectifs. Si celui-ci est trop fort, les agents feront route seuls et ne s'occuperont pas du mouvement des voisins. En revanche, les mouvements collectifs seront davantages présents avec un bruit qui tend vers zéro.\\
+
+   Ce paramètre perturbe ainsi la communication entre les agents et affecter leur capacité à se coordonner efficacement. Par exemple, si un agent ne peut pas détecter les mouvements de ses voisins en raison d'un niveau de bruit élevé, il peut suivre une trajectoire différente et rompre la cohérence du groupe.\\
+
 \newpage
-Par exemple, en regardant cette figure~:
+Pour bien comprendre, nous avons créer cette figure en mettant un bruit très fort~:
 
 
    \begin{figure}[!h]
@@ -242,7 +249,16 @@ Par exemple, en regardant cette figure~:
 	\end{figure}  
 
 	
-Nous voyons bien ici que les agents ont des directions plutôt différentes. Nous avons un bruit qui est fort dans ce cas, et nous remarquons que les agents ont tendance à prendre des directions sans s'occuper de leurs voisins. Il est alors évident que le bruit est un paramètre essentiel dans le modèle de \textsc{Vicsek}.
+Avec cette image, nous voyons bien ici que les agents ont des directions plutôt différentes. Nous avons un bruit qui est fort dans ce cas, et nous remarquons que les agents ont tendance à prendre des directions sans s'occuper de leurs voisins. 
+
+En effet, la cohésion du groupe est significativement réduite. Nous pouvons d'ailleurs remarquer que les agents, de ce fait occupent la quasi totalité de l'espace définit. Au contraire des mouvements de groupe qui font que les agents sont plus regroupé à un endroit précis.  \\
+
+De plus, nous avons également remarqué que certains agents, sous l'influence du bruit changent brutalement de direction au cours de leur déplacement.\\
+
+Il est alors évident que le bruit est un paramètre essentiel dans le modèle de \textsc{Vicsek}.\\
+
+
+
    
 \chapter{Résultats expérimentaux} \label{chap:resultats}
 \section{Résultats historiques de \textsc{Vicsek}}
@@ -371,7 +387,13 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 
 	\subsection{Système évolutif}
 	
-		En ajoutant des agents répulsifs, nous avons eu l'idée de créer un système de «~mort~» où les agents touchés par un agent répulsifs sont retirés de la liste des agents et placés dans un autre attribut du groupe. Cela permet notamment de comparer les caractéristiques des agents morts avec celles des survivants et de voir quels paramètres permettent de survivre. En mettant des valeurs limites pour le bruit et la sensibilité aux agents répulsifs et en moyennant les résultats sur 10 mesures, nous obtenons les résultats suivants~:\\
+		En ajoutant des agents répulsifs, nous avons eu l'idée de créer un système de «~mort~» où les agents touchés par un agent répulsifs sont retirés de la liste des agents et placés dans un autre attribut du groupe.
+		
+      Cela permet notamment de comparer les caractéristiques des agents morts avec celles des survivants et de voir quels paramètres permettent de survivre. Nous avons créer de nouvelles fonctions appelées \verb|test| qui calculent le pourcentage de survivants. 
+     
+     En générant différents groupes avec \verb|group_generator|, ces fonctions ont 4 groupes à tester pour différents bruits et sensibilité. 
+     
+     En mettant des valeurs limites pour le bruit et la sensibilité aux agents répulsifs et en moyennant les résultats sur 10 mesures, nous obtenons les résultats suivants~:\\
 		
 		\begin{tabular}{|c|c|c|} \hline
 		\centering
@@ -382,7 +404,7 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 			0 & 0 & 39 \\ \hline
 		\end{tabular}\\
 
-   Nous voyons bien que statistiquement, les agents ont plus de chance de survivre avec un bruit et une sensibilité à 1. En effet, dans ce cas là, les agents avec une grande sensibilité cherche à fuir à tout prix le prédateur. De plus, le bruit fort fait que les agents ne cherche pas à imiter leurs voisins, ce qui ne perturbe pas la fuite qu'il avait entrepris. 
+   Nous voyons bien que statistiquement, les agents ont plus de chance de survivre avec un bruit et une sensibilité à 1. En effet, dans ce cas là, les agents avec une grande sensibilité cherche à fuir à tout prix le prédateur. De plus, le bruit fort fait que les agents ne cherche pas à imiter leurs voisins, ce qui ne perturbe pas la fuite qu'il avait entrepris.
    
    Cependant, en enlevant le bruit, nous voyons tout de même que le pourcentage de survivant reste très élevé. La sensibilité est un élément clé pour la survie des agents.\\
 
@@ -401,6 +423,9 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
    
    Pour créer ces murs, il nous faut préciser \verb|agent_type = 3| dans la méthode \verb|agent_generator|.\\
    
+   Nous avons choisis dans un premier temps de représenter un mur au milieu de l'espace considéré. Ces agents de type 3, sont en noir et forment une ligne dans l'animation suivante.\\
+   
+    
 	\begin{figure}[!h]
 		\centering
 		\begin{tabular}{cc}
@@ -412,7 +437,26 @@ Nous voyons bien ici que les agents ont des directions plutôt différentes. Nou
 
 	Nous voyons bien que les agents rebroussent un peu chemin. En réalité, nous pourrions plutôt nous attendre à ce que le groupe contourne l'obstacle. Il y a tout de même quelques agents qui ont visiblement contourné l'obstacle, mais la majorité du groupe fait demi-tour.
 	
+	Cependant, il ne faut pas oublier de préciser que l'obstacle est particulièrement imposant, et que cela explique sûrement le comportement du groupe.\\
 	
+	Nous avons alors voulu voir l'effet de plusieurs petits obstacles sur un groupe. Pour ce faire, nous avons généré une animation avec six agents de type 3, qui forment un ensemble de petits obstacles répartis sur tout l'espace. Nous obtenons ces images~:
+	
+		\begin{figure}[!h]
+		\centering
+		\begin{tabular}{cc}
+			\includegraphics[width=8cm]{images/image_20.png} & \includegraphics[width=8cm]{images/image_21.png} \\
+		\end{tabular}
+		\caption{Effet de plusieurs petits obstacles sur le mouvement des agents (~avant et après l'obstacle~)}
+		\label{obstacles2}
+	\end{figure}
+	
+	Dans ce cas là, les agents ne font pas demi-tour mais se fraient un passage entre les petits obstacles. De plus, nous observons que les mouvements de groupes semblent peu affectés par ces six obstacles.
+	
+	 En effet, dans cette animation, les agents contournent les petits obstacles plus facilement. Cela explique le comportement des agents face au grand mur. L'obstacle était trop grand et les agents ont préférés faire demi-tour. Dans ce nouveau cas, ces obstacles sont petits et les agents ont plus d'espace libre pour pouvoir contourner. \\
+	 
+	 La taille de l'obstacle est donc importante et détermine de comportement du groupe.  
+	
+
 \nnchapter{Conclusion}
 
    Avec la mise en place de ce programme, nous avons réussi à reproduire le modèle de \textsc{Vicsek} de manière numérique. Notre programme s'implémente de deux classes composées de plusieurs méthodes qui définissent les paramètres du groupe et de chaque agent.\\
