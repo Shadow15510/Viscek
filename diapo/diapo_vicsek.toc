@@ -1,0 +1,8 @@
+\babel@toc {nil}{}\relax 
+\beamer@sectionintoc {1}{Présentation et explication}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Présentation du modèle}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Explications sur le modèle}{7}{0}{1}
+\beamer@sectionintoc {2}{Méthode utilisée}{17}{0}{2}
+\beamer@subsectionintoc {2}{1}{Classes et méthodes}{18}{0}{2}
+\beamer@subsectionintoc {2}{2}{Créations et manipulations sur les agents}{19}{0}{2}
+\beamer@sectionintoc {3}{Résultats et interprétations physiques}{21}{0}{3}

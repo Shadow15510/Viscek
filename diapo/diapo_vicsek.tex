@@ -141,7 +141,36 @@
 \end{frame}
 
 \section{Méthode utilisée}
+\subsection{Classes et méthodes}
+\begin{frame}{Classes et méthodes}
+\only<1>{\begin{center} Programmation orientée objet $\Rightarrow$ Deux classes composées de  plusieurs méthodes\end{center}}
+\only<1>{\begin{center} \includegraphics[width=10cm]{images/code.png}  \end{center}}
+\end{frame}
 
+\subsection{Créations et manipulations sur les agents}
+\begin{frame}{Création et manipulation d'agents}
+\begin{itemize}
+\item Créations d'agents~;
+\item Choix des paramètres (bruit, vitesse, cône de vision $\dots$)~;
+\item Evolution dans le temps grâce aux équations.
+\end{itemize}
+\vspace{1cm}
+\begin{center}$r_{i}(t + \text dt)  =  r_{i}(t) + v_{i}\Delta t$\end{center}
+\end{frame}
+
+\begin{frame}{Création et manipulation de groupe}
+\begin{itemize}
+\item Création de groupes~;
+\item Evolution dans le temps en fonction des voisins~;
+\item Calcul du paramètre d'alignement.
+\end{itemize}
+\vspace{1cm}
+\begin{center}$\Theta_{i}(t + \text dt)  =  \Theta_{j |r_{i}-r_{j}|<r} + \eta_{i}(t)$\end{center}
+\end{frame}
+
+\section{Résultats et interprétations physiques}
+\begin{frame}{Animations et fichiers GIF}
+\end{frame}
 \end{document}
 
 
