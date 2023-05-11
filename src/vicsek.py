@@ -3,6 +3,9 @@ Vicsek — 1.7.4
 ==============
 (Alexis Peyroutet et Antoine Royer)
 
+Licence
+-------
+La totalité du code est soumis à la licence GNU General Public Licence v3.0
 
 Description
 -----------
