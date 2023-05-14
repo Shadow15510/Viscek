@@ -207,7 +207,7 @@
 			
 			\begin{column}{0.4\paperwidth}
 				\begin{itemize}
-					\item<1-> Ce paramètre perturbe ainsi la communication entre les agents~;
+					\item<1-> Ce paramètre perturbe la communication entre les agents~;
 					\item<2-> La cohésion du groupe est significativement réduite lorsque le bruit augmente.
           \end{itemize}			
 			\end{column}
@@ -230,7 +230,85 @@
 \end{frame}
 
 \subsection{Au-delà du modèle de Vicsek}
-\begin{frame}
+\begin{frame}{Création d'un agent leader}
+		\begin{columns}
+			\begin{column}{0.6\paperwidth}
+			\only<1-3>{\begin{center} \includegraphics[width=7.5cm]{images/image_15.png} \\ Un agent leader en noir \end{center}}
+			\only<4>{\begin{center} \includegraphics[width=6cm]{images/grues.jpg} \\ Migration des grues \end{center}}
+			\end{column}
+			
+			\begin{column}{0.4\paperwidth}
+				\begin{itemize}
+					\item<1-> Nouveau paramètre pour le type d'agent~;
+					\item<2-> Influence plus importante sur les agents normaux~;
+					\item<3-> Organisation en «~triangle ou en arc de cercle~»~;
+					\item<4-> Autre type de mouvement collectif.
+				\end{itemize}			
+			\end{column}
+		\end{columns}		
+	\end{frame}
+	
+\begin{frame}{Mise en place d'une prédation}	
+\begin{columns}
+			\begin{column}{0.6\paperwidth}
+			\only<1-3>{\begin{center} \includegraphics[width=7.5cm]{images/image_16.png} \\Trois prédateurs en noir \end{center}}
+			\only<4>{\begin{center} \includegraphics[width=7.5cm]{images/image_17.png} \\Un seul prédateur en noir \end{center}}
+			\end{column}
+			
+			\begin{column}{0.4\paperwidth}
+				\begin{itemize}
+					\item<1-> Nouveau paramètre pour simuler la «~peur des agents~»~;
+					\item<2-> Agents prennent la fuite dans le sens inverse de leur direction~;
+					\item<3-> Mouvements de groupes moins observés avec plusieurs prédateurs~;
+					\item<4-> Mouvements de groupes conservés avec un prédateur.
+				\end{itemize}			
+			\end{column}
+		\end{columns}		
+	\end{frame}
+
+\begin{frame}{Système évolutif}	
+
+\begin{center}Nous avons 4 groupes tests avec des paramètres différents.\end{center}
+
+\begin{center}\begin{tabular}{|c|c|c|} \hline	
+          \centering	
+			bruit & sensibilité & pourcentage de survivants \\ \hline
+			1 & 0 & 30 \\ \hline
+			0 & 1 & 79 \\ \hline
+			1 & 1 & 86 \\ \hline
+			0 & 0 & 39 \\ \hline
+		\end{tabular}\end{center}
+		
+\begin{center}Bruit et sensibilité au maximum $\rightarrow$ Meilleure chance de survie.\end{center}
+\end{frame}
+
+\begin{frame}{Ajout d'obstacles}
+\only<1>{\begin{center} \includegraphics[width=7.5cm]{images/image_19.png}  \end{center}}
+\only<1>{\begin{center} Nouveau type d'agent «~mur~»\end{center}}
+
+\only<2>{\begin{center}\includegraphics[width=7.5cm]{images/image_18.png}\end{center}} 
+\only<2>{\begin{center} La majorité des agents fait demi-tour \\ Importance de la taille de l'obstacle\end{center}}
+
+\only<3>{\begin{center}\includegraphics[width=7.5cm]{images/image_20.png}\end{center}} 
+\only<3>{\begin{center} Simulation de petits obstacles en noir \end{center}}
+
+\only<4>{\begin{center}\includegraphics[width=7.5cm]{images/image_21.png}\end{center}} 
+\only<4>{\begin{center} Les agents contournent les obstacles \end{center}}
+\end{frame}
+
+\section*{\ }
+	\begin{frame}{Conclusion}
+		
+			\begin{itemize}
+				\item<1-> Nous avons réussi à simuler le modèle de Vicsek numériquement~;
+				\item<2-> Nous avons joué sur le fait que chaque agent est unique~;
+				\item<3-> Nous sommes allés au-delà du modèle avec la mise en place d'une prédation, la création d'agents leaders et de murs.
+				\item<4-> Il serait maintenant intéressant de regarder les comportements collectifs chez certaines espèces végétales~;
+			\end{itemize}
+\end{frame}		
+\begin{frame}	
+\begin{center} \includegraphics[width=8cm]{images/image_9.png}  \end{center}
+\begin{center} Merci pour votre écoute ! \\ Avez-vous des questions ? \end{center}
 \end{frame}
 
 \end{document}
