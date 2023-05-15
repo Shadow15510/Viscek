@@ -100,7 +100,7 @@
 \only<1>{\begin{center}Le modèle de \textsc{Vicsek} permet d'étudier un groupe d'agents qui se déplace dans un espace.\end{center}}
 \only<1>{\begin{center} \includegraphics[width=4cm]{images/regle.jpg}  \end{center}}
 
-\only<2>{\begin{center}Chacun des agents a une vitesse donnée (en norme et en direction) et va interagir avec ses voisins.\end{center}}
+\only<2>{\begin{center}Chacun des agents a une vitesse donnée (~en norme et en direction~) et va interagir avec ses voisins.\end{center}}
 \only<2>{\begin{center} \includegraphics[width=8cm]{images/image_3.png}  \end{center}}
 
 \only<3>{\begin{center}Création d'un mouvement de groupe suite aux interactions entre les agents.\end{center}}
@@ -218,7 +218,7 @@
 
 \begin{frame}{Paramètre d'alignement en fonction du bruit}
    \only<1>{\begin{center}\includegraphics[width=8cm]{images/bruit_4bis.png}\end{center}}
-   \only<1>{\begin{center} 40 agents \\ Densité fixe $\rightarrow$ 4,15 agents par unité d'espace au carré\end{center}}
+   \only<1>{\begin{center} 40 agents \\ Densité fixe $\rightarrow$ 4,15 agents par unité d'espace au   carré\end{center}}
 
    \only<2>{\begin{center}\includegraphics[width=8cm]{images/comparatif_4.png}\end{center}}
    \only<2>{\begin{center} Agents plus nombreux $\rightarrow$ Meilleur alignement \end{center}}
@@ -241,7 +241,7 @@
 				\begin{itemize}
 					\item<1-> Nouveau paramètre pour le type d'agent~;
 					\item<2-> Influence plus importante sur les agents normaux~;
-					\item<3-> Organisation en «~triangle ou en arc de cercle~»~;
+					\item<3-> Organisation en ~triangle ou en arc de cercle~»~;
 					\item<4-> Autre type de mouvement collectif.
 				\end{itemize}			
 			\end{column}
