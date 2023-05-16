@@ -59,8 +59,8 @@
 
 
 \title{Projet numérique~: Soutenance finale}
-\subtitle{Modèle de Vicsek}
-\author{ROYER Antoine and PEYROUTET Alexis}
+\subtitle{Modèle de \textsc{Vicsek}}
+\author{Antoine \textsc{Royer} \& Alexis \textsc{Peyroutet}}
 \institute{L3 PCAME – Tarbes}
 \date{}
 
@@ -95,12 +95,12 @@
 	
 \subsection{Explications sur le modèle}
 
-\begin{frame}{Les bases du modèles}
+\begin{frame}{Les bases du modèle}
 
 \only<1>{\begin{center}Le modèle de \textsc{Vicsek} permet d'étudier un groupe d'agents qui se déplace dans un espace.\end{center}}
 \only<1>{\begin{center} \includegraphics[width=4cm]{images/regle.jpg}  \end{center}}
 
-\only<2>{\begin{center}Chacun des agents a une vitesse donnée (en norme et en direction) et va interagir avec ses voisins.\end{center}}
+\only<2>{\begin{center}Chacun des agents a une vitesse donnée (~en norme et en direction~) et va interagir avec ses voisins.\end{center}}
 \only<2>{\begin{center} \includegraphics[width=8cm]{images/image_3.png}  \end{center}}
 
 \only<3>{\begin{center}Création d'un mouvement de groupe suite aux interactions entre les agents.\end{center}}
@@ -117,7 +117,7 @@
 		\begin{itemize}
 				   \item<1-3> $r_{i}$ la position de chaque individu~;
 				   \item<2-3> $i$ est l'indice de l'agent en question et $t$ le temps~;
-					\item<3-3> $\eta$ le bruit et $\Theta$ l'angle définissant la direction de sa vitesse.
+				   \item<3-3> $\eta$ le bruit et $\Theta$ l'angle définissant la direction de sa vitesse.
 		\end{itemize}
 				
 		\vspace{-2cm}\only<4-5>{\begin{center} \[ \left\{ \begin{array}{rcl}
@@ -144,7 +144,7 @@
 \subsection{Classes et méthodes}
 \begin{frame}{Classes et méthodes}
 \only<1>{\begin{center} Programmation orientée objet $\Rightarrow$ Deux classes composées de  plusieurs méthodes\end{center}}
-\only<1>{\begin{center} \includegraphics[width=10cm]{images/code.png}  \end{center}}
+\only<1>{\begin{center} \includegraphics[width=10cm]{images/code.png} \\ \includegraphics[width=5cm]{images/code2.png} \end{center}}
 \end{frame}
 
 \subsection{Créations et manipulations sur les agents}
@@ -176,12 +176,62 @@
 \only<1>{\begin{center} \includegraphics[width=8cm]{images/image_8.png}  \end{center}}
 \only<1>{\begin{center}Images avec agents colorés pour indiquer leur direction\end{center}}
 
-\only<2>{\begin{center}\includegraphics[width=8cm]{images/image_7.png}\end{center}} 
-\only<2>{\begin{center}Apparition de petits groupes\end{center}}
 
-\only<3>{\begin{center}\includegraphics[width=8cm]{images/image_9.png}\end{center}} 
-\only<3>{\begin{center}Regroupement en un seul et même groupe\end{center}}
+\transduration<2-50>{0.01}
+	\only<2>{\begin{center} \includegraphics[width=8cm]{images/anim/01.png} \end{center}}
+	\only<3>{\begin{center} \includegraphics[width=8cm]{images/anim/02.png} \end{center}}
+	\only<4>{\begin{center} \includegraphics[width=8cm]{images/anim/03.png} \end{center}}
+	\only<5>{\begin{center} \includegraphics[width=8cm]{images/anim/04.png} \end{center}}
+	\only<6>{\begin{center} \includegraphics[width=8cm]{images/anim/05.png} \end{center}}
+	\only<7>{\begin{center} \includegraphics[width=8cm]{images/anim/06.png} \end{center}}
+	\only<8>{\begin{center} \includegraphics[width=8cm]{images/anim/07.png} \end{center}}
+	\only<9>{\begin{center} \includegraphics[width=8cm]{images/anim/08.png} \end{center}}
+	\only<10>{\begin{center} \includegraphics[width=8cm]{images/anim/09.png} \end{center}}
+	\only<11>{\begin{center} \includegraphics[width=8cm]{images/anim/10.png} \end{center}}
+	\only<12>{\begin{center} \includegraphics[width=8cm]{images/anim/11.png} \end{center}}
+	\only<13>{\begin{center} \includegraphics[width=8cm]{images/anim/12.png} \end{center}}
+	\only<14>{\begin{center} \includegraphics[width=8cm]{images/anim/13.png} \end{center}}
+	\only<15>{\begin{center} \includegraphics[width=8cm]{images/anim/14.png} \end{center}}
+	\only<16>{\begin{center} \includegraphics[width=8cm]{images/anim/15.png} \end{center}}
+	\only<17>{\begin{center} \includegraphics[width=8cm]{images/anim/16.png} \end{center}}
+	\only<18>{\begin{center} \includegraphics[width=8cm]{images/anim/17.png} \end{center}}
+	\only<19>{\begin{center} \includegraphics[width=8cm]{images/anim/18.png} \end{center}}
+	\only<20>{\begin{center} \includegraphics[width=8cm]{images/anim/19.png} \end{center}}
+	\only<21>{\begin{center} \includegraphics[width=8cm]{images/anim/20.png} \end{center}}
+	\only<22>{\begin{center} \includegraphics[width=8cm]{images/anim/21.png} \end{center}}
+	\only<23>{\begin{center} \includegraphics[width=8cm]{images/anim/22.png} \end{center}}
+	\only<24>{\begin{center} \includegraphics[width=8cm]{images/anim/23.png} \end{center}}
+	\only<25>{\begin{center} \includegraphics[width=8cm]{images/anim/24.png} \end{center}}
+	\only<26>{\begin{center} \includegraphics[width=8cm]{images/anim/25.png} \end{center}}
+	\only<27>{\begin{center} \includegraphics[width=8cm]{images/anim/26.png} \end{center}}
+	\only<28>{\begin{center} \includegraphics[width=8cm]{images/anim/27.png} \end{center}}
+	\only<29>{\begin{center} \includegraphics[width=8cm]{images/anim/28.png} \end{center}}
+	\only<30>{\begin{center} \includegraphics[width=8cm]{images/anim/29.png} \end{center}}
+	\only<31>{\begin{center} \includegraphics[width=8cm]{images/anim/30.png} \end{center}}
+	\only<32>{\begin{center} \includegraphics[width=8cm]{images/anim/31.png} \end{center}}
+	\only<33>{\begin{center} \includegraphics[width=8cm]{images/anim/32.png} \end{center}}
+	\only<34>{\begin{center} \includegraphics[width=8cm]{images/anim/33.png} \end{center}}
+	\only<35>{\begin{center} \includegraphics[width=8cm]{images/anim/34.png} \end{center}}
+	\only<36>{\begin{center} \includegraphics[width=8cm]{images/anim/35.png} \end{center}}
+	\only<37>{\begin{center} \includegraphics[width=8cm]{images/anim/36.png} \end{center}}
+	\only<38>{\begin{center} \includegraphics[width=8cm]{images/anim/37.png} \end{center}}
+	\only<39>{\begin{center} \includegraphics[width=8cm]{images/anim/38.png} \end{center}}
+	\only<40>{\begin{center} \includegraphics[width=8cm]{images/anim/39.png} \end{center}}
+	\only<41>{\begin{center} \includegraphics[width=8cm]{images/anim/40.png} \end{center}}
+	\only<42>{\begin{center} \includegraphics[width=8cm]{images/anim/41.png} \end{center}}
+	\only<43>{\begin{center} \includegraphics[width=8cm]{images/anim/42.png} \end{center}}
+	\only<44>{\begin{center} \includegraphics[width=8cm]{images/anim/43.png} \end{center}}
+	\only<45>{\begin{center} \includegraphics[width=8cm]{images/anim/44.png} \end{center}}
+	\only<46>{\begin{center} \includegraphics[width=8cm]{images/anim/45.png} \end{center}}
+	\only<47>{\begin{center} \includegraphics[width=8cm]{images/anim/46.png} \end{center}}
+	\only<48>{\begin{center} \includegraphics[width=8cm]{images/anim/47.png} \end{center}}
+	\only<49>{\begin{center} \includegraphics[width=8cm]{images/anim/48.png} \end{center}}
+	\only<50>{\begin{center} \includegraphics[width=8cm]{images/anim/49.png} \end{center}}
+	
+	\only<51>{\begin{center} \includegraphics[width=8cm]{images/anim/49.png} \end{center}}
+
 \end{frame}
+
 
 
 \begin{frame}{Cône de vision}
@@ -202,13 +252,63 @@
 \begin{frame}{Paramètre de bruit}
 \begin{columns}
 			\begin{column}{0.6\paperwidth}
-		       \begin{center}\includegraphics[width=8cm]{images/image_10.png}\end{center}
+		       	\transduration<1-49>{0.01}
+				\only<1>{\begin{center} \includegraphics[width=8cm]{images/bruit/01.png} \end{center}}
+				\only<2>{\begin{center} \includegraphics[width=8cm]{images/bruit/02.png} \end{center}}
+				\only<3>{\begin{center} \includegraphics[width=8cm]{images/bruit/03.png} \end{center}}
+				\only<4>{\begin{center} \includegraphics[width=8cm]{images/bruit/04.png} \end{center}}
+				\only<5>{\begin{center} \includegraphics[width=8cm]{images/bruit/05.png} \end{center}}
+				\only<6>{\begin{center} \includegraphics[width=8cm]{images/bruit/06.png} \end{center}}
+				\only<7>{\begin{center} \includegraphics[width=8cm]{images/bruit/07.png} \end{center}}
+				\only<8>{\begin{center} \includegraphics[width=8cm]{images/bruit/08.png} \end{center}}
+				\only<9>{\begin{center} \includegraphics[width=8cm]{images/bruit/09.png} \end{center}}
+				\only<10>{\begin{center} \includegraphics[width=8cm]{images/bruit/10.png} \end{center}}
+				\only<11>{\begin{center} \includegraphics[width=8cm]{images/bruit/11.png} \end{center}}
+				\only<12>{\begin{center} \includegraphics[width=8cm]{images/bruit/12.png} \end{center}}
+				\only<13>{\begin{center} \includegraphics[width=8cm]{images/bruit/13.png} \end{center}}
+				\only<14>{\begin{center} \includegraphics[width=8cm]{images/bruit/14.png} \end{center}}
+				\only<15>{\begin{center} \includegraphics[width=8cm]{images/bruit/15.png} \end{center}}
+				\only<16>{\begin{center} \includegraphics[width=8cm]{images/bruit/16.png} \end{center}}
+				\only<17>{\begin{center} \includegraphics[width=8cm]{images/bruit/17.png} \end{center}}
+				\only<18>{\begin{center} \includegraphics[width=8cm]{images/bruit/18.png} \end{center}}
+				\only<19>{\begin{center} \includegraphics[width=8cm]{images/bruit/19.png} \end{center}}
+				\only<20>{\begin{center} \includegraphics[width=8cm]{images/bruit/20.png} \end{center}}
+				\only<21>{\begin{center} \includegraphics[width=8cm]{images/bruit/21.png} \end{center}}
+				\only<22>{\begin{center} \includegraphics[width=8cm]{images/bruit/22.png} \end{center}}
+				\only<23>{\begin{center} \includegraphics[width=8cm]{images/bruit/23.png} \end{center}}
+				\only<24>{\begin{center} \includegraphics[width=8cm]{images/bruit/24.png} \end{center}}
+				\only<25>{\begin{center} \includegraphics[width=8cm]{images/bruit/25.png} \end{center}}
+				\only<26>{\begin{center} \includegraphics[width=8cm]{images/bruit/26.png} \end{center}}
+				\only<27>{\begin{center} \includegraphics[width=8cm]{images/bruit/27.png} \end{center}}
+				\only<28>{\begin{center} \includegraphics[width=8cm]{images/bruit/28.png} \end{center}}
+				\only<29>{\begin{center} \includegraphics[width=8cm]{images/bruit/29.png} \end{center}}
+				\only<30>{\begin{center} \includegraphics[width=8cm]{images/bruit/30.png} \end{center}}
+				\only<31>{\begin{center} \includegraphics[width=8cm]{images/bruit/31.png} \end{center}}
+				\only<32>{\begin{center} \includegraphics[width=8cm]{images/bruit/32.png} \end{center}}
+				\only<33>{\begin{center} \includegraphics[width=8cm]{images/bruit/33.png} \end{center}}
+				\only<34>{\begin{center} \includegraphics[width=8cm]{images/bruit/34.png} \end{center}}
+				\only<35>{\begin{center} \includegraphics[width=8cm]{images/bruit/35.png} \end{center}}
+				\only<36>{\begin{center} \includegraphics[width=8cm]{images/bruit/36.png} \end{center}}
+				\only<37>{\begin{center} \includegraphics[width=8cm]{images/bruit/37.png} \end{center}}
+				\only<38>{\begin{center} \includegraphics[width=8cm]{images/bruit/38.png} \end{center}}
+				\only<39>{\begin{center} \includegraphics[width=8cm]{images/bruit/39.png} \end{center}}
+				\only<40>{\begin{center} \includegraphics[width=8cm]{images/bruit/40.png} \end{center}}
+				\only<41>{\begin{center} \includegraphics[width=8cm]{images/bruit/41.png} \end{center}}
+				\only<42>{\begin{center} \includegraphics[width=8cm]{images/bruit/42.png} \end{center}}
+				\only<43>{\begin{center} \includegraphics[width=8cm]{images/bruit/43.png} \end{center}}
+				\only<44>{\begin{center} \includegraphics[width=8cm]{images/bruit/44.png} \end{center}}
+				\only<45>{\begin{center} \includegraphics[width=8cm]{images/bruit/45.png} \end{center}}
+				\only<46>{\begin{center} \includegraphics[width=8cm]{images/bruit/46.png} \end{center}}
+				\only<47>{\begin{center} \includegraphics[width=8cm]{images/bruit/47.png} \end{center}}
+				\only<48>{\begin{center} \includegraphics[width=8cm]{images/bruit/48.png} \end{center}}
+				\only<49>{\begin{center} \includegraphics[width=8cm]{images/bruit/49.png} \end{center}}
+				\only<50>{\begin{center} \includegraphics[width=8cm]{images/bruit/50.png} \end{center}}
 			\end{column}
 			
 			\begin{column}{0.4\paperwidth}
 				\begin{itemize}
 					\item<1-> Ce paramètre perturbe la communication entre les agents~;
-					\item<2-> La cohésion du groupe est significativement réduite lorsque le bruit augmente.
+					\item<50-> La cohésion du groupe est significativement réduite lorsque le bruit augmente.
           \end{itemize}			
 			\end{column}
 		\end{columns}		
@@ -273,10 +373,10 @@
 \begin{center}\begin{tabular}{|c|c|c|} \hline	
           \centering	
 			bruit & sensibilité & pourcentage de survivants \\ \hline
-			1 & 0 & 30 \\ \hline
-			0 & 1 & 79 \\ \hline
-			1 & 1 & 86 \\ \hline
 			0 & 0 & 39 \\ \hline
+			0 & 1 & 79 \\ \hline
+			1 & 0 & 30 \\ \hline
+			1 & 1 & 86 \\ \hline
 		\end{tabular}\end{center}
 		
 \begin{center}Bruit et sensibilité au maximum $\rightarrow$ Meilleure chance de survie.\end{center}
