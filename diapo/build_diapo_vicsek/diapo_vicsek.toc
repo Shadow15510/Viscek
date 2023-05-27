@@ -7,5 +7,5 @@
 \beamer@subsectionintoc {2}{2}{Créations et manipulations sur les agents}{19}{0}{2}
 \beamer@sectionintoc {3}{Résultats et interprétations physiques}{21}{0}{3}
 \beamer@subsectionintoc {3}{1}{Premiers résultats et paramètres importants}{22}{0}{3}
-\beamer@subsectionintoc {3}{2}{Résultats historiques de Vicsek}{29}{0}{3}
-\beamer@subsectionintoc {3}{3}{Au-delà du modèle de Vicsek}{32}{0}{3}
+\beamer@subsectionintoc {3}{2}{Résultats historiques de Vicsek}{125}{0}{3}
+\beamer@subsectionintoc {3}{3}{Au-delà du modèle de Vicsek}{128}{0}{3}
